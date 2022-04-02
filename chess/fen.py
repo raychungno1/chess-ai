@@ -1,39 +1,13 @@
-from .piece import Type, Color, Piece, char_to_type, char_to_col
-
+from .piece import Color, King, Queen, Rook, Bishop, Knight, Pawn, Empty
+from .dict import char_to_col
 
 class FEN:
-    def load(string):
-        board, string = FEN.__load_pieces(string)
+    def load_pieces(string):
+        board = []
+        for i in range(64):
+            board.append(Empty())
 
-        white_to_move, string = FEN.__load_turn(string)
-
-        (white_long_castle,
-         white_short_castle,
-         black_long_castle,
-         black_short_castle, string) = FEN.__load_castle(string)
-
-        en_passant, string = FEN.__load_en_passant(string)
-
-        half_moves, string = FEN.__load_half_moves(string)
-
-        move_num = int(string)
-
-        return (
-            board,
-            white_to_move,
-            white_long_castle,
-            white_short_castle,
-            black_long_castle,
-            black_short_castle,
-            en_passant,
-            half_moves,
-            move_num
-        )
-
-    def __load_pieces(string):
-        board = [None] * 64
-        row = 7
-        col = 0
+        row, col = 7, 0
 
         for i, char in enumerate(string):
             if char == "/":
@@ -43,9 +17,38 @@ class FEN:
             elif char.isdigit():
                 col += int(char)
 
-            elif char.lower() in char_to_type:
-                board[row * 8 + col] = Piece(
-                    char_to_type[char.lower()],
+            elif char.lower() == "k":
+                board[row * 8 + col] = King(
+                    Color.WHITE if char.isupper() else Color.BLACK
+                )
+                col += 1
+
+            elif char.lower() == "q":
+                board[row * 8 + col] = Queen(
+                    Color.WHITE if char.isupper() else Color.BLACK
+                )
+                col += 1
+
+            elif char.lower() == "r":
+                board[row * 8 + col] = Rook(
+                    Color.WHITE if char.isupper() else Color.BLACK
+                )
+                col += 1
+
+            elif char.lower() == "b":
+                board[row * 8 + col] = Bishop(
+                    Color.WHITE if char.isupper() else Color.BLACK
+                )
+                col += 1
+
+            elif char.lower() == "n":
+                board[row * 8 + col] = Knight(
+                    Color.WHITE if char.isupper() else Color.BLACK
+                )
+                col += 1
+
+            elif char.lower() == "p":
+                board[row * 8 + col] = Pawn(
                     Color.WHITE if char.isupper() else Color.BLACK
                 )
                 col += 1
@@ -55,10 +58,10 @@ class FEN:
 
         return board, string[i + 1:]
 
-    def __load_turn(string):
+    def load_turn(string):
         return string[0] == "w", string[2:]
 
-    def __load_castle(string):
+    def load_castle(string):
         white_long_castle = False
         white_short_castle = False
         black_long_castle = False
@@ -88,7 +91,7 @@ class FEN:
             string[i + 1:]
         )
 
-    def __load_en_passant(string):
+    def load_en_passant(string):
         if (string[0].isalpha()):
             col = char_to_col[string[0]]
             row = int(string[1]) - 1
@@ -96,14 +99,14 @@ class FEN:
 
         return None, string[2:]
 
-    def __load_half_moves(string):
+    def load_half_moves(string):
         for i, char in enumerate(string):
             if not char.isdigit():
                 break
 
         return int(string[:i]), string[i + 1:]
 
-    def __load_move_num(string):
+    def load_move_num(string):
         for i, char in enumerate(string):
             if not char.isdigit():
                 break
