@@ -44,7 +44,7 @@ class Piece:
                 if board.get_piece(i).correct_turn(board.white_to_move):
                     break
 
-                moves.append(Move(self, origin, i))
+                moves.append(Move(board, origin, i))
 
                 if not(board.get_piece(i).empty()) and not(board.get_piece(i).correct_turn(board.white_to_move)):
                     break
@@ -58,6 +58,10 @@ class Piece:
 
 
 class King(Piece):
+    def __init__(self, color=Color.WHITE):
+        super().__init__(color)
+        self.num_moves = 0
+        
     def tostring(self):
         return super().tostring("k")
 
@@ -66,15 +70,15 @@ class King(Piece):
 
         if (self.color == Color.WHITE):
             if board.white_long_castle and board.get_piece(1).empty() and board.get_piece(2).empty()  and board.get_piece(3).empty():
-                moves.append(Move(self, i, i - 2))
+                moves.append(Move(board, i, i - 2))
             if board.white_short_castle and board.get_piece(5).empty() and board.get_piece(6).empty():
-                moves.append(Move(self, i, i + 2))
+                moves.append(Move(board, i, i + 2))
 
         else:
             if board.black_long_castle and board.get_piece(57).empty() and board.get_piece(58).empty()  and board.get_piece(59).empty():
-                moves.append(Move(self, i, i - 2))
+                moves.append(Move(board, i, i - 2))
             if board.black_short_castle and board.get_piece(61).empty() and board.get_piece(62).empty():
-                moves.append(Move(self, i, i + 2))
+                moves.append(Move(board, i, i + 2))
 
         return moves
 
@@ -88,6 +92,10 @@ class Queen(Piece):
 
 
 class Rook(Piece):
+    def __init__(self, color=Color.WHITE):
+        super().__init__(color)
+        self.num_moves = 0
+
     def tostring(self):
         return super().tostring("r")
 
@@ -115,31 +123,31 @@ class Knight(Piece):
 
         if row + 1 < 8:
             if col + 2 < 8 and not(board.get_piece(Board.get_index(row + 1, col + 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(self, i, Board.get_index(row + 1, col + 2)))
+                moves.append(Move(board, i, Board.get_index(row + 1, col + 2)))
             if col - 2 >= 0 and not(board.get_piece(Board.get_index(row + 1, col - 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(self, i, Board.get_index(row + 1, col - 2)))
+                moves.append(Move(board, i, Board.get_index(row + 1, col - 2)))
 
             if row + 2 < 8:
                 if col + 1 < 8 and not(board.get_piece(Board.get_index(row + 2, col + 1)).correct_turn(board.white_to_move)):
                     moves.append(
-                        Move(self, i, Board.get_index(row + 2, col + 1)))
+                        Move(board, i, Board.get_index(row + 2, col + 1)))
                 if col - 1 >= 0 and not(board.get_piece(Board.get_index(row + 2, col - 1)).correct_turn(board.white_to_move)):
                     moves.append(
-                        Move(self, i, Board.get_index(row + 2, col - 1)))
+                        Move(board, i, Board.get_index(row + 2, col - 1)))
 
         if row - 1 >= 0:
             if col + 2 < 8 and not(board.get_piece(Board.get_index(row - 1, col + 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(self, i, Board.get_index(row - 1, col + 2)))
+                moves.append(Move(board, i, Board.get_index(row - 1, col + 2)))
             if col - 2 >= 0 and not(board.get_piece(Board.get_index(row - 1, col - 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(self, i, Board.get_index(row - 1, col - 2)))
+                moves.append(Move(board, i, Board.get_index(row - 1, col - 2)))
 
             if row - 2 >= 0:
                 if col + 1 < 8 and not(board.get_piece(Board.get_index(row - 2, col + 1)).correct_turn(board.white_to_move)):
                     moves.append(
-                        Move(self, i, Board.get_index(row - 2, col + 1)))
+                        Move(board, i, Board.get_index(row - 2, col + 1)))
                 if col - 1 >= 0 and not(board.get_piece(Board.get_index(row - 2, col - 1)).correct_turn(board.white_to_move)):
                     moves.append(
-                        Move(self, i, Board.get_index(row - 2, col - 1)))
+                        Move(board, i, Board.get_index(row - 2, col - 1)))
 
         return moves
 
@@ -160,21 +168,21 @@ class Pawn(Piece):
         if row + move_offset < 8:
             if board.get_piece(Board.get_index(row + move_offset, col)).empty():
                 moves.append(
-                    Move(self, i, Board.get_index(row + move_offset, col)))
+                    Move(board, i, Board.get_index(row + move_offset, col)))
 
                 if row == double_row and board.get_piece(Board.get_index(row + 2 * move_offset, col)).empty():
                     moves.append(
-                        Move(self, i, Board.get_index(row + 2 * move_offset, col)))
+                        Move(board, i, Board.get_index(row + 2 * move_offset, col)))
 
             if col + 1 < 8:
                 if (not(board.get_piece(Board.get_index(row + move_offset, col + 1)).empty()) and not(board.get_piece(Board.get_index(row + move_offset, col + 1)).correct_turn(board.white_to_move))) or (board.en_passant == Board.get_index(row + move_offset, col + 1)):
                     moves.append(
-                        Move(self, i, Board.get_index(row + move_offset, col + 1)))
+                        Move(board, i, Board.get_index(row + move_offset, col + 1)))
 
             if col - 1 >= 0:
                 if (not(board.get_piece(Board.get_index(row + move_offset, col - 1)).empty()) and not(board.get_piece(Board.get_index(row + move_offset, col - 1)).correct_turn(board.white_to_move))) or (board.en_passant == Board.get_index(row + move_offset, col - 1)):
                     moves.append(
-                        Move(self, i, Board.get_index(row + move_offset, col - 1)))
+                        Move(board, i, Board.get_index(row + move_offset, col - 1)))
 
         return moves
 

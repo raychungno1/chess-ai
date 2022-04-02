@@ -1,7 +1,7 @@
 import os
 from numpy import square
 import pygame
-from game import Const, draw_board, get_board_square
+from game import Const, draw_board, get_board_square, undo_clicked
 from chess import Board, Move
 
 
@@ -15,7 +15,6 @@ def main():
     board = Board()
     clock = pygame.time.Clock()
 
-    clicking = False
     mx, my = 0, 0
     square_clicked = None
 
@@ -27,24 +26,20 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    clicking = True
                     mx, my = pygame.mouse.get_pos()
                     square_clicked = get_board_square(mx, my)
-                    print(square_clicked)
-                    # print(f"{mx}, {my}")
-                    # print(square_clicked)
+                    if undo_clicked(mx, my):
+                        board.undo()
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
-                    clicking = False
                     mx, my = pygame.mouse.get_pos()
                     target_square = get_board_square(mx, my)
-                    board.move(Move(board.get_piece(square_clicked),
-                               square_clicked, target_square))
+                    if target_square != None:
+                        board.move(Move(board, square_clicked, target_square))
                     square_clicked = None
 
-        if clicking:
-            mx, my = pygame.mouse.get_pos()
+        mx, my = pygame.mouse.get_pos()
 
         draw_window(board, square_clicked, mx, my)
 

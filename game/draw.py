@@ -3,7 +3,7 @@ from .const import Const
 from chess import Board, Color, Piece, King, Queen, Rook, Bishop, Knight, Pawn, Empty
 
 pygame.font.init()
-FONT = pygame.font.SysFont('comicsans', 40)
+FONT = pygame.font.SysFont('ariel', 40)
 
 
 def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
@@ -40,6 +40,10 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
                     (x, y),
                     get_piece_img(board.get_piece(Board.get_index(row, col)))
                 )
+
+    text = FONT.render("Undo", 1, Const.BLACK)
+    WIN.blit(text, (Const.WIDTH - text.get_width() - 10, Const.HEIGHT - text.get_height() - 10))
+
 
     if square_clicked != None:
         WIN.blit(

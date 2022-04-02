@@ -1,16 +1,28 @@
 
 class Move:
-    def __init__(self, piece, start, target):
-        self.piece = piece
+    def __init__(self, board, start, target):
+        self.board = board
+        self.piece = board.get_piece(start)
         self.start_square = start
         self.target_square = target
+        self.captured_piece = board.get_piece(self.target_square)
+        self.ep_square = None
+        self.ep_piece = None
 
     def tostring(self):
-        str = self.piece.tostring()
+        str = ""
+
+        from .piece import Pawn
+        if type(self.piece) != Pawn:
+            str = self.piece.tostring().upper()
+
         from .board import Board
-        if str.lower() == "p":
-            return Board.get_notation(self.target_square)
-        return self.piece.tostring() + Board.get_notation(self.target_square)
+        if not self.captured_piece.empty() or self.is_en_passant():
+            if type(self.piece) == Pawn:
+                str = Board.get_notation(self.start_square)[0]
+            str += "x"
+
+        return str + Board.get_notation(self.target_square)
 
     def equals(self, move):
         return self.start_square == move.start_square and self.target_square == move.target_square
@@ -23,9 +35,9 @@ class Move:
         from .piece import Pawn
         return type(self.piece) == Pawn and abs(row1 - row2) == 2
 
-    def is_en_passant(self, ep_index):
+    def is_en_passant(self):
         from .piece import Pawn
-        return type(self.piece) == Pawn and self.target_square == ep_index
+        return type(self.piece) == Pawn and self.target_square == self.board.en_passant
 
     def is_king_side_castle(self):
         from .board import Board
