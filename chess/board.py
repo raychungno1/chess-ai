@@ -37,7 +37,7 @@ class Board:
     def get_piece(self, index):
         return self.board[index]
 
-    def generate_moves(self, index=None):
+    def generate_moves(self, index=None, king_checks=True):
         moves = []
 
         if index == None:
@@ -47,32 +47,65 @@ class Board:
         elif self.board[index].correct_turn(self.white_to_move):
             moves += self.board[index].gen_moves(self, index)
 
+        if (king_checks == True):
+            for move in list(moves):
+                prev_en_passant = self.en_passant
+                self.make_valid_move(move)
+                opponent_moves = self.generate_moves(None, False)
+                self.undo()
+                self.en_passant = prev_en_passant
+
+                for opp_move in opponent_moves:
+                    from .piece import King
+                    if (type(opp_move.captured_piece) == King or
+                            self.attack_through_castle(move, opp_move) == True):
+
+                        moves.remove(move)
+                        break
+
         return moves
 
+    def attack_through_castle(self, move, opp_move):
+        return (
+            (move.is_king_side_castle() and self.white_to_move and opp_move.target_square == 5) or
+            (move.is_king_side_castle() and not self.white_to_move and opp_move.target_square == 61) or
+            (move.is_queen_side_castle() and self.white_to_move and opp_move.target_square == 3) or
+            (move.is_queen_side_castle()
+             and not self.white_to_move and opp_move.target_square == 59)
+        )
+
     def move(self, possible_move):
+        if possible_move.start_square == possible_move.target_square:
+            return
+
         for move in self.generate_moves():
             if move.equals(possible_move):
-
                 print(move.tostring())  # PRINT MOVE
+                self.make_valid_move(move)
+                return
 
-                self.move_list.append(move)
-                self.board[move.target_square] = self.board[move.start_square]
-                self.board[move.start_square] = Empty()
-                move.ep_square = self.en_passant
+    def make_valid_move(self, move):
+        self.move_list.append(move)
+        self.board[move.target_square] = self.board[move.start_square]
+        self.board[move.start_square] = Empty()
+        move.ep_square = self.en_passant
 
-                # Resolving en passant
-                self.move_en_passant(move)
+        # Resolving en passant
+        self.move_en_passant(move)
 
-                # Resolving castle moves and updates castling rights
-                self.move_castle(move)
+        # Resolving castle moves and updates castling rights
+        self.move_castle(move)
 
-                # Resolving rouble pawn pushes (updating en passant rule)
-                self.move_pawn_push(move)
+        # Resolving rouble pawn pushes (updating en passant rule)
+        self.move_pawn_push(move)
 
-                self.white_to_move = not self.white_to_move
+        # Resolving promotions
+        self.move_promotion(move)
+
+        self.white_to_move = not self.white_to_move
 
     def move_en_passant(self, move):
-        if self.en_passant != None and move.is_en_passant():
+        if move.is_en_passant():
             if self.white_to_move:
                 move.ep_piece = self.board[move.target_square - 8]
                 self.board[move.target_square - 8] = Empty()
@@ -123,6 +156,11 @@ class Board:
         else:
             self.en_passant = None
 
+    def move_promotion(self, move):
+        if move.is_promotion() == True:
+            from .piece import Queen
+            self.board[move.target_square] = Queen()
+
     def undo(self):
         if len(self.move_list) > 0:
             move = self.move_list.pop()
@@ -140,8 +178,10 @@ class Board:
             # Resolving rouble pawn pushes (updating en passant rule)
             self.undo_pawn_push(move)
 
+            # Resolving promotions
+            self.undo_promotion(move)
+
     def undo_en_passant(self, move):
-        from .piece import Pawn
         if move.ep_piece != None:
             self.en_passant = move.target_square
             if self.white_to_move:
@@ -163,7 +203,6 @@ class Board:
         if self.white_to_move:
             if type(move.piece) == King:
                 move.piece.num_moves -= 1
-                print(move.start_square)
                 if move.piece.num_moves == 0 and move.start_square == 4:
                     if type(self.board[0]) == Rook and self.board[0].num_moves == 0:
                         self.white_long_castle = True
@@ -196,6 +235,11 @@ class Board:
     def undo_pawn_push(self, move):
         if move.is_double_pawn_push():
             self.en_passant = None
+
+    def undo_promotion(self, move):
+        if move.is_promotion() == True:
+            from .piece import Pawn
+            self.board[move.start_square] = Pawn()
 
     def get_index(row_or_str, col=0):
         if type(row_or_str) == str:

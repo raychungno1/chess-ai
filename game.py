@@ -23,6 +23,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                return
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -35,7 +36,7 @@ def main():
                 if event.button == 1:
                     mx, my = pygame.mouse.get_pos()
                     target_square = get_board_square(mx, my)
-                    if target_square != None:
+                    if square_clicked != None and target_square != None:
                         board.move(Move(board, square_clicked, target_square))
                     square_clicked = None
 
