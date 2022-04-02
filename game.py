@@ -39,6 +39,7 @@ def main():
                     if square_clicked != None and target_square != None:
                         board.move(Move(board, square_clicked, target_square))
                     square_clicked = None
+                    board.check_winner()
 
         mx, my = pygame.mouse.get_pos()
 

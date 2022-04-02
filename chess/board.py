@@ -254,3 +254,10 @@ class Board:
 
     def get_notation(index):
         return col_to_char[index % 8] + str(index // 8 + 1)
+
+    def check_winner(self):
+        if len(self.generate_moves()) == 0:
+            print("WIN")
+            return True
+        return False
+        
