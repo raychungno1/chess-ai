@@ -71,4 +71,6 @@ class Move:
 
     def is_promotion(self):
         from .piece import Piece
-        return self.piece.type == Piece.PAWN and self.target_square >= 56
+        if self.piece.color == Piece.WHITE:
+            return self.piece.type == Piece.PAWN and self.target_square >= 56
+        return self.piece.type == Piece.PAWN and self.target_square < 8

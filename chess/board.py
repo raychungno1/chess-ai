@@ -95,7 +95,6 @@ class Board:
 
         for move in self.generate_moves():
             if move.equals(possible_move):
-                # print(move.tostring())  # PRINT MOVE
                 self.make_valid_move(move)
                 return True
         return False

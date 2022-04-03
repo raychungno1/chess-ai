@@ -47,7 +47,7 @@ def main():
                                 start = time.time()
                                 move = AI.choose_move(board)
                                 end = time.time()
-                                print(f"Time: {end - start}")
+                                print(f"Eval: {AI.eval(board)} | Time: {end - start}")
                                 board.move(move)
                                 board.check_winner()
                         target_square = None
