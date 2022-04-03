@@ -13,8 +13,7 @@ PIECE_IMG = pygame.transform.scale(pygame.image.load(os.path.join(
 
 
 def main():
-    board = Board("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - ")
-    # board = Board()
+    board = Board()
     clock = pygame.time.Clock()
 
     mx, my = 0, 0
@@ -34,7 +33,7 @@ def main():
                     square_clicked = get_board_square(mx, my)
                     if undo_clicked(mx, my):
                         board.undo()
-                        # board.undo()
+                        board.undo()
                         undoing = True
 
             if event.type == pygame.MOUSEBUTTONUP:
@@ -44,13 +43,13 @@ def main():
                         target_square = get_board_square(mx, my)
                         if square_clicked != None and target_square != None:
                             valid = board.move(Move(board, square_clicked, target_square))
-                            # if valid == True:
-                                # start = time.time()
-                                # move = AI.choose_move(board)
-                                # end = time.time()
-                                # print(f"Time: {end - start}")
-                                # board.move(move)
-                                # board.check_winner()
+                            if valid == True:
+                                start = time.time()
+                                move = AI.choose_move(board)
+                                end = time.time()
+                                print(f"Time: {end - start}")
+                                board.move(move)
+                                board.check_winner()
                         target_square = None
                         square_clicked = None
                     undoing = False
