@@ -1,6 +1,6 @@
 import pygame
 from .const import Const
-from chess import Board, Color, Piece, King, Queen, Rook, Bishop, Knight, Pawn, Empty
+from chess import Board, Piece
 
 pygame.font.init()
 FONT = pygame.font.SysFont('ariel', 40)
@@ -19,7 +19,7 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
 
             draw_square(WIN, row, col, color)
 
-    if square_clicked != None and not board.get_piece(square_clicked).empty():
+    if square_clicked != None and board.get_piece(square_clicked).type != Piece.EMPTY:
         row, col = Board.get_row_col(square_clicked)
         draw_square(WIN, row, col, Const.HIGHLIGHT_ORIGIN)
 
@@ -64,35 +64,35 @@ def draw_square(WIN, row, col, color):
 
 
 def get_piece_img(piece):
-    if type(piece) == Empty:
+    if piece.type == Piece.EMPTY:
         return Const.EMPTY
 
-    if type(piece) == King:
-        if piece.color == Color.WHITE:
+    if piece.type == Piece.KING:
+        if piece.color == Piece.WHITE:
             return Const.W_KING
         return Const.B_KING
 
-    elif type(piece) == Pawn:
-        if piece.color == Color.WHITE:
+    elif piece.type == Piece.PAWN:
+        if piece.color == Piece.WHITE:
             return Const.W_PAWN
         return Const.B_PAWN
 
-    elif type(piece) == Knight:
-        if piece.color == Color.WHITE:
+    elif piece.type == Piece.KNIGHT:
+        if piece.color == Piece.WHITE:
             return Const.W_KNIGHT
         return Const.B_KNIGHT
 
-    elif type(piece) == Bishop:
-        if piece.color == Color.WHITE:
+    elif piece.type == Piece.BISHOP:
+        if piece.color == Piece.WHITE:
             return Const.W_BISHOP
         return Const.B_BISHOP
 
-    elif type(piece) == Rook:
-        if piece.color == Color.WHITE:
+    elif piece.type == Piece.ROOK:
+        if piece.color == Piece.WHITE:
             return Const.W_ROOK
         return Const.B_ROOK
 
-    elif type(piece) == Queen:
-        if piece.color == Color.WHITE:
+    elif piece.type == Piece.QUEEN:
+        if piece.color == Piece.WHITE:
             return Const.W_QUEEN
         return Const.B_QUEEN

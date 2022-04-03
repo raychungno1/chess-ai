@@ -18,13 +18,13 @@ class Move:
         if self.is_queen_side_castle():
             return "O-O-O"
 
-        from .piece import Pawn
-        if type(self.piece) != Pawn:
+        from .piece import Piece
+        if self.piece.type != Piece.PAWN:
             str = self.piece.tostring().upper()
 
         from .board import Board
-        if not self.captured_piece.empty() or self.is_en_passant():
-            if type(self.piece) == Pawn:
+        if self.captured_piece.type != Piece.EMPTY or self.is_en_passant():
+            if self.piece.type == Piece.PAWN:
                 str = Board.get_notation(self.start_square)[0]
             str += "x"
 
@@ -38,37 +38,37 @@ class Move:
         row1, _ = Board.get_row_col(self.start_square)
         row2, _ = Board.get_row_col(self.target_square)
 
-        from .piece import Pawn
-        return type(self.piece) == Pawn and abs(row1 - row2) == 2
+        from .piece import Piece
+        return self.piece.type == Piece.PAWN and abs(row1 - row2) == 2
 
     def is_en_passant(self):
-        from .piece import Pawn
-        return type(self.piece) == Pawn and self.target_square == self.board.en_passant
+        from .piece import Piece
+        return self.piece.type == Piece.PAWN and self.target_square == self.board.en_passant
 
     def is_castle(self):
         from .board import Board
         _, col1 = Board.get_row_col(self.start_square)
         _, col2 = Board.get_row_col(self.target_square)
 
-        from .piece import King
-        return type(self.piece) == King and abs(col1 - col2) == 2
+        from .piece import Piece
+        return self.piece.type == Piece.KING and abs(col1 - col2) == 2
 
     def is_king_side_castle(self):
         from .board import Board
         _, col1 = Board.get_row_col(self.start_square)
         _, col2 = Board.get_row_col(self.target_square)
 
-        from .piece import King
-        return type(self.piece) == King and col2 - col1 == 2
+        from .piece import Piece
+        return self.piece.type == Piece.KING and col2 - col1 == 2
 
     def is_queen_side_castle(self):
         from .board import Board
         _, col1 = Board.get_row_col(self.start_square)
         _, col2 = Board.get_row_col(self.target_square)
 
-        from .piece import King
-        return type(self.piece) == King and col1 - col2 == 2
+        from .piece import Piece
+        return self.piece.type == Piece.KING and col1 - col2 == 2
 
     def is_promotion(self):
-        from .piece import Pawn
-        return type(self.piece) == Pawn and self.target_square >= 56
+        from .piece import Piece
+        return self.piece.type == Piece.PAWN and self.target_square >= 56

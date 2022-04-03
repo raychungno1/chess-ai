@@ -3,7 +3,8 @@ from numpy import square
 import pygame
 from game import Const, draw_board, get_board_square, undo_clicked
 from chess import Board, Move
-
+from ai import AI
+import time
 
 WIN = pygame.display.set_mode((Const.WIDTH, Const.HEIGHT))
 pygame.display.set_caption("Chess")
@@ -12,12 +13,14 @@ PIECE_IMG = pygame.transform.scale(pygame.image.load(os.path.join(
 
 
 def main():
-    board = Board()
+    board = Board("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - ")
+    # board = Board()
     clock = pygame.time.Clock()
 
     mx, my = 0, 0
     square_clicked = None
-
+    target_square = None
+    undoing = False
     while True:
         clock.tick(Const.FPS)
         for event in pygame.event.get():
@@ -31,15 +34,26 @@ def main():
                     square_clicked = get_board_square(mx, my)
                     if undo_clicked(mx, my):
                         board.undo()
+                        # board.undo()
+                        undoing = True
 
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
-                    mx, my = pygame.mouse.get_pos()
-                    target_square = get_board_square(mx, my)
-                    if square_clicked != None and target_square != None:
-                        board.move(Move(board, square_clicked, target_square))
-                    square_clicked = None
-                    board.check_winner()
+                    if undoing == False:
+                        mx, my = pygame.mouse.get_pos()
+                        target_square = get_board_square(mx, my)
+                        if square_clicked != None and target_square != None:
+                            valid = board.move(Move(board, square_clicked, target_square))
+                            # if valid == True:
+                                # start = time.time()
+                                # move = AI.choose_move(board)
+                                # end = time.time()
+                                # print(f"Time: {end - start}")
+                                # board.move(move)
+                                # board.check_winner()
+                        target_square = None
+                        square_clicked = None
+                    undoing = False
 
         mx, my = pygame.mouse.get_pos()
 

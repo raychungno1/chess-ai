@@ -1,11 +1,11 @@
-from .piece import Color, King, Queen, Rook, Bishop, Knight, Pawn, Empty
+from .piece import Piece
 from .dict import char_to_col
 
 class FEN:
     def load_pieces(string):
         board = []
         for i in range(64):
-            board.append(Empty())
+            board.append(Piece())
 
         row, col = 7, 0
 
@@ -17,40 +17,8 @@ class FEN:
             elif char.isdigit():
                 col += int(char)
 
-            elif char.lower() == "k":
-                board[row * 8 + col] = King(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
-                col += 1
-
-            elif char.lower() == "q":
-                board[row * 8 + col] = Queen(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
-                col += 1
-
-            elif char.lower() == "r":
-                board[row * 8 + col] = Rook(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
-                col += 1
-
-            elif char.lower() == "b":
-                board[row * 8 + col] = Bishop(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
-                col += 1
-
-            elif char.lower() == "n":
-                board[row * 8 + col] = Knight(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
-                col += 1
-
-            elif char.lower() == "p":
-                board[row * 8 + col] = Pawn(
-                    Color.WHITE if char.isupper() else Color.BLACK
-                )
+            elif char.isalpha():
+                board[row * 8 + col] = Piece(char)
                 col += 1
 
             else:
@@ -100,10 +68,13 @@ class FEN:
         return None, string[2:]
 
     def load_half_moves(string):
+        i = 0
         for i, char in enumerate(string):
             if not char.isdigit():
                 break
 
+        if string[:i] == "":
+            return 0, string
         return int(string[:i]), string[i + 1:]
 
     def load_move_num(string):

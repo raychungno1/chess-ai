@@ -7,17 +7,14 @@ def move_gen_test(board, depth):
 
     moves = board.generate_moves()
     num_pos = 0
-
     for move in moves:
-        prev_en_passant = board.en_passant
         board.make_valid_move(move)
         num_pos += move_gen_test(board, depth - 1)
         board.undo()
-        board.en_passant = prev_en_passant
 
     return num_pos
 
-b = Board()
+b = Board("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - ")
 for i in range(5):
     start = time.time()
     num_pos = move_gen_test(b, i)

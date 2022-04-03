@@ -1,7 +1,6 @@
-from chess.piece import Empty
 from .fen import FEN
 from .dict import char_to_col, col_to_char
-from .piece import King, Rook
+from .piece import Piece
 
 
 class Board:
@@ -19,9 +18,16 @@ class Board:
 
         self.half_moves, string = FEN.load_half_moves(string)
 
-        self.move_num = int(string)
+        if string == "":
+            self.move_num = 0
+        else:
+            self.move_num = int(string)
 
         self.move_list = []
+
+        self.attack_map = [0] * 64
+        self.checks = []
+        self.pins = []
 
     def print(self):
         row, col = 7, 0
@@ -34,34 +40,43 @@ class Board:
 
             print("\n" + "-" * 33)
 
+    def print_attack_map(self):
+        row, col = 7, 0
+
+        for row in range(7, -1, -1):
+            for col in range(8):
+                print(f"{self.attack_map[row * 8 + col]} ", end="")
+            print()
+
+
     def get_piece(self, index):
         return self.board[index]
 
-    def generate_moves(self, index=None, king_checks=True):
+    def generate_attack_map(self):
+        self.attack_map = [0] * 64
+        self.checks = []
+        self.pins = []
+
+        for i, piece in enumerate(self.board):
+            if not piece.correct_turn(self.white_to_move) and piece.type != Piece.EMPTY:
+                piece.gen_attack(self, i)
+
+    def generate_moves(self, index=None):
         moves = []
+
+        self.generate_attack_map()
+
+        # self.print_attack_map()
+        # print("Checks" + str(self.checks))
+        # print("Pins" + str(self.pins))
 
         if index == None:
             for i, piece in enumerate(self.board):
                 if piece.correct_turn(self.white_to_move):
                     moves += piece.gen_moves(self, i)
+
         elif self.board[index].correct_turn(self.white_to_move):
             moves += self.board[index].gen_moves(self, index)
-
-        if (king_checks == True):
-            for move in list(moves):
-                prev_en_passant = self.en_passant
-                self.make_valid_move(move)
-                opponent_moves = self.generate_moves(None, False)
-                self.undo()
-                self.en_passant = prev_en_passant
-
-                for opp_move in opponent_moves:
-                    from .piece import King
-                    if (type(opp_move.captured_piece) == King or
-                            self.attack_through_castle(move, opp_move) == True):
-
-                        moves.remove(move)
-                        break
 
         return moves
 
@@ -75,19 +90,20 @@ class Board:
         )
 
     def move(self, possible_move):
-        if possible_move.start_square == possible_move.target_square:
+        if possible_move == None or possible_move.start_square == possible_move.target_square:
             return
 
         for move in self.generate_moves():
             if move.equals(possible_move):
                 print(move.tostring())  # PRINT MOVE
                 self.make_valid_move(move)
-                return
+                return True
+        return False
 
     def make_valid_move(self, move):
         self.move_list.append(move)
         self.board[move.target_square] = self.board[move.start_square]
-        self.board[move.start_square] = Empty()
+        self.board[move.start_square] = Piece()
         move.ep_square = self.en_passant
 
         # Resolving en passant
@@ -108,29 +124,29 @@ class Board:
         if move.is_en_passant():
             if self.white_to_move:
                 move.ep_piece = self.board[move.target_square - 8]
-                self.board[move.target_square - 8] = Empty()
+                self.board[move.target_square - 8] = Piece()
             else:
                 move.ep_piece = self.board[move.target_square + 8]
-                self.board[move.target_square + 8] = Empty()
+                self.board[move.target_square + 8] = Piece()
 
     def move_castle(self, move):
         if self.white_to_move:
-            if type(move.piece) == King:
+            if move.piece.type == Piece.KING:
                 move.piece.num_moves += 1
                 self.white_long_castle = False
                 self.white_short_castle = False
-            if type(move.piece) == Rook:
+            if move.piece.type == Piece.ROOK:
                 move.piece.num_moves += 1
                 if move.start_square == 0:
                     self.white_long_castle = False
                 if move.start_square == 7:
                     self.white_short_castle = False
         else:
-            if type(move.piece) == King:
+            if move.piece.type == Piece.KING:
                 move.piece.num_moves += 1
                 self.black_long_castle = False
                 self.black_short_castle = False
-            if type(move.piece) == Rook:
+            if move.piece.type == Piece.ROOK:
                 move.piece.num_moves += 1
                 if move.start_square == 56:
                     self.black_long_castle = False
@@ -140,12 +156,12 @@ class Board:
         if move.is_king_side_castle():
             self.board[move.target_square -
                        1] = self.board[move.target_square + 1]
-            self.board[move.target_square + 1] = Empty()
+            self.board[move.target_square + 1] = Piece()
 
         if move.is_queen_side_castle():
             self.board[move.target_square +
                        1] = self.board[move.target_square - 2]
-            self.board[move.target_square - 2] = Empty()
+            self.board[move.target_square - 2] = Piece()
 
     def move_pawn_push(self, move):
         if move.is_double_pawn_push():
@@ -158,8 +174,11 @@ class Board:
 
     def move_promotion(self, move):
         if move.is_promotion() == True:
-            from .piece import Queen
-            self.board[move.target_square] = Queen()
+            from .piece import Piece
+            if self.white_to_move == True:
+                self.board[move.target_square] = Piece("Q")
+            else:
+                self.board[move.target_square] = Piece("q")
 
     def undo(self):
         if len(self.move_list) > 0:
@@ -167,7 +186,6 @@ class Board:
             self.board[move.start_square] = self.board[move.target_square]
             self.board[move.target_square] = move.captured_piece
             self.white_to_move = not self.white_to_move
-            self.en_passant = move.ep_square
 
             # Resolving en passant
             self.undo_en_passant(move)
@@ -181,6 +199,8 @@ class Board:
             # Resolving promotions
             self.undo_promotion(move)
 
+            self.en_passant = move.ep_square
+
     def undo_en_passant(self, move):
         if move.ep_piece != None:
             self.en_passant = move.target_square
@@ -193,40 +213,40 @@ class Board:
         if move.is_king_side_castle():
             self.board[move.target_square +
                        1] = self.board[move.target_square - 1]
-            self.board[move.target_square - 1] = Empty()
+            self.board[move.target_square - 1] = Piece()
 
         if move.is_queen_side_castle():
             self.board[move.target_square -
                        2] = self.board[move.target_square + 1]
-            self.board[move.target_square + 1] = Empty()
+            self.board[move.target_square + 1] = Piece()
 
         if self.white_to_move:
-            if type(move.piece) == King:
+            if move.piece.type == Piece.KING:
                 move.piece.num_moves -= 1
                 if move.piece.num_moves == 0 and move.start_square == 4:
-                    if type(self.board[0]) == Rook and self.board[0].num_moves == 0:
+                    if self.board[0].type == Piece.ROOK and self.board[0].num_moves == 0:
                         self.white_long_castle = True
-                    if type(self.board[7]) == Rook and self.board[7].num_moves == 0:
+                    if self.board[7].type == Piece.ROOK and self.board[7].num_moves == 0:
                         self.white_short_castle = True
-            if type(move.piece) == Rook:
+            if move.piece.type == Piece.ROOK:
                 move.piece.num_moves -= 1
-                if move.piece.num_moves == 0 and type(self.board[4]) == King and self.board[4].num_moves == 0:
+                if move.piece.num_moves == 0 and self.board[4].type == Piece.KING and self.board[4].num_moves == 0:
                     if move.start_square == 0:
                         self.white_long_castle = True
                     if move.start_square == 7:
                         self.white_short_castle = True
 
         else:
-            if type(move.piece) == King:
+            if move.piece.type == Piece.KING:
                 move.piece.num_moves -= 1
                 if move.piece.num_moves == 0 and move.start_square == 60:
-                    if type(self.board[56]) == Rook and self.board[56].num_moves == 0:
+                    if self.board[56].type == Piece.ROOK and self.board[56].num_moves == 0:
                         self.black_long_castle = True
-                    if type(self.board[63]) == Rook and self.board[63].num_moves == 0:
+                    if self.board[63].type == Piece.ROOK and self.board[63].num_moves == 0:
                         self.black_short_castle = True
-            if type(move.piece) == Rook:
+            if move.piece.type == Piece.ROOK:
                 move.piece.num_moves -= 1
-                if move.piece.num_moves == 0 and type(self.board[60]) == King and self.board[60].num_moves == 0:
+                if move.piece.num_moves == 0 and self.board[60].type == Piece.KING and self.board[60].num_moves == 0:
                     if move.start_square == 56:
                         self.black_long_castle = True
                     if move.start_square == 63:
@@ -238,8 +258,11 @@ class Board:
 
     def undo_promotion(self, move):
         if move.is_promotion() == True:
-            from .piece import Pawn
-            self.board[move.start_square] = Pawn()
+            from .piece import Piece
+            if self.white_to_move == True:
+                self.board[move.start_square] = Piece("P")
+            else:
+                self.board[move.start_square] = Piece("p")
 
     def get_index(row_or_str, col=0):
         if type(row_or_str) == str:
@@ -248,6 +271,12 @@ class Board:
             return row * 8 + col
         else:
             return row_or_str * 8 + col
+
+    def get_row(index):
+        return index // 8
+
+    def get_col(index):
+        return index % 8
 
     def get_row_col(index):
         return index // 8, index % 8
@@ -260,4 +289,3 @@ class Board:
             print("WIN")
             return True
         return False
-        

@@ -1,201 +1,193 @@
 from .move import Move
-
-
-class Color:
-    WHITE = 0
-    BLACK = 1
+from .dict import mailbox, mailbox_64, offsets
 
 
 class Piece:
+    EMPTY = 0
+    KING = 1
+    PAWN = 2
+    KNIGHT = 3
+    BISHOP = 4
+    ROOK = 5
+    QUEEN = 6
 
-    def __init__(self, color=Color.WHITE):
-        self.color = color
+    WHITE = 8
+    BLACK = 16
 
-    def correct_turn(self, white_to_move):
-        return white_to_move and self.color == Color.WHITE or not(white_to_move) and self.color == Color.BLACK
+    char_to_piece = {
+        "": EMPTY,
+        "k": KING,
+        "p": PAWN,
+        "n": KNIGHT,
+        "b": BISHOP,
+        "r": ROOK,
+        "q": QUEEN,
+    }
 
-    def tostring(self, str):
-        if (self.color == Color.WHITE):
-            str = str.capitalize()
+    piece_to_char = {
+        EMPTY: " ",
+        KING: "k",
+        PAWN: "p",
+        KNIGHT: "n",
+        BISHOP: "b",
+        ROOK: "r",
+        QUEEN: "q",
+    }
+
+    def __init__(self, char=""):
+        self.color = Piece.BLACK if char.islower() else Piece.WHITE
+        if char == "":
+            self.color = 0
+        self.type = Piece.char_to_piece[char.lower()]
+        self.num_moves = 0
+
+    def is_sliding(self):
+        return self.type >= 4
+
+    def tostring(self):
+        str = Piece.piece_to_char[self.type]
+        if self.color == Piece.WHITE:
+            str = str.upper()
         return str
 
-    def empty(self):
-        return False
+    def correct_turn(self, white_to_move):
+        return white_to_move and self.color == Piece.WHITE or not(white_to_move) and self.color == Piece.BLACK
 
-    DIR_OFFSET = [1, -1, -8, 8, 7, 9, -7, -9]
+    def gen_attack(self, board, i):
+        from .board import Board
+        if self.type == Piece.PAWN:
+            target = -1
+            if self.color == Piece.WHITE:
+                if Board.get_col(i) != 0:
+                    target = i + 7
+                    board.attack_map[target] = 1
+                if Board.get_col(i) != 7:
+                    target = i + 9
+                    board.attack_map[target] = 1
+            else:
+                if Board.get_col(i) != 0:
+                    target = i - 9
+                    board.attack_map[target] = 1
+                if Board.get_col(i) != 7:
+                    target = i - 7
+                    board.attack_map[target] = 1
 
-    def gen_moves(self, board, i, offsets=DIR_OFFSET, range=8):
-        moves = []
-        origin = i
-
-        for dir in offsets:
-            distance = 0
-
-            from .board import Board
-            old_row, old_col = Board.get_row_col(origin)
-
-            i = origin + dir
-            row, col = Board.get_row_col(i)
-
-            while (distance < range and i >= 0 and i < 64 and
-                   abs(old_row - row) <= 1 and
-                   abs(old_col - col) <= 1):
-
-                if board.get_piece(i).correct_turn(board.white_to_move):
-                    break
-
-                moves.append(Move(board, origin, i))
-
-                if not(board.get_piece(i).empty()) and not(board.get_piece(i).correct_turn(board.white_to_move)):
-                    break
-
-                i += dir
-                distance += 1
-                old_row, old_col = row, col
-                row, col = Board.get_row_col(i)
-
-        return moves
-
-
-class King(Piece):
-    def __init__(self, color=Color.WHITE):
-        super().__init__(color)
-        self.num_moves = 0
-        
-    def tostring(self):
-        return super().tostring("k")
-
-    def gen_moves(self, board, i):
-        moves = super().gen_moves(board, i, Piece.DIR_OFFSET, 1)
-
-        if (self.color == Color.WHITE):
-            if board.white_long_castle and board.get_piece(1).empty() and board.get_piece(2).empty()  and board.get_piece(3).empty():
-                moves.append(Move(board, i, i - 2))
-            if board.white_short_castle and board.get_piece(5).empty() and board.get_piece(6).empty():
-                moves.append(Move(board, i, i + 2))
+            if target != -1 and board.get_piece(target).type == Piece.KING and board.get_piece(target).correct_turn(board.white_to_move):
+                board.checks.append([-128])
 
         else:
-            if board.black_long_castle and board.get_piece(57).empty() and board.get_piece(58).empty()  and board.get_piece(59).empty():
-                moves.append(Move(board, i, i - 2))
-            if board.black_short_castle and board.get_piece(61).empty() and board.get_piece(62).empty():
-                moves.append(Move(board, i, i + 2))
+            for offset in offsets[self.type]:
+                if offset == 0:
+                    break
 
-        return moves
+                n = i
+                checking_pins = False
+                possible_check = [i]
+                possible_pin = [i]
+                while 1:
+                    n = mailbox[mailbox_64[n] + offset]
+                    if n == -1:
+                        break
 
+                    if checking_pins == False:
+                        board.attack_map[n] = 1
 
-class Queen(Piece):
-    def tostring(self):
-        return super().tostring("q")
+                    if board.get_piece(n).type != Piece.EMPTY:
+                        if checking_pins == False:
+                            checking_pins = True
+                            if board.get_piece(n).type == Piece.KING and board.get_piece(n).correct_turn(board.white_to_move):
+                                board.checks.append(possible_check)
+                                break
+                        else:
+                            if board.get_piece(n).type == Piece.KING and board.get_piece(n).correct_turn(board.white_to_move):
+                                board.pins.append(possible_pin)
+                            break
 
-    def gen_moves(self, board, i):
-        return super().gen_moves(board, i)
+                    possible_check.append(n)
+                    possible_pin.append(n)
 
-
-class Rook(Piece):
-    def __init__(self, color=Color.WHITE):
-        super().__init__(color)
-        self.num_moves = 0
-
-    def tostring(self):
-        return super().tostring("r")
-
-    def gen_moves(self, board, i):
-        return super().gen_moves(board, i, Piece.DIR_OFFSET[:4])
-
-
-class Bishop(Piece):
-    def tostring(self):
-        return super().tostring("b")
-
-    def gen_moves(self, board, i):
-        return super().gen_moves(board, i, Piece.DIR_OFFSET[4:])
-
-
-class Knight(Piece):
-    def tostring(self):
-        return super().tostring("n")
+                    if not self.is_sliding():
+                        break
 
     def gen_moves(self, board, i):
         moves = []
 
         from .board import Board
-        row, col = Board.get_row_col(i)
+        if self.type == Piece.PAWN:
+            if self.color == Piece.WHITE:
+                if Board.get_col(i) != 0 and (board.get_piece(i + 7).color == Piece.BLACK or board.en_passant == i + 7) and (len(board.checks) == 0 or all([(i + 7) in check for check in board.checks])) and Piece.valid_pin_move(i, i + 7, board):
+                    moves.append(Move(board, i, i + 7))
+                if Board.get_col(i) != 7 and (board.get_piece(i + 9).color == Piece.BLACK or board.en_passant == i + 9) and (len(board.checks) == 0 or all([(i + 9) in check for check in board.checks])) and Piece.valid_pin_move(i, i + 9, board):
+                    moves.append(Move(board, i, i + 9))
+                if board.get_piece(i + 8).type == Piece.EMPTY and Piece.valid_pin_move(i, i + 8, board):
+                    if len(board.checks) == 0 or all([(i + 8) in check for check in board.checks]):
+                        moves.append(Move(board, i, i + 8))
+                    if Board.get_row(i) == 1 and board.get_piece(i + 16).type == Piece.EMPTY and (len(board.checks) == 0 or all([(i + 16) in check for check in board.checks])):
+                        moves.append(Move(board, i, i + 16))
+            else:
+                if Board.get_col(i) != 0 and (board.get_piece(i - 9).color == Piece.WHITE or board.en_passant == i - 9) and (len(board.checks) == 0 or all([(i - 9) in check for check in board.checks])) and Piece.valid_pin_move(i, i - 9, board):
+                    moves.append(Move(board, i, i - 9))
+                if Board.get_col(i) != 7 and (board.get_piece(i - 7).color == Piece.WHITE or board.en_passant == i - 7) and (len(board.checks) == 0 or all([(i - 7) in check for check in board.checks])) and Piece.valid_pin_move(i, i - 7, board):
+                    moves.append(Move(board, i, i - 7))
+                if board.get_piece(i - 8).type == Piece.EMPTY and Piece.valid_pin_move(i, i - 8, board):
+                    if len(board.checks) == 0 or all([(i - 8) in check for check in board.checks]):
+                        moves.append(Move(board, i, i - 8))
+                    if Board.get_row(i) == 6 and board.get_piece(i - 16).type == Piece.EMPTY and (len(board.checks) == 0 or all([(i - 16) in check for check in board.checks])):
+                        moves.append(Move(board, i, i - 16))
 
-        if row + 1 < 8:
-            if col + 2 < 8 and not(board.get_piece(Board.get_index(row + 1, col + 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(board, i, Board.get_index(row + 1, col + 2)))
-            if col - 2 >= 0 and not(board.get_piece(Board.get_index(row + 1, col - 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(board, i, Board.get_index(row + 1, col - 2)))
+        else:
+            for offset in offsets[self.type]:
+                if offset == 0:
+                    break
 
-            if row + 2 < 8:
-                if col + 1 < 8 and not(board.get_piece(Board.get_index(row + 2, col + 1)).correct_turn(board.white_to_move)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row + 2, col + 1)))
-                if col - 1 >= 0 and not(board.get_piece(Board.get_index(row + 2, col - 1)).correct_turn(board.white_to_move)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row + 2, col - 1)))
+                n = i
+                while 1:
+                    n = mailbox[mailbox_64[n] + offset]
+                    if n == -1:
+                        break
 
-        if row - 1 >= 0:
-            if col + 2 < 8 and not(board.get_piece(Board.get_index(row - 1, col + 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(board, i, Board.get_index(row - 1, col + 2)))
-            if col - 2 >= 0 and not(board.get_piece(Board.get_index(row - 1, col - 2)).correct_turn(board.white_to_move)):
-                moves.append(Move(board, i, Board.get_index(row - 1, col - 2)))
+                    if self.type == Piece.KING and ((board.attack_map[n] == 1 or n - i in [i - check[-1] for check in board.checks]) or (not board.get_piece(n).correct_turn(board.white_to_move))):
+                        if (board.attack_map[n] == 1 or n - i in [i - check[-1] for check in board.checks]):
+                            break
+                        if (not board.get_piece(n).correct_turn(board.white_to_move)):
+                            moves.append(Move(board, i, n))
+                            break
 
-            if row - 2 >= 0:
-                if col + 1 < 8 and not(board.get_piece(Board.get_index(row - 2, col + 1)).correct_turn(board.white_to_move)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row - 2, col + 1)))
-                if col - 1 >= 0 and not(board.get_piece(Board.get_index(row - 2, col - 1)).correct_turn(board.white_to_move)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row - 2, col - 1)))
+                    if Piece.valid_pin_move(i, n, board) and (len(board.checks) == 0 or all([(n) in check for check in board.checks])):
+                        if board.get_piece(n).type != Piece.EMPTY:
+                            if not board.get_piece(n).correct_turn(board.white_to_move):
+                                moves.append(Move(board, i, n))
+                            break
+                        moves.append(Move(board, i, n))
+                    elif board.get_piece(n).correct_turn(board.white_to_move):
+                        break
+
+                    if not self.is_sliding():
+                        break
+
+            if self.type == Piece.KING and len(board.checks) == 0:
+                if (self.color == Piece.WHITE):
+                    if board.white_long_castle and board.get_piece(1).type == Piece.EMPTY and board.get_piece(2).type == Piece.EMPTY and board.get_piece(3).type == Piece.EMPTY and board.attack_map[1] == 0 and board.attack_map[2] == 0 and board.attack_map[3] == 0:
+                        moves.append(Move(board, i, i - 2))
+                    if board.white_short_castle and board.get_piece(5).type == Piece.EMPTY and board.get_piece(6).type == Piece.EMPTY and board.attack_map[5] == 0 and board.attack_map[6] == 0:
+                        moves.append(Move(board, i, i + 2))
+
+                else:
+                    if board.black_long_castle and board.get_piece(57).type == Piece.EMPTY and board.get_piece(58).type == Piece.EMPTY and board.get_piece(59).type == Piece.EMPTY and board.attack_map[57] == 0 and board.attack_map[58] == 0 and board.attack_map[59] == 0:
+                        moves.append(Move(board, i, i - 2))
+                    if board.black_short_castle and board.get_piece(61).type == Piece.EMPTY and board.get_piece(62).type == Piece.EMPTY and board.attack_map[61] == 0 and board.attack_map[62] == 0:
+                        moves.append(Move(board, i, i + 2))
 
         return moves
 
+    def valid_pin_move(start, target, board):
+        valid_pin = None
+        for pin in board.pins:
+            if start in pin:
+                valid_pin = pin
+                break
 
-class Pawn(Piece):
-    def tostring(self):
-        return super().tostring("p")
-
-    def gen_moves(self, board, i):
-        moves = []
-
-        from .board import Board
-        row, col = Board.get_row_col(i)
-
-        move_offset = 1 if self.color == Color.WHITE else -1
-        double_row = 1 if self.color == Color.WHITE else 6
-
-        if row + move_offset < 8:
-            if board.get_piece(Board.get_index(row + move_offset, col)).empty():
-                moves.append(
-                    Move(board, i, Board.get_index(row + move_offset, col)))
-
-                if row == double_row and board.get_piece(Board.get_index(row + 2 * move_offset, col)).empty():
-                    moves.append(
-                        Move(board, i, Board.get_index(row + 2 * move_offset, col)))
-
-            if col + 1 < 8:
-                if (not(board.get_piece(Board.get_index(row + move_offset, col + 1)).empty()) and not(board.get_piece(Board.get_index(row + move_offset, col + 1)).correct_turn(board.white_to_move))) or (board.en_passant == Board.get_index(row + move_offset, col + 1)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row + move_offset, col + 1)))
-
-            if col - 1 >= 0:
-                if (not(board.get_piece(Board.get_index(row + move_offset, col - 1)).empty()) and not(board.get_piece(Board.get_index(row + move_offset, col - 1)).correct_turn(board.white_to_move))) or (board.en_passant == Board.get_index(row + move_offset, col - 1)):
-                    moves.append(
-                        Move(board, i, Board.get_index(row + move_offset, col - 1)))
-
-        return moves
-
-
-class Empty(Piece):
-    def tostring(self):
-        return super().tostring(" ")
-
-    def correct_turn(self, _):
-        return False
-
-    def gen_moves(self, board, i):
-        return []
-
-    def empty(self):
-        return True
+        if valid_pin == None:
+            return True
+        else:
+            return target in valid_pin
