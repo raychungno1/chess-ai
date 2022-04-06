@@ -1,18 +1,57 @@
 import random
+
+from numpy import Infinity
 from chess import Piece
 
 class AI:
     def choose_move(board):
-        moves = board.generate_moves()
-        if len(moves) > 0:
-            return random.choice(moves)
+        moves = board.get_moves()
+        if len(moves) == 0:
+            return
 
+        depth = 3
+        value = -Infinity
+        best_move = moves[0]
+        for move in board.get_moves():
+            board.make_valid_move(move)
+            evaluation = AI.minimax(board, depth - 1, False)
+            if evaluation > value:
+                best_move = move
+                value = evaluation
+            board.undo()
+        return best_move
+        # moves = board.get_moves()
+        # if len(moves) > 0:
+        #     return random.choice(moves)
+
+    def minimax(board, depth, is_maximizer):
+        if board.check_winner():
+            if is_maximizer == True:
+                return -100
+            else:
+                return 100
+
+        if depth == 0:
+            return AI.eval(board)
+        
+        if is_maximizer == True:
+            value = -Infinity
+            for move in board.get_moves():
+                board.make_valid_move(move)
+                value = max(value, AI.minimax(board, depth - 1, False))
+                board.undo()
+            return value
+        else:
+            value = Infinity
+            for move in board.get_moves():
+                board.make_valid_move(move)
+                value = min(value, AI.minimax(board, depth - 1, True))
+                board.undo()
+            return value
 
     def eval(board):
         white_pos = AI.count_material(board, Piece.WHITE)
-        print(white_pos)
         black_pos = AI.count_material(board, Piece.BLACK)
-        print(black_pos)
         eval = white_pos - black_pos
 
         if board.white_to_move:

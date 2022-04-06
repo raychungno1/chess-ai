@@ -23,7 +23,7 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
         row, col = Board.get_row_col(square_clicked)
         draw_square(WIN, row, col, Const.HIGHLIGHT_ORIGIN)
 
-        moves = board.generate_moves(square_clicked)
+        moves = board.get_moves(square_clicked)
         for move in moves:
             row, col = Board.get_row_col(move.target_square)
             draw_square(WIN, row, col, Const.HIGHLIGHT_MOVE)
@@ -31,8 +31,8 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
     for row in range(8):
         for col in range(8):
 
-            x = 50 + Const.SQUARE_SIZE * col
-            y = 50 + Const.SQUARE_SIZE * (7 - row)
+            x = Const.SQUARE_SIZE // 2 + Const.SQUARE_SIZE * col
+            y = Const.SQUARE_SIZE // 2 + Const.SQUARE_SIZE * (7 - row)
 
             if Board.get_index(row, col) != square_clicked:
                 WIN.blit(
@@ -55,8 +55,8 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my):
 
 def draw_square(WIN, row, col, color):
     square = pygame.Rect(
-        50 + Const.SQUARE_SIZE * col,
-        50 + Const.SQUARE_SIZE * (7 - row),
+        Const.SQUARE_SIZE // 2 + Const.SQUARE_SIZE * col,
+        Const.SQUARE_SIZE // 2 + Const.SQUARE_SIZE * (7 - row),
         Const.SQUARE_SIZE,
         Const.SQUARE_SIZE
     )

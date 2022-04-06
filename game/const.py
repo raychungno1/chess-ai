@@ -1,8 +1,8 @@
 import pygame
 
 class Const:
-  FPS = 60
-  WIDTH, HEIGHT = 900, 900
+  FPS = 30
+  WIDTH, HEIGHT = 720, 720
 
   BG = (210, 205, 202)
   DARK_SQUARE = (223, 197, 170)
@@ -11,7 +11,7 @@ class Const:
   HIGHLIGHT_MOVE = (188, 183, 179)
   HIGHLIGHT_ORIGIN = (148, 140, 137)
 
-  SQUARE_SIZE = 100
+  SQUARE_SIZE = 80
   EMPTY = pygame.Rect(0, 0, 0, 0)
   W_KING = pygame.Rect(0, 0, SQUARE_SIZE, SQUARE_SIZE)
   B_KING = pygame.Rect(0, SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)

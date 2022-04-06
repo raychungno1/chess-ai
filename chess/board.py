@@ -28,6 +28,7 @@ class Board:
         self.attack_map = [0] * 64
         self.checks = []
         self.pins = []
+        self.current_moves = self.generate_moves()
 
     def print(self):
         row, col = 7, 0
@@ -66,10 +67,6 @@ class Board:
 
         self.generate_attack_map()
 
-        # self.print_attack_map()
-        # print("Checks" + str(self.checks))
-        # print("Pins" + str(self.pins))
-
         if index == None:
             for i, piece in enumerate(self.board):
                 if piece.correct_turn(self.white_to_move):
@@ -78,6 +75,16 @@ class Board:
         elif self.board[index].correct_turn(self.white_to_move):
             moves += self.board[index].gen_moves(self, index)
 
+        return moves
+
+    def get_moves(self, index=None):
+        if index is None:
+            return self.current_moves
+
+        moves = []
+        for move in self.current_moves:
+            if move.start_square == index:
+                moves.append(move)
         return moves
 
     def attack_through_castle(self, move, opp_move):
@@ -93,7 +100,7 @@ class Board:
         if possible_move == None or possible_move.start_square == possible_move.target_square:
             return
 
-        for move in self.generate_moves():
+        for move in self.current_moves:
             if move.equals(possible_move):
                 self.make_valid_move(move)
                 return True
@@ -118,6 +125,8 @@ class Board:
         self.move_promotion(move)
 
         self.white_to_move = not self.white_to_move
+
+        self.current_moves = self.generate_moves()
 
     def move_en_passant(self, move):
         if move.is_en_passant():
@@ -199,6 +208,7 @@ class Board:
             self.undo_promotion(move)
 
             self.en_passant = move.ep_square
+            self.current_moves = self.generate_moves()
 
     def undo_en_passant(self, move):
         if move.ep_piece != None:
@@ -284,7 +294,4 @@ class Board:
         return col_to_char[index % 8] + str(index // 8 + 1)
 
     def check_winner(self):
-        if len(self.generate_moves()) == 0:
-            print("WIN")
-            return True
-        return False
+        return len(self.current_moves) == 0
