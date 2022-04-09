@@ -3,6 +3,7 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "depends": [],
         "name": "board",
         "sources": [
             "src/board.pyx"
@@ -694,6 +695,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__board
 #define __PYX_HAVE_API__board
 /* Early includes */
+#include <string.h>
+#include <stdio.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1073,6 +1076,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* IncludeStringH.proto */
+#include <string.h>
+
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
 #define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
@@ -1191,6 +1197,18 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* PyObjectSetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
+#else
+#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
+#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
+#endif
+
+/* VoidPtrExport.proto */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
+
 /* VoidPtrImport.proto */
 static int __Pyx_ImportVoidPtr(PyObject *module, const char *name, void **p, const char *sig);
 
@@ -1201,10 +1219,16 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
+/* Module declarations from 'libc.string' */
+
+/* Module declarations from 'libc.stdio' */
+
 /* Module declarations from 'helper' */
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_get_bit)(__pyx_t_6helper_U64, int); /*proto*/
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_set_bit)(__pyx_t_6helper_U64, int); /*proto*/
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_pop_bit)(__pyx_t_6helper_U64, int); /*proto*/
+static int (*__pyx_f_6helper_count_bits)(__pyx_t_6helper_U64); /*proto*/
+static int (*__pyx_f_6helper_get_ls1b_index)(__pyx_t_6helper_U64); /*proto*/
 static PyObject *(*__pyx_f_6helper_print_bitboard)(__pyx_t_6helper_U64); /*proto*/
 
 /* Module declarations from 'attack' */
@@ -1214,9 +1238,14 @@ static __pyx_t_6helper_U64 (*__pyx_vp_6attack_knight_attacks)[64] = 0;
 #define __pyx_v_6attack_knight_attacks (*__pyx_vp_6attack_knight_attacks)
 static __pyx_t_6helper_U64 (*__pyx_vp_6attack_king_attacks)[64] = 0;
 #define __pyx_v_6attack_king_attacks (*__pyx_vp_6attack_king_attacks)
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_mask_bishop_attacks)(int); /*proto*/
 static __pyx_t_6helper_U64 (*__pyx_f_6attack_mask_rook_attacks)(int); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_set_occupancy)(int, int, __pyx_t_6helper_U64); /*proto*/
 
 /* Module declarations from 'board' */
+static char *__pyx_v_5board_square_to_coord[64];
+static int __pyx_v_5board_rank;
+static int __pyx_v_5board_file;
 static int __pyx_v_5board_square;
 #define __Pyx_MODULE_NAME "board"
 extern int __pyx_module_is_main_board;
@@ -1228,11 +1257,15 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_square_to_coord[] = "square_to_coord";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_n_s_pyx_capi;
 static PyObject *__pyx_n_s_range;
+static PyObject *__pyx_n_s_square_to_coord;
 static PyObject *__pyx_n_s_test;
 /* Late includes */
 
@@ -1285,12 +1318,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
+  {&__pyx_n_s_square_to_coord, __pyx_k_square_to_coord, sizeof(__pyx_k_square_to_coord), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 17, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1328,10 +1363,17 @@ static int __Pyx_modinit_global_init_code(void) {
 
 static int __Pyx_modinit_variable_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_export_code", 0);
   /*--- Variable export code ---*/
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_square_to_coord, (void *)&__pyx_v_5board_square_to_coord, "char *[64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_function_export_code(void) {
@@ -1393,11 +1435,15 @@ static int __Pyx_modinit_function_import_code(void) {
   if (__Pyx_ImportFunction(__pyx_t_1, "get_bit", (void (**)(void))&__pyx_f_6helper_get_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "set_bit", (void (**)(void))&__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "pop_bit", (void (**)(void))&__pyx_f_6helper_pop_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "count_bits", (void (**)(void))&__pyx_f_6helper_count_bits, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_ls1b_index", (void (**)(void))&__pyx_f_6helper_get_ls1b_index, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "print_bitboard", (void (**)(void))&__pyx_f_6helper_print_bitboard, "PyObject *(__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportFunction(__pyx_t_1, "mask_bishop_attacks", (void (**)(void))&__pyx_f_6attack_mask_bishop_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "mask_rook_attacks", (void (**)(void))&__pyx_f_6attack_mask_rook_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "set_occupancy", (void (**)(void))&__pyx_f_6attack_set_occupancy, "__pyx_t_6helper_U64 (int, int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -1501,8 +1547,10 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_board(PyObject *__pyx_pyinit_modul
 #endif
 #endif
 {
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  static char *__pyx_t_1[64];
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1597,7 +1645,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
-  (void)__Pyx_modinit_variable_export_code();
+  if (unlikely(__Pyx_modinit_variable_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_function_export_code();
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
@@ -1608,42 +1656,142 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "board.pyx":7
- * # print_bitboard(mask_rook_attacks(d5))
- * cdef int square
- * for square in range(64):             # <<<<<<<<<<<<<<
- *     print_bitboard(mask_rook_attacks(square))
- *     # print_bitboard(king_attacks[square])
+  /* "board.pyx":5
+ * from attack cimport pawn_attacks, knight_attacks, king_attacks, set_occupancy, mask_bishop_attacks, mask_rook_attacks
+ * 
+ * square_to_coord[:] = [             # <<<<<<<<<<<<<<
+ *     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
+ *     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
  */
-  for (__pyx_t_1 = 0; __pyx_t_1 < 64; __pyx_t_1+=1) {
-    __pyx_v_5board_square = __pyx_t_1;
+  __pyx_t_1[0] = ((char *)"a8");
+  __pyx_t_1[1] = ((char *)"b8");
+  __pyx_t_1[2] = ((char *)"c8");
+  __pyx_t_1[3] = ((char *)"d8");
+  __pyx_t_1[4] = ((char *)"e8");
+  __pyx_t_1[5] = ((char *)"f8");
+  __pyx_t_1[6] = ((char *)"g8");
+  __pyx_t_1[7] = ((char *)"h8");
+  __pyx_t_1[8] = ((char *)"a7");
+  __pyx_t_1[9] = ((char *)"b7");
+  __pyx_t_1[10] = ((char *)"c7");
+  __pyx_t_1[11] = ((char *)"d7");
+  __pyx_t_1[12] = ((char *)"e7");
+  __pyx_t_1[13] = ((char *)"f7");
+  __pyx_t_1[14] = ((char *)"g7");
+  __pyx_t_1[15] = ((char *)"h7");
+  __pyx_t_1[16] = ((char *)"a6");
+  __pyx_t_1[17] = ((char *)"b6");
+  __pyx_t_1[18] = ((char *)"c6");
+  __pyx_t_1[19] = ((char *)"d6");
+  __pyx_t_1[20] = ((char *)"e6");
+  __pyx_t_1[21] = ((char *)"f6");
+  __pyx_t_1[22] = ((char *)"g6");
+  __pyx_t_1[23] = ((char *)"h6");
+  __pyx_t_1[24] = ((char *)"a5");
+  __pyx_t_1[25] = ((char *)"b5");
+  __pyx_t_1[26] = ((char *)"c5");
+  __pyx_t_1[27] = ((char *)"d5");
+  __pyx_t_1[28] = ((char *)"e5");
+  __pyx_t_1[29] = ((char *)"f5");
+  __pyx_t_1[30] = ((char *)"g5");
+  __pyx_t_1[31] = ((char *)"h5");
+  __pyx_t_1[32] = ((char *)"a4");
+  __pyx_t_1[33] = ((char *)"b4");
+  __pyx_t_1[34] = ((char *)"c4");
+  __pyx_t_1[35] = ((char *)"d4");
+  __pyx_t_1[36] = ((char *)"e4");
+  __pyx_t_1[37] = ((char *)"f4");
+  __pyx_t_1[38] = ((char *)"g4");
+  __pyx_t_1[39] = ((char *)"h4");
+  __pyx_t_1[40] = ((char *)"a3");
+  __pyx_t_1[41] = ((char *)"b3");
+  __pyx_t_1[42] = ((char *)"c3");
+  __pyx_t_1[43] = ((char *)"d3");
+  __pyx_t_1[44] = ((char *)"e3");
+  __pyx_t_1[45] = ((char *)"f3");
+  __pyx_t_1[46] = ((char *)"g3");
+  __pyx_t_1[47] = ((char *)"h3");
+  __pyx_t_1[48] = ((char *)"a2");
+  __pyx_t_1[49] = ((char *)"b2");
+  __pyx_t_1[50] = ((char *)"c2");
+  __pyx_t_1[51] = ((char *)"d2");
+  __pyx_t_1[52] = ((char *)"e2");
+  __pyx_t_1[53] = ((char *)"f2");
+  __pyx_t_1[54] = ((char *)"g2");
+  __pyx_t_1[55] = ((char *)"h2");
+  __pyx_t_1[56] = ((char *)"a1");
+  __pyx_t_1[57] = ((char *)"b1");
+  __pyx_t_1[58] = ((char *)"c1");
+  __pyx_t_1[59] = ((char *)"d1");
+  __pyx_t_1[60] = ((char *)"e1");
+  __pyx_t_1[61] = ((char *)"f1");
+  __pyx_t_1[62] = ((char *)"g1");
+  __pyx_t_1[63] = ((char *)"h1");
+  memcpy(&(__pyx_v_5board_square_to_coord[0]), __pyx_t_1, sizeof(__pyx_v_5board_square_to_coord[0]) * (64));
 
-    /* "board.pyx":8
- * cdef int square
- * for square in range(64):
- *     print_bitboard(mask_rook_attacks(square))             # <<<<<<<<<<<<<<
- *     # print_bitboard(king_attacks[square])
+  /* "board.pyx":17
+ * 
+ * cdef int rank, file, square
+ * for rank in range(8):             # <<<<<<<<<<<<<<
+ *     for file in range(8):
+ *         square = rank * 8 + file
  */
-    __pyx_t_2 = __pyx_f_6helper_print_bitboard(__pyx_f_6attack_mask_rook_attacks(__pyx_v_5board_square)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  for (__pyx_t_2 = 0; __pyx_t_2 < 8; __pyx_t_2+=1) {
+    __pyx_v_5board_rank = __pyx_t_2;
+
+    /* "board.pyx":18
+ * cdef int rank, file, square
+ * for rank in range(8):
+ *     for file in range(8):             # <<<<<<<<<<<<<<
+ *         square = rank * 8 + file
+ * 
+ */
+    for (__pyx_t_3 = 0; __pyx_t_3 < 8; __pyx_t_3+=1) {
+      __pyx_v_5board_file = __pyx_t_3;
+
+      /* "board.pyx":19
+ * for rank in range(8):
+ *     for file in range(8):
+ *         square = rank * 8 + file             # <<<<<<<<<<<<<<
+ * 
+ *         printf("%d, ", count_bits(mask_rook_attacks(square)))
+ */
+      __pyx_v_5board_square = ((__pyx_v_5board_rank * 8) + __pyx_v_5board_file);
+
+      /* "board.pyx":21
+ *         square = rank * 8 + file
+ * 
+ *         printf("%d, ", count_bits(mask_rook_attacks(square)))             # <<<<<<<<<<<<<<
+ *     printf("\n")
+ * 
+ */
+      (void)(printf(((char const *)"%d, "), __pyx_f_6helper_count_bits(__pyx_f_6attack_mask_rook_attacks(__pyx_v_5board_square))));
+    }
+
+    /* "board.pyx":22
+ * 
+ *         printf("%d, ", count_bits(mask_rook_attacks(square)))
+ *     printf("\n")             # <<<<<<<<<<<<<<
+ * 
+ */
+    (void)(printf(((char const *)"\n")));
   }
 
   /* "board.pyx":1
- * from helper cimport U64, get_bit, set_bit, pop_bit, print_bitboard             # <<<<<<<<<<<<<<
- * from attack cimport pawn_attacks, knight_attacks, king_attacks, mask_rook_attacks
- * 
+ * from libc.stdio cimport printf             # <<<<<<<<<<<<<<
+ * from helper cimport U64, get_bit, set_bit, pop_bit, count_bits, get_ls1b_index, print_bitboard
+ * from attack cimport pawn_attacks, knight_attacks, king_attacks, set_occupancy, mask_bishop_attacks, mask_rook_attacks
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_4) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /*--- Wrapped vars code ---*/
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init board", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -2538,6 +2686,51 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+/* PyObjectSetAttrStr */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_setattro))
+        return tp->tp_setattro(obj, attr_name, value);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_setattr))
+        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
+#endif
+    return PyObject_SetAttr(obj, attr_name, value);
+}
+#endif
+
+/* VoidPtrExport */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
+    PyObject *d;
+    PyObject *cobj = 0;
+    d = PyDict_GetItem(__pyx_d, __pyx_n_s_pyx_capi);
+    Py_XINCREF(d);
+    if (!d) {
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        if (__Pyx_PyObject_SetAttrStr(__pyx_m, __pyx_n_s_pyx_capi, d) < 0)
+            goto bad;
+    }
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItem(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* VoidPtrImport */

@@ -1123,6 +1123,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'helper' */
 static __pyx_t_6helper_U64 __pyx_f_6helper_get_bit(__pyx_t_6helper_U64, int); /*proto*/
+static int __pyx_f_6helper_count_bits(__pyx_t_6helper_U64); /*proto*/
 #define __Pyx_MODULE_NAME "helper"
 extern int __pyx_module_is_main_helper;
 int __pyx_module_is_main_helper = 0;
@@ -1240,7 +1241,7 @@ static __pyx_t_6helper_U64 __pyx_f_6helper_pop_bit(__pyx_t_6helper_U64 __pyx_v_b
  * cdef U64 pop_bit(U64 bitboard, int square):
  *     return bitboard ^ (1ULL << square) if get_bit(bitboard, square) else bitboard             # <<<<<<<<<<<<<<
  * 
- * cdef print_bitboard(U64 bitboard):
+ * cdef int count_bits(U64 bitboard):
  */
   if ((__pyx_f_6helper_get_bit(__pyx_v_bitboard, __pyx_v_square) != 0)) {
     __pyx_t_1 = (__pyx_v_bitboard ^ (1ULL << __pyx_v_square));
@@ -1267,6 +1268,153 @@ static __pyx_t_6helper_U64 __pyx_f_6helper_pop_bit(__pyx_t_6helper_U64 __pyx_v_b
 /* "helper.pyx":13
  *     return bitboard ^ (1ULL << square) if get_bit(bitboard, square) else bitboard
  * 
+ * cdef int count_bits(U64 bitboard):             # <<<<<<<<<<<<<<
+ *     cdef int count = 0
+ * 
+ */
+
+static int __pyx_f_6helper_count_bits(__pyx_t_6helper_U64 __pyx_v_bitboard) {
+  int __pyx_v_count;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("count_bits", 0);
+
+  /* "helper.pyx":14
+ * 
+ * cdef int count_bits(U64 bitboard):
+ *     cdef int count = 0             # <<<<<<<<<<<<<<
+ * 
+ *     while bitboard:
+ */
+  __pyx_v_count = 0;
+
+  /* "helper.pyx":16
+ *     cdef int count = 0
+ * 
+ *     while bitboard:             # <<<<<<<<<<<<<<
+ *         count += 1
+ * 
+ */
+  while (1) {
+    __pyx_t_1 = (__pyx_v_bitboard != 0);
+    if (!__pyx_t_1) break;
+
+    /* "helper.pyx":17
+ * 
+ *     while bitboard:
+ *         count += 1             # <<<<<<<<<<<<<<
+ * 
+ *         # sets least significant "1" bit to "0"
+ */
+    __pyx_v_count = (__pyx_v_count + 1);
+
+    /* "helper.pyx":20
+ * 
+ *         # sets least significant "1" bit to "0"
+ *         bitboard &= bitboard - 1             # <<<<<<<<<<<<<<
+ * 
+ *     return count
+ */
+    __pyx_v_bitboard = (__pyx_v_bitboard & (__pyx_v_bitboard - 1));
+  }
+
+  /* "helper.pyx":22
+ *         bitboard &= bitboard - 1
+ * 
+ *     return count             # <<<<<<<<<<<<<<
+ * 
+ * cdef int get_ls1b_index(U64 bitboard):
+ */
+  __pyx_r = __pyx_v_count;
+  goto __pyx_L0;
+
+  /* "helper.pyx":13
+ *     return bitboard ^ (1ULL << square) if get_bit(bitboard, square) else bitboard
+ * 
+ * cdef int count_bits(U64 bitboard):             # <<<<<<<<<<<<<<
+ *     cdef int count = 0
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "helper.pyx":24
+ *     return count
+ * 
+ * cdef int get_ls1b_index(U64 bitboard):             # <<<<<<<<<<<<<<
+ *     if bitboard:
+ *         # bithack
+ */
+
+static int __pyx_f_6helper_get_ls1b_index(__pyx_t_6helper_U64 __pyx_v_bitboard) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("get_ls1b_index", 0);
+
+  /* "helper.pyx":25
+ * 
+ * cdef int get_ls1b_index(U64 bitboard):
+ *     if bitboard:             # <<<<<<<<<<<<<<
+ *         # bithack
+ *         return count_bits((bitboard & -bitboard) - 1)
+ */
+  __pyx_t_1 = (__pyx_v_bitboard != 0);
+  if (__pyx_t_1) {
+
+    /* "helper.pyx":27
+ *     if bitboard:
+ *         # bithack
+ *         return count_bits((bitboard & -bitboard) - 1)             # <<<<<<<<<<<<<<
+ *     else:
+ *         return -1
+ */
+    __pyx_r = __pyx_f_6helper_count_bits(((__pyx_v_bitboard & (-__pyx_v_bitboard)) - 1));
+    goto __pyx_L0;
+
+    /* "helper.pyx":25
+ * 
+ * cdef int get_ls1b_index(U64 bitboard):
+ *     if bitboard:             # <<<<<<<<<<<<<<
+ *         # bithack
+ *         return count_bits((bitboard & -bitboard) - 1)
+ */
+  }
+
+  /* "helper.pyx":29
+ *         return count_bits((bitboard & -bitboard) - 1)
+ *     else:
+ *         return -1             # <<<<<<<<<<<<<<
+ * 
+ * cdef print_bitboard(U64 bitboard):
+ */
+  /*else*/ {
+    __pyx_r = -1;
+    goto __pyx_L0;
+  }
+
+  /* "helper.pyx":24
+ *     return count
+ * 
+ * cdef int get_ls1b_index(U64 bitboard):             # <<<<<<<<<<<<<<
+ *     if bitboard:
+ *         # bithack
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "helper.pyx":31
+ *         return -1
+ * 
  * cdef print_bitboard(U64 bitboard):             # <<<<<<<<<<<<<<
  *     cdef int rank, file, square
  * 
@@ -1283,7 +1431,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("print_bitboard", 0);
 
-  /* "helper.pyx":16
+  /* "helper.pyx":34
  *     cdef int rank, file, square
  * 
  *     printf("\n")             # <<<<<<<<<<<<<<
@@ -1292,7 +1440,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
  */
   (void)(printf(((char const *)"\n")));
 
-  /* "helper.pyx":17
+  /* "helper.pyx":35
  * 
  *     printf("\n")
  *     for rank in range(8): # Ranks             # <<<<<<<<<<<<<<
@@ -1302,7 +1450,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
   for (__pyx_t_1 = 0; __pyx_t_1 < 8; __pyx_t_1+=1) {
     __pyx_v_rank = __pyx_t_1;
 
-    /* "helper.pyx":18
+    /* "helper.pyx":36
  *     printf("\n")
  *     for rank in range(8): # Ranks
  *         for file in range(8): # Files             # <<<<<<<<<<<<<<
@@ -1312,7 +1460,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
     for (__pyx_t_2 = 0; __pyx_t_2 < 8; __pyx_t_2+=1) {
       __pyx_v_file = __pyx_t_2;
 
-      /* "helper.pyx":19
+      /* "helper.pyx":37
  *     for rank in range(8): # Ranks
  *         for file in range(8): # Files
  *             square = rank * 8 + file # Square index             # <<<<<<<<<<<<<<
@@ -1321,7 +1469,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
  */
       __pyx_v_square = ((__pyx_v_rank * 8) + __pyx_v_file);
 
-      /* "helper.pyx":21
+      /* "helper.pyx":39
  *             square = rank * 8 + file # Square index
  * 
  *             if not(file):             # <<<<<<<<<<<<<<
@@ -1331,7 +1479,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
       __pyx_t_3 = ((!(__pyx_v_file != 0)) != 0);
       if (__pyx_t_3) {
 
-        /* "helper.pyx":22
+        /* "helper.pyx":40
  * 
  *             if not(file):
  *                 printf(" %d ", 8 - rank) # Rank label             # <<<<<<<<<<<<<<
@@ -1340,7 +1488,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
  */
         (void)(printf(((char const *)" %d "), (8 - __pyx_v_rank)));
 
-        /* "helper.pyx":21
+        /* "helper.pyx":39
  *             square = rank * 8 + file # Square index
  * 
  *             if not(file):             # <<<<<<<<<<<<<<
@@ -1349,7 +1497,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
  */
       }
 
-      /* "helper.pyx":25
+      /* "helper.pyx":43
  * 
  *             # Square state
  *             printf(" %d", get_bit(bitboard, square))             # <<<<<<<<<<<<<<
@@ -1359,7 +1507,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
       (void)(printf(((char const *)" %d"), __pyx_f_6helper_get_bit(__pyx_v_bitboard, __pyx_v_square)));
     }
 
-    /* "helper.pyx":27
+    /* "helper.pyx":45
  *             printf(" %d", get_bit(bitboard, square))
  * 
  *         printf("\n")             # <<<<<<<<<<<<<<
@@ -1369,7 +1517,7 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
     (void)(printf(((char const *)"\n")));
   }
 
-  /* "helper.pyx":29
+  /* "helper.pyx":47
  *         printf("\n")
  * 
  *     printf("\n    a b c d e f g h\n\n") # File label             # <<<<<<<<<<<<<<
@@ -1378,15 +1526,15 @@ static PyObject *__pyx_f_6helper_print_bitboard(__pyx_t_6helper_U64 __pyx_v_bitb
  */
   (void)(printf(((char const *)"\n    a b c d e f g h\n\n")));
 
-  /* "helper.pyx":31
+  /* "helper.pyx":49
  *     printf("\n    a b c d e f g h\n\n") # File label
  * 
  *     printf("    Bitboard: %llud\n\n", bitboard) # Decimal representation             # <<<<<<<<<<<<<<
  */
   (void)(printf(((char const *)"    Bitboard: %llud\n\n"), __pyx_v_bitboard));
 
-  /* "helper.pyx":13
- *     return bitboard ^ (1ULL << square) if get_bit(bitboard, square) else bitboard
+  /* "helper.pyx":31
+ *         return -1
  * 
  * cdef print_bitboard(U64 bitboard):             # <<<<<<<<<<<<<<
  *     cdef int rank, file, square
@@ -1454,7 +1602,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 35, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1508,6 +1656,8 @@ static int __Pyx_modinit_function_export_code(void) {
   if (__Pyx_ExportFunction("get_bit", (void (*)(void))__pyx_f_6helper_get_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("set_bit", (void (*)(void))__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("pop_bit", (void (*)(void))__pyx_f_6helper_pop_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("count_bits", (void (*)(void))__pyx_f_6helper_count_bits, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("get_ls1b_index", (void (*)(void))__pyx_f_6helper_get_ls1b_index, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("print_bitboard", (void (*)(void))__pyx_f_6helper_print_bitboard, "PyObject *(__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
