@@ -1,5 +1,5 @@
-from board cimport white, black
-from helper cimport set_bit, pop_bit, get_ls1b_index
+from helper cimport set_bit, pop_bit, count_bits, get_ls1b_index
+from const cimport rook_magic_numbers, bishop_magic_numbers
 
 
 # Bit masks for certain files
@@ -9,7 +9,6 @@ cdef U64 not_h_file = 9187201950435737471ULL
 cdef U64 not_hg_file = 4557430888798830399ULL
 
 # Occupancy bit count for every square on board
-cdef int bishop_relevant_bits[64]
 bishop_relevant_bits[:] = [
     6, 5, 5, 5, 5, 5, 5, 6, 
     5, 5, 5, 5, 5, 5, 5, 5,
@@ -21,7 +20,6 @@ bishop_relevant_bits[:] = [
     6, 5, 5, 5, 5, 5, 5, 6
 ]
 
-cdef int rook_relevant_bits[64]
 rook_relevant_bits[:] = [
     12, 11, 11, 11, 11, 11, 11, 12, 
     11, 10, 10, 10, 10, 10, 10, 11,
@@ -256,5 +254,42 @@ cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask):
         if index & (1 << count):
             occupancy |= (1ULL << square)
     return occupancy
+
+cdef init_sliders_attacks(int bishop):
+    cdef int square, relevant_bits_count, occupancy_indicies, index, magic_index
+    cdef U64 attack_mask, occupancy
+    for square in range(64):
+        bishop_masks[square] = mask_bishop_attacks(square)
+        rook_masks[square] = mask_rook_attacks(square)
+
+        attack_mask = bishop_masks[square] if bishop else rook_masks[square]
+
+        relevant_bits_count = count_bits(attack_mask)
+        occupancy_indicies = (1 << relevant_bits_count)
+
+        for index in range(occupancy_indicies):
+            occupancy = set_occupancy(index, relevant_bits_count, attack_mask)
+            if bishop:
+                magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])
+                bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)
+            else:
+                magic_index = (occupancy * rook_magic_numbers[square]) >> (64 - rook_relevant_bits[square])
+                rook_attacks[square][magic_index] = rook_attacks_on_the_fly(square, occupancy)
         
+cdef U64 get_bishop_attacks(int square, U64 occupancy):
+    occupancy &= bishop_masks[square]
+    occupancy *= bishop_magic_numbers[square]
+    occupancy >>= 64 - bishop_relevant_bits[square]
+
+    return bishop_attacks[square][occupancy]
+
+cdef U64 get_rook_attacks(int square, U64 occupancy):
+    occupancy &= rook_masks[square]
+    occupancy *= rook_magic_numbers[square]
+    occupancy >>= 64 - rook_relevant_bits[square]
+
+    return rook_attacks[square][occupancy]
+
 init_leapers_attacks()
+init_sliders_attacks(bishop)
+init_sliders_attacks(rook)

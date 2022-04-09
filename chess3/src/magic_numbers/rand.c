@@ -3,13 +3,12 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "depends": [],
-        "name": "board",
+        "name": "rand",
         "sources": [
-            "src/board.pyx"
+            "src/rand.pyx"
         ]
     },
-    "module_name": "board"
+    "module_name": "rand"
 }
 END: Cython Metadata */
 
@@ -692,11 +691,9 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__board
-#define __PYX_HAVE_API__board
+#define __PYX_HAVE__rand
+#define __PYX_HAVE_API__rand
 /* Early includes */
-#include <string.h>
-#include <stdio.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -906,7 +903,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "src\\board.pyx",
+  "src\\rand.pyx",
 };
 
 /* "helper.pxd":1
@@ -917,125 +914,6 @@ static const char *__pyx_f[] = {
 typedef unsigned PY_LONG_LONG __pyx_t_6helper_U64;
 
 /*--- Type declarations ---*/
-
-/* "attack.pxd":5
- * 
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     white, black
- * 
- */
-enum  {
-  __pyx_e_6attack_white,
-  __pyx_e_6attack_black
-};
-
-/* "attack.pxd":8
- *     white, black
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     rook, bishop
- * 
- */
-enum  {
-  __pyx_e_6attack_rook,
-  __pyx_e_6attack_bishop
-};
-
-/* "board.pxd":1
- * cdef enum:             # <<<<<<<<<<<<<<
- *     a8, b8, c8, d8, e8, f8, g8, h8,
- *     a7, b7, c7, d7, e7, f7, g7, h7,
- */
-enum  {
-  __pyx_e_5board_a8,
-  __pyx_e_5board_b8,
-  __pyx_e_5board_c8,
-  __pyx_e_5board_d8,
-  __pyx_e_5board_e8,
-  __pyx_e_5board_f8,
-  __pyx_e_5board_g8,
-  __pyx_e_5board_h8,
-  __pyx_e_5board_a7,
-  __pyx_e_5board_b7,
-  __pyx_e_5board_c7,
-  __pyx_e_5board_d7,
-  __pyx_e_5board_e7,
-  __pyx_e_5board_f7,
-  __pyx_e_5board_g7,
-  __pyx_e_5board_h7,
-  __pyx_e_5board_a6,
-  __pyx_e_5board_b6,
-  __pyx_e_5board_c6,
-  __pyx_e_5board_d6,
-  __pyx_e_5board_e6,
-  __pyx_e_5board_f6,
-  __pyx_e_5board_g6,
-  __pyx_e_5board_h6,
-  __pyx_e_5board_a5,
-  __pyx_e_5board_b5,
-  __pyx_e_5board_c5,
-  __pyx_e_5board_d5,
-  __pyx_e_5board_e5,
-  __pyx_e_5board_f5,
-  __pyx_e_5board_g5,
-  __pyx_e_5board_h5,
-  __pyx_e_5board_a4,
-  __pyx_e_5board_b4,
-  __pyx_e_5board_c4,
-  __pyx_e_5board_d4,
-  __pyx_e_5board_e4,
-  __pyx_e_5board_f4,
-  __pyx_e_5board_g4,
-  __pyx_e_5board_h4,
-  __pyx_e_5board_a3,
-  __pyx_e_5board_b3,
-  __pyx_e_5board_c3,
-  __pyx_e_5board_d3,
-  __pyx_e_5board_e3,
-  __pyx_e_5board_f3,
-  __pyx_e_5board_g3,
-  __pyx_e_5board_h3,
-  __pyx_e_5board_a2,
-  __pyx_e_5board_b2,
-  __pyx_e_5board_c2,
-  __pyx_e_5board_d2,
-  __pyx_e_5board_e2,
-  __pyx_e_5board_f2,
-  __pyx_e_5board_g2,
-  __pyx_e_5board_h2,
-  __pyx_e_5board_a1,
-  __pyx_e_5board_b1,
-  __pyx_e_5board_c1,
-  __pyx_e_5board_d1,
-  __pyx_e_5board_e1,
-  __pyx_e_5board_f1,
-  __pyx_e_5board_g1,
-  __pyx_e_5board_h1
-};
-
-/* "board.pxd":11
- *     a1, b1, c1, d1, e1, f1, g1, h1,
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     white, black
- * 
- */
-enum  {
-  __pyx_e_5board_white,
-  __pyx_e_5board_black
-};
-
-/* "board.pxd":14
- *     white, black
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     rook, bishop
- */
-enum  {
-  __pyx_e_5board_rook,
-  __pyx_e_5board_bishop
-};
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1226,70 +1104,242 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
-/* VoidPtrImport.proto */
-static int __Pyx_ImportVoidPtr(PyObject *module, const char *name, void **p, const char *sig);
+/* PyObjectSetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
+#else
+#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
+#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
+#endif
 
-/* FunctionImport.proto */
-static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
+/* VoidPtrExport.proto */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
+
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
 
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from 'libc.string' */
-
-/* Module declarations from 'libc.stdio' */
-
 /* Module declarations from 'helper' */
-static __pyx_t_6helper_U64 (*__pyx_f_6helper_set_bit)(__pyx_t_6helper_U64, int); /*proto*/
-static PyObject *(*__pyx_f_6helper_print_bitboard)(__pyx_t_6helper_U64); /*proto*/
 
-/* Module declarations from 'const' */
-static char *(*__pyx_vp_5const_square_to_coord)[64] = 0;
-#define __pyx_v_5const_square_to_coord (*__pyx_vp_5const_square_to_coord)
-static __pyx_t_6helper_U64 (*__pyx_vp_5const_rook_magic_numbers)[64] = 0;
-#define __pyx_v_5const_rook_magic_numbers (*__pyx_vp_5const_rook_magic_numbers)
-static __pyx_t_6helper_U64 (*__pyx_vp_5const_bishop_magic_numbers)[64] = 0;
-#define __pyx_v_5const_bishop_magic_numbers (*__pyx_vp_5const_bishop_magic_numbers)
+/* Module declarations from 'rand' */
+static unsigned int __pyx_v_4rand_rand_state;
+static unsigned int __pyx_f_4rand_get_random_U32_number(unsigned int *); /*proto*/
+static __pyx_t_6helper_U64 __pyx_f_4rand_get_random_U64_numbers(unsigned int *); /*proto*/
+#define __Pyx_MODULE_NAME "rand"
+extern int __pyx_module_is_main_rand;
+int __pyx_module_is_main_rand = 0;
 
-/* Module declarations from 'attack' */
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_pawn_attacks)[2][64] = 0;
-#define __pyx_v_6attack_pawn_attacks (*__pyx_vp_6attack_pawn_attacks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_knight_attacks)[64] = 0;
-#define __pyx_v_6attack_knight_attacks (*__pyx_vp_6attack_knight_attacks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_king_attacks)[64] = 0;
-#define __pyx_v_6attack_king_attacks (*__pyx_vp_6attack_king_attacks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_bishop_masks)[64] = 0;
-#define __pyx_v_6attack_bishop_masks (*__pyx_vp_6attack_bishop_masks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_bishop_attacks)[64][0x200] = 0;
-#define __pyx_v_6attack_bishop_attacks (*__pyx_vp_6attack_bishop_attacks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_rook_masks)[64] = 0;
-#define __pyx_v_6attack_rook_masks (*__pyx_vp_6attack_rook_masks)
-static __pyx_t_6helper_U64 (*__pyx_vp_6attack_rook_attacks)[64][0x1000] = 0;
-#define __pyx_v_6attack_rook_attacks (*__pyx_vp_6attack_rook_attacks)
-static int (*__pyx_vp_6attack_bishop_relevant_bits)[64] = 0;
-#define __pyx_v_6attack_bishop_relevant_bits (*__pyx_vp_6attack_bishop_relevant_bits)
-static int (*__pyx_vp_6attack_rook_relevant_bits)[64] = 0;
-#define __pyx_v_6attack_rook_relevant_bits (*__pyx_vp_6attack_rook_relevant_bits)
-static __pyx_t_6helper_U64 (*__pyx_f_6attack_get_bishop_attacks)(int, __pyx_t_6helper_U64); /*proto*/
-static __pyx_t_6helper_U64 (*__pyx_f_6attack_get_rook_attacks)(int, __pyx_t_6helper_U64); /*proto*/
-
-/* Module declarations from 'board' */
-static __pyx_t_6helper_U64 __pyx_v_5board_occupancy;
-#define __Pyx_MODULE_NAME "board"
-extern int __pyx_module_is_main_board;
-int __pyx_module_is_main_board = 0;
-
-/* Implementation of 'board' */
+/* Implementation of 'rand' */
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_rand_state[] = "rand_state";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_n_s_pyx_capi;
+static PyObject *__pyx_n_s_rand_state;
 static PyObject *__pyx_n_s_test;
 /* Late includes */
+
+/* "rand.pyx":3
+ * cdef unsigned int rand_state = 1804289383
+ * 
+ * cdef unsigned int get_random_U32_number(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     cdef unsigned int number = state[0]
+ * 
+ */
+
+static unsigned int __pyx_f_4rand_get_random_U32_number(unsigned int *__pyx_v_state) {
+  unsigned int __pyx_v_number;
+  unsigned int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_random_U32_number", 0);
+
+  /* "rand.pyx":4
+ * 
+ * cdef unsigned int get_random_U32_number(unsigned int *state):
+ *     cdef unsigned int number = state[0]             # <<<<<<<<<<<<<<
+ * 
+ *     # XOR shift algorithm
+ */
+  __pyx_v_number = (__pyx_v_state[0]);
+
+  /* "rand.pyx":7
+ * 
+ *     # XOR shift algorithm
+ *     number ^= number << 13             # <<<<<<<<<<<<<<
+ *     number ^= number >> 17
+ *     number ^= number << 5
+ */
+  __pyx_v_number = (__pyx_v_number ^ (__pyx_v_number << 13));
+
+  /* "rand.pyx":8
+ *     # XOR shift algorithm
+ *     number ^= number << 13
+ *     number ^= number >> 17             # <<<<<<<<<<<<<<
+ *     number ^= number << 5
+ * 
+ */
+  __pyx_v_number = (__pyx_v_number ^ (__pyx_v_number >> 17));
+
+  /* "rand.pyx":9
+ *     number ^= number << 13
+ *     number ^= number >> 17
+ *     number ^= number << 5             # <<<<<<<<<<<<<<
+ * 
+ *     state[0] = number
+ */
+  __pyx_v_number = (__pyx_v_number ^ (__pyx_v_number << 5));
+
+  /* "rand.pyx":11
+ *     number ^= number << 5
+ * 
+ *     state[0] = number             # <<<<<<<<<<<<<<
+ *     return number
+ * 
+ */
+  (__pyx_v_state[0]) = __pyx_v_number;
+
+  /* "rand.pyx":12
+ * 
+ *     state[0] = number
+ *     return number             # <<<<<<<<<<<<<<
+ * 
+ * cdef U64 get_random_U64_numbers(unsigned int *state):
+ */
+  __pyx_r = __pyx_v_number;
+  goto __pyx_L0;
+
+  /* "rand.pyx":3
+ * cdef unsigned int rand_state = 1804289383
+ * 
+ * cdef unsigned int get_random_U32_number(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     cdef unsigned int number = state[0]
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rand.pyx":14
+ *     return number
+ * 
+ * cdef U64 get_random_U64_numbers(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     cdef U64 n1, n2, n3, n4
+ *     n1 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ */
+
+static __pyx_t_6helper_U64 __pyx_f_4rand_get_random_U64_numbers(unsigned int *__pyx_v_state) {
+  __pyx_t_6helper_U64 __pyx_v_n1;
+  __pyx_t_6helper_U64 __pyx_v_n2;
+  __pyx_t_6helper_U64 __pyx_v_n3;
+  __pyx_t_6helper_U64 __pyx_v_n4;
+  __pyx_t_6helper_U64 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_random_U64_numbers", 0);
+
+  /* "rand.pyx":16
+ * cdef U64 get_random_U64_numbers(unsigned int *state):
+ *     cdef U64 n1, n2, n3, n4
+ *     n1 = <U64>(get_random_U32_number(state)) & 0xFFFF             # <<<<<<<<<<<<<<
+ *     n2 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n3 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ */
+  __pyx_v_n1 = (((__pyx_t_6helper_U64)__pyx_f_4rand_get_random_U32_number(__pyx_v_state)) & 0xFFFF);
+
+  /* "rand.pyx":17
+ *     cdef U64 n1, n2, n3, n4
+ *     n1 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n2 = <U64>(get_random_U32_number(state)) & 0xFFFF             # <<<<<<<<<<<<<<
+ *     n3 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n4 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ */
+  __pyx_v_n2 = (((__pyx_t_6helper_U64)__pyx_f_4rand_get_random_U32_number(__pyx_v_state)) & 0xFFFF);
+
+  /* "rand.pyx":18
+ *     n1 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n2 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n3 = <U64>(get_random_U32_number(state)) & 0xFFFF             # <<<<<<<<<<<<<<
+ *     n4 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ * 
+ */
+  __pyx_v_n3 = (((__pyx_t_6helper_U64)__pyx_f_4rand_get_random_U32_number(__pyx_v_state)) & 0xFFFF);
+
+  /* "rand.pyx":19
+ *     n2 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n3 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ *     n4 = <U64>(get_random_U32_number(state)) & 0xFFFF             # <<<<<<<<<<<<<<
+ * 
+ *     return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48)
+ */
+  __pyx_v_n4 = (((__pyx_t_6helper_U64)__pyx_f_4rand_get_random_U32_number(__pyx_v_state)) & 0xFFFF);
+
+  /* "rand.pyx":21
+ *     n4 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ * 
+ *     return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48)             # <<<<<<<<<<<<<<
+ * 
+ * cdef U64 generate_magic_number(unsigned int *state):
+ */
+  __pyx_r = (((__pyx_v_n1 | (__pyx_v_n2 << 16)) | (__pyx_v_n3 << 32)) | (__pyx_v_n4 << 48));
+  goto __pyx_L0;
+
+  /* "rand.pyx":14
+ *     return number
+ * 
+ * cdef U64 get_random_U64_numbers(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     cdef U64 n1, n2, n3, n4
+ *     n1 = <U64>(get_random_U32_number(state)) & 0xFFFF
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "rand.pyx":23
+ *     return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48)
+ * 
+ * cdef U64 generate_magic_number(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     return get_random_U64_numbers(state) & get_random_U64_numbers(state) & get_random_U64_numbers(state)
+ */
+
+static __pyx_t_6helper_U64 __pyx_f_4rand_generate_magic_number(unsigned int *__pyx_v_state) {
+  __pyx_t_6helper_U64 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("generate_magic_number", 0);
+
+  /* "rand.pyx":24
+ * 
+ * cdef U64 generate_magic_number(unsigned int *state):
+ *     return get_random_U64_numbers(state) & get_random_U64_numbers(state) & get_random_U64_numbers(state)             # <<<<<<<<<<<<<<
+ */
+  __pyx_r = ((__pyx_f_4rand_get_random_U64_numbers(__pyx_v_state) & __pyx_f_4rand_get_random_U64_numbers(__pyx_v_state)) & __pyx_f_4rand_get_random_U64_numbers(__pyx_v_state));
+  goto __pyx_L0;
+
+  /* "rand.pyx":23
+ *     return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48)
+ * 
+ * cdef U64 generate_magic_number(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     return get_random_U64_numbers(state) & get_random_U64_numbers(state) & get_random_U64_numbers(state)
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
 
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
@@ -1298,17 +1348,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_board(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_rand(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_board},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_rand},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "board",
+    "rand",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -1340,6 +1390,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
+  {&__pyx_n_s_rand_state, __pyx_k_rand_state, sizeof(__pyx_k_rand_state), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -1379,18 +1431,34 @@ static int __Pyx_modinit_global_init_code(void) {
 
 static int __Pyx_modinit_variable_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_export_code", 0);
   /*--- Variable export code ---*/
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_rand_state, (void *)&__pyx_v_4rand_rand_state, "unsigned int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("get_random_U32_number", (void (*)(void))__pyx_f_4rand_get_random_U32_number, "unsigned int (unsigned int *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("get_random_U64_numbers", (void (*)(void))__pyx_f_4rand_get_random_U64_numbers, "__pyx_t_6helper_U64 (unsigned int *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("generate_magic_number", (void (*)(void))__pyx_f_4rand_generate_magic_number, "__pyx_t_6helper_U64 (unsigned int *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(void) {
@@ -1411,62 +1479,18 @@ static int __Pyx_modinit_type_import_code(void) {
 
 static int __Pyx_modinit_variable_import_code(void) {
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_import_code", 0);
   /*--- Variable import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("const"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "square_to_coord", (void **)&__pyx_vp_5const_square_to_coord, "char *[64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_magic_numbers", (void **)&__pyx_vp_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_magic_numbers", (void **)&__pyx_vp_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "pawn_attacks", (void **)&__pyx_vp_6attack_pawn_attacks, "__pyx_t_6helper_U64 [2][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "knight_attacks", (void **)&__pyx_vp_6attack_knight_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "king_attacks", (void **)&__pyx_vp_6attack_king_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_masks", (void **)&__pyx_vp_6attack_bishop_masks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_attacks", (void **)&__pyx_vp_6attack_bishop_attacks, "__pyx_t_6helper_U64 [64][0x200]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_masks", (void **)&__pyx_vp_6attack_rook_masks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_attacks", (void **)&__pyx_vp_6attack_rook_attacks, "__pyx_t_6helper_U64 [64][0x1000]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_relevant_bits", (void **)&__pyx_vp_6attack_bishop_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_relevant_bits", (void **)&__pyx_vp_6attack_rook_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static int __Pyx_modinit_function_import_code(void) {
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("helper"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "set_bit", (void (**)(void))&__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "print_bitboard", (void (**)(void))&__pyx_f_6helper_print_bitboard, "PyObject *(__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_bishop_attacks", (void (**)(void))&__pyx_f_6attack_get_bishop_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_rook_attacks", (void (**)(void))&__pyx_f_6attack_get_rook_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 
@@ -1488,11 +1512,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initboard(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initboard(void)
+__Pyx_PyMODINIT_FUNC initrand(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initrand(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_board(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_board(void)
+__Pyx_PyMODINIT_FUNC PyInit_rand(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_rand(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -1559,7 +1583,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_board(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_rand(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -1571,7 +1595,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_board(PyObject *__pyx_pyinit_modul
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'board' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'rand' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -1586,7 +1610,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_board(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_rand(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -1623,7 +1647,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("board", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("rand", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -1641,14 +1665,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_board) {
+  if (__pyx_module_is_main_rand) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "board")) {
-      if (unlikely(PyDict_SetItemString(modules, "board", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "rand")) {
+      if (unlikely(PyDict_SetItemString(modules, "rand", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1658,123 +1682,29 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
-  (void)__Pyx_modinit_variable_export_code();
-  (void)__Pyx_modinit_function_export_code();
+  if (unlikely(__Pyx_modinit_variable_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (unlikely(__Pyx_modinit_function_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
-  if (unlikely(__Pyx_modinit_variable_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (unlikely(__Pyx_modinit_function_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_variable_import_code();
+  (void)__Pyx_modinit_function_import_code();
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "board.pyx":5
- * from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks
+  /* "rand.pyx":1
+ * cdef unsigned int rand_state = 1804289383             # <<<<<<<<<<<<<<
  * 
- * cdef U64 occupancy = 0ULL             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, c5)
- * occupancy = set_bit(occupancy, f2)
+ * cdef unsigned int get_random_U32_number(unsigned int *state):
  */
-  __pyx_v_5board_occupancy = 0ULL;
+  __pyx_v_4rand_rand_state = 0x6B8B4567;
 
-  /* "board.pyx":6
+  /* "rand.pyx":23
+ *     return n1 | (n2 << 16) | (n3 << 32) | (n4 << 48)
  * 
- * cdef U64 occupancy = 0ULL
- * occupancy = set_bit(occupancy, c5)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, f2)
- * occupancy = set_bit(occupancy, g7)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_c5);
-
-  /* "board.pyx":7
- * cdef U64 occupancy = 0ULL
- * occupancy = set_bit(occupancy, c5)
- * occupancy = set_bit(occupancy, f2)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, g7)
- * occupancy = set_bit(occupancy, b2)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_f2);
-
-  /* "board.pyx":8
- * occupancy = set_bit(occupancy, c5)
- * occupancy = set_bit(occupancy, f2)
- * occupancy = set_bit(occupancy, g7)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, b2)
- * occupancy = set_bit(occupancy, b5)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_g7);
-
-  /* "board.pyx":9
- * occupancy = set_bit(occupancy, f2)
- * occupancy = set_bit(occupancy, g7)
- * occupancy = set_bit(occupancy, b2)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, b5)
- * occupancy = set_bit(occupancy, e2)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_b2);
-
-  /* "board.pyx":10
- * occupancy = set_bit(occupancy, g7)
- * occupancy = set_bit(occupancy, b2)
- * occupancy = set_bit(occupancy, b5)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, e2)
- * occupancy = set_bit(occupancy, e7)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_b5);
-
-  /* "board.pyx":11
- * occupancy = set_bit(occupancy, b2)
- * occupancy = set_bit(occupancy, b5)
- * occupancy = set_bit(occupancy, e2)             # <<<<<<<<<<<<<<
- * occupancy = set_bit(occupancy, e7)
- * 
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_e2);
-
-  /* "board.pyx":12
- * occupancy = set_bit(occupancy, b5)
- * occupancy = set_bit(occupancy, e2)
- * occupancy = set_bit(occupancy, e7)             # <<<<<<<<<<<<<<
- * 
- * print_bitboard(occupancy)
- */
-  __pyx_v_5board_occupancy = __pyx_f_6helper_set_bit(__pyx_v_5board_occupancy, __pyx_e_5board_e7);
-
-  /* "board.pyx":14
- * occupancy = set_bit(occupancy, e7)
- * 
- * print_bitboard(occupancy)             # <<<<<<<<<<<<<<
- * print_bitboard(get_bishop_attacks(d4, occupancy))
- * print_bitboard(get_rook_attacks(e5, occupancy))
- */
-  __pyx_t_1 = __pyx_f_6helper_print_bitboard(__pyx_v_5board_occupancy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "board.pyx":15
- * 
- * print_bitboard(occupancy)
- * print_bitboard(get_bishop_attacks(d4, occupancy))             # <<<<<<<<<<<<<<
- * print_bitboard(get_rook_attacks(e5, occupancy))
- */
-  __pyx_t_1 = __pyx_f_6helper_print_bitboard(__pyx_f_6attack_get_bishop_attacks(__pyx_e_5board_d4, __pyx_v_5board_occupancy)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "board.pyx":16
- * print_bitboard(occupancy)
- * print_bitboard(get_bishop_attacks(d4, occupancy))
- * print_bitboard(get_rook_attacks(e5, occupancy))             # <<<<<<<<<<<<<<
- */
-  __pyx_t_1 = __pyx_f_6helper_print_bitboard(__pyx_f_6attack_get_rook_attacks(__pyx_e_5board_e5, __pyx_v_5board_occupancy)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "board.pyx":1
- * from libc.stdio cimport printf             # <<<<<<<<<<<<<<
- * from helper cimport U64, print_bitboard, set_bit
- * from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks
+ * cdef U64 generate_magic_number(unsigned int *state):             # <<<<<<<<<<<<<<
+ *     return get_random_U64_numbers(state) & get_random_U64_numbers(state) & get_random_U64_numbers(state)
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1788,11 +1718,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init board", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init rand", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init board");
+    PyErr_SetString(PyExc_ImportError, "init rand");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2668,108 +2598,87 @@ static int __Pyx_check_binary_version(void) {
     return 0;
 }
 
-/* VoidPtrImport */
-#ifndef __PYX_HAVE_RT_ImportVoidPtr
-#define __PYX_HAVE_RT_ImportVoidPtr
-static int __Pyx_ImportVoidPtr(PyObject *module, const char *name, void **p, const char *sig) {
-    PyObject *d = 0;
-    PyObject *cobj = 0;
-    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
-    if (!d)
-        goto bad;
-    cobj = PyDict_GetItemString(d, name);
-    if (!cobj) {
-        PyErr_Format(PyExc_ImportError,
-            "%.200s does not export expected C variable %.200s",
-                PyModule_GetName(module), name);
-        goto bad;
-    }
-#if PY_VERSION_HEX >= 0x02070000
-    if (!PyCapsule_IsValid(cobj, sig)) {
-        PyErr_Format(PyExc_TypeError,
-            "C variable %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), name, sig, PyCapsule_GetName(cobj));
-        goto bad;
-    }
-    *p = PyCapsule_GetPointer(cobj, sig);
-#else
-    {const char *desc, *s1, *s2;
-    desc = (const char *)PyCObject_GetDesc(cobj);
-    if (!desc)
-        goto bad;
-    s1 = desc; s2 = sig;
-    while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
-    if (*s1 != *s2) {
-        PyErr_Format(PyExc_TypeError,
-            "C variable %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), name, sig, desc);
-        goto bad;
-    }
-    *p = PyCObject_AsVoidPtr(cobj);}
+/* PyObjectSetAttrStr */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_setattro))
+        return tp->tp_setattro(obj, attr_name, value);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_setattr))
+        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
 #endif
-    if (!(*p))
-        goto bad;
-    Py_DECREF(d);
-    return 0;
-bad:
-    Py_XDECREF(d);
-    return -1;
+    return PyObject_SetAttr(obj, attr_name, value);
 }
 #endif
 
-/* FunctionImport */
-#ifndef __PYX_HAVE_RT_ImportFunction
-#define __PYX_HAVE_RT_ImportFunction
-static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig) {
+/* VoidPtrExport */
+static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
+    PyObject *d;
+    PyObject *cobj = 0;
+    d = PyDict_GetItem(__pyx_d, __pyx_n_s_pyx_capi);
+    Py_XINCREF(d);
+    if (!d) {
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        if (__Pyx_PyObject_SetAttrStr(__pyx_m, __pyx_n_s_pyx_capi, d) < 0)
+            goto bad;
+    }
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItem(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
+}
+
+/* FunctionExport */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
     PyObject *d = 0;
     PyObject *cobj = 0;
     union {
         void (*fp)(void);
         void *p;
     } tmp;
-    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
-    if (!d)
-        goto bad;
-    cobj = PyDict_GetItemString(d, funcname);
-    if (!cobj) {
-        PyErr_Format(PyExc_ImportError,
-            "%.200s does not export expected C function %.200s",
-                PyModule_GetName(module), funcname);
-        goto bad;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
     }
+    tmp.fp = f;
 #if PY_VERSION_HEX >= 0x02070000
-    if (!PyCapsule_IsValid(cobj, sig)) {
-        PyErr_Format(PyExc_TypeError,
-            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), funcname, sig, PyCapsule_GetName(cobj));
-        goto bad;
-    }
-    tmp.p = PyCapsule_GetPointer(cobj, sig);
+    cobj = PyCapsule_New(tmp.p, sig, 0);
 #else
-    {const char *desc, *s1, *s2;
-    desc = (const char *)PyCObject_GetDesc(cobj);
-    if (!desc)
-        goto bad;
-    s1 = desc; s2 = sig;
-    while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
-    if (*s1 != *s2) {
-        PyErr_Format(PyExc_TypeError,
-            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), funcname, sig, desc);
-        goto bad;
-    }
-    tmp.p = PyCObject_AsVoidPtr(cobj);}
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
 #endif
-    *f = tmp.fp;
-    if (!(*f))
+    if (!cobj)
         goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
     Py_DECREF(d);
     return 0;
 bad:
+    Py_XDECREF(cobj);
     Py_XDECREF(d);
     return -1;
 }
-#endif
 
 /* InitStrings */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {

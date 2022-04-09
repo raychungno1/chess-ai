@@ -11,4 +11,5 @@ cdef enum:
 cdef enum:
     white, black
 
-cdef char *square_to_coord[64]
+cdef enum:
+    rook, bishop

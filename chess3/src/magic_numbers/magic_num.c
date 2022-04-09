@@ -3,12 +3,13 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "name": "attack",
+        "depends": [],
+        "name": "magic_num",
         "sources": [
-            "src/attack.pyx"
+            "src/magic_num.pyx"
         ]
     },
-    "module_name": "attack"
+    "module_name": "magic_num"
 }
 END: Cython Metadata */
 
@@ -691,9 +692,11 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__attack
-#define __PYX_HAVE_API__attack
+#define __PYX_HAVE__magic_num
+#define __PYX_HAVE_API__magic_num
 /* Early includes */
+#include <string.h>
+#include <stdio.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -903,7 +906,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "src\\attack.pyx",
+  "src\\magic_num.pyx",
 };
 
 /* "helper.pxd":1
@@ -914,30 +917,6 @@ static const char *__pyx_f[] = {
 typedef unsigned PY_LONG_LONG __pyx_t_6helper_U64;
 
 /*--- Type declarations ---*/
-
-/* "attack.pxd":5
- * 
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     white, black
- * 
- */
-enum  {
-  __pyx_e_6attack_white,
-  __pyx_e_6attack_black
-};
-
-/* "attack.pxd":8
- *     white, black
- * 
- * cdef enum:             # <<<<<<<<<<<<<<
- *     rook, bishop
- * 
- */
-enum  {
-  __pyx_e_6attack_rook,
-  __pyx_e_6attack_bishop
-};
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1013,41 +992,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
-/* DivInt[long].proto */
-static CYTHON_INLINE long __Pyx_div_long(long, long);
-
-/* ModInt[long].proto */
-static CYTHON_INLINE long __Pyx_mod_long(long, long);
-
-/* IncludeStringH.proto */
-#include <string.h>
-
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -1084,6 +1028,37 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 #define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
 #endif
 
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
 /* CLineInTraceback.proto */
 #ifdef CYTHON_CLINE_IN_TRACEBACK
 #define __Pyx_CLineForTraceback(tstate, c_line)  (((CYTHON_CLINE_IN_TRACEBACK)) ? c_line : 0)
@@ -1116,13 +1091,19 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 #endif
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_PY_LONG_LONG(unsigned PY_LONG_LONG value);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE unsigned PY_LONG_LONG __Pyx_PyInt_As_unsigned_PY_LONG_LONG(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -1143,18 +1124,6 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
-/* PyObjectSetAttrStr.proto */
-#if CYTHON_USE_TYPE_SLOTS
-#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
-static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
-#else
-#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
-#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
-#endif
-
-/* VoidPtrExport.proto */
-static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
-
 /* FunctionExport.proto */
 static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
 
@@ -1169,2528 +1138,385 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
 /* Module declarations from 'helper' */
-static __pyx_t_6helper_U64 (*__pyx_f_6helper_set_bit)(__pyx_t_6helper_U64, int); /*proto*/
-static __pyx_t_6helper_U64 (*__pyx_f_6helper_pop_bit)(__pyx_t_6helper_U64, int); /*proto*/
 static int (*__pyx_f_6helper_count_bits)(__pyx_t_6helper_U64); /*proto*/
-static int (*__pyx_f_6helper_get_ls1b_index)(__pyx_t_6helper_U64); /*proto*/
 
-/* Module declarations from 'const' */
-static char *(*__pyx_vp_5const_square_to_coord)[64] = 0;
-#define __pyx_v_5const_square_to_coord (*__pyx_vp_5const_square_to_coord)
-static __pyx_t_6helper_U64 (*__pyx_vp_5const_rook_magic_numbers)[64] = 0;
-#define __pyx_v_5const_rook_magic_numbers (*__pyx_vp_5const_rook_magic_numbers)
-static __pyx_t_6helper_U64 (*__pyx_vp_5const_bishop_magic_numbers)[64] = 0;
-#define __pyx_v_5const_bishop_magic_numbers (*__pyx_vp_5const_bishop_magic_numbers)
+/* Module declarations from 'libc.string' */
+
+/* Module declarations from 'libc.stdio' */
 
 /* Module declarations from 'attack' */
-static __pyx_t_6helper_U64 __pyx_v_6attack_pawn_attacks[2][64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_knight_attacks[64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_king_attacks[64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_bishop_masks[64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_bishop_attacks[64][0x200];
-static __pyx_t_6helper_U64 __pyx_v_6attack_rook_masks[64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_rook_attacks[64][0x1000];
-static int __pyx_v_6attack_bishop_relevant_bits[64];
-static int __pyx_v_6attack_rook_relevant_bits[64];
-static __pyx_t_6helper_U64 __pyx_v_6attack_not_a_file;
-static __pyx_t_6helper_U64 __pyx_v_6attack_not_ab_file;
-static __pyx_t_6helper_U64 __pyx_v_6attack_not_h_file;
-static __pyx_t_6helper_U64 __pyx_v_6attack_not_hg_file;
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_bishop_attacks(int); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_rook_attacks(int); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_bishop_attacks_on_the_fly(int, __pyx_t_6helper_U64); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_rook_attacks_on_the_fly(int, __pyx_t_6helper_U64); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_set_occupancy(int, int, __pyx_t_6helper_U64); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_pawn_attacks(int, int); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_knight_attacks(int); /*proto*/
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_king_attacks(int); /*proto*/
-static PyObject *__pyx_f_6attack_init_leapers_attacks(void); /*proto*/
-static PyObject *__pyx_f_6attack_init_sliders_attacks(int); /*proto*/
-#define __Pyx_MODULE_NAME "attack"
-extern int __pyx_module_is_main_attack;
-int __pyx_module_is_main_attack = 0;
+static __pyx_t_6helper_U64 (*__pyx_vp_6attack_pawn_attacks)[2][64] = 0;
+#define __pyx_v_6attack_pawn_attacks (*__pyx_vp_6attack_pawn_attacks)
+static __pyx_t_6helper_U64 (*__pyx_vp_6attack_knight_attacks)[64] = 0;
+#define __pyx_v_6attack_knight_attacks (*__pyx_vp_6attack_knight_attacks)
+static __pyx_t_6helper_U64 (*__pyx_vp_6attack_king_attacks)[64] = 0;
+#define __pyx_v_6attack_king_attacks (*__pyx_vp_6attack_king_attacks)
+static int (*__pyx_vp_6attack_bishop_relevant_bits)[64] = 0;
+#define __pyx_v_6attack_bishop_relevant_bits (*__pyx_vp_6attack_bishop_relevant_bits)
+static int (*__pyx_vp_6attack_rook_relevant_bits)[64] = 0;
+#define __pyx_v_6attack_rook_relevant_bits (*__pyx_vp_6attack_rook_relevant_bits)
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_mask_bishop_attacks)(int); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_mask_rook_attacks)(int); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_bishop_attacks_on_the_fly)(int, __pyx_t_6helper_U64); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_rook_attacks_on_the_fly)(int, __pyx_t_6helper_U64); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_set_occupancy)(int, int, __pyx_t_6helper_U64); /*proto*/
 
-/* Implementation of 'attack' */
+/* Module declarations from 'rand' */
+static unsigned int *__pyx_vp_4rand_rand_state = 0;
+#define __pyx_v_4rand_rand_state (*__pyx_vp_4rand_rand_state)
+static __pyx_t_6helper_U64 (*__pyx_f_4rand_generate_magic_number)(unsigned int *); /*proto*/
+
+/* Module declarations from 'magic_num' */
+#define __Pyx_MODULE_NAME "magic_num"
+extern int __pyx_module_is_main_magic_num;
+int __pyx_module_is_main_magic_num = 0;
+
+/* Implementation of 'magic_num' */
 static PyObject *__pyx_builtin_range;
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
-static const char __pyx_k_rook_masks[] = "rook_masks";
-static const char __pyx_k_bishop_masks[] = "bishop_masks";
-static const char __pyx_k_king_attacks[] = "king_attacks";
-static const char __pyx_k_pawn_attacks[] = "pawn_attacks";
-static const char __pyx_k_rook_attacks[] = "rook_attacks";
-static const char __pyx_k_bishop_attacks[] = "bishop_attacks";
-static const char __pyx_k_knight_attacks[] = "knight_attacks";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_rook_relevant_bits[] = "rook_relevant_bits";
-static const char __pyx_k_bishop_relevant_bits[] = "bishop_relevant_bits";
-static PyObject *__pyx_n_s_bishop_attacks;
-static PyObject *__pyx_n_s_bishop_masks;
-static PyObject *__pyx_n_s_bishop_relevant_bits;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_king_attacks;
-static PyObject *__pyx_n_s_knight_attacks;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_pawn_attacks;
-static PyObject *__pyx_n_s_pyx_capi;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_rook_attacks;
-static PyObject *__pyx_n_s_rook_masks;
-static PyObject *__pyx_n_s_rook_relevant_bits;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_int_18374686479671623680;
 /* Late includes */
 
-/* "attack.pyx":34
- * ]
+/* "magic_num.pyx":7
+ * from helper cimport count_bits
  * 
- * cdef U64 mask_pawn_attacks(int side, int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
+ * cdef U64 find_magic_number(int square, int relevant_bits, int bishop):             # <<<<<<<<<<<<<<
+ *     cdef U64 occupancies[4096]
+ *     cdef U64 attacks[4096]
  */
 
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_pawn_attacks(int __pyx_v_side, int __pyx_v_square) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  __pyx_t_6helper_U64 __pyx_v_bitboard;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("mask_pawn_attacks", 0);
-
-  /* "attack.pyx":35
- * 
- * cdef U64 mask_pawn_attacks(int side, int square):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- *     cdef U64 bitboard = set_bit(0ULL, square)
- * 
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":36
- * cdef U64 mask_pawn_attacks(int side, int square):
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)             # <<<<<<<<<<<<<<
- * 
- *     # Pawn attack offsets 7, 9
- */
-  __pyx_v_bitboard = __pyx_f_6helper_set_bit(0ULL, __pyx_v_square);
-
-  /* "attack.pyx":39
- * 
- *     # Pawn attack offsets 7, 9
- *     if side: # Black pawn             # <<<<<<<<<<<<<<
- *         if (bitboard << 7) & not_h_file:
- *             attacks |= (bitboard << 7)
- */
-  __pyx_t_1 = (__pyx_v_side != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":40
- *     # Pawn attack offsets 7, 9
- *     if side: # Black pawn
- *         if (bitboard << 7) & not_h_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard << 7)
- * 
- */
-    __pyx_t_1 = (((__pyx_v_bitboard << 7) & __pyx_v_6attack_not_h_file) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":41
- *     if side: # Black pawn
- *         if (bitboard << 7) & not_h_file:
- *             attacks |= (bitboard << 7)             # <<<<<<<<<<<<<<
- * 
- *         if (bitboard << 9) & not_a_file:
- */
-      __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 7));
-
-      /* "attack.pyx":40
- *     # Pawn attack offsets 7, 9
- *     if side: # Black pawn
- *         if (bitboard << 7) & not_h_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard << 7)
- * 
- */
-    }
-
-    /* "attack.pyx":43
- *             attacks |= (bitboard << 7)
- * 
- *         if (bitboard << 9) & not_a_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard << 9)
- * 
- */
-    __pyx_t_1 = (((__pyx_v_bitboard << 9) & __pyx_v_6attack_not_a_file) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":44
- * 
- *         if (bitboard << 9) & not_a_file:
- *             attacks |= (bitboard << 9)             # <<<<<<<<<<<<<<
- * 
- *     else: # White pawn
- */
-      __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 9));
-
-      /* "attack.pyx":43
- *             attacks |= (bitboard << 7)
- * 
- *         if (bitboard << 9) & not_a_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard << 9)
- * 
- */
-    }
-
-    /* "attack.pyx":39
- * 
- *     # Pawn attack offsets 7, 9
- *     if side: # Black pawn             # <<<<<<<<<<<<<<
- *         if (bitboard << 7) & not_h_file:
- *             attacks |= (bitboard << 7)
- */
-    goto __pyx_L3;
-  }
-
-  /* "attack.pyx":47
- * 
- *     else: # White pawn
- *         if (bitboard >> 7) & not_a_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard >> 7)
- * 
- */
-  /*else*/ {
-    __pyx_t_1 = (((__pyx_v_bitboard >> 7) & __pyx_v_6attack_not_a_file) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":48
- *     else: # White pawn
- *         if (bitboard >> 7) & not_a_file:
- *             attacks |= (bitboard >> 7)             # <<<<<<<<<<<<<<
- * 
- *         if (bitboard >> 9) & not_h_file:
- */
-      __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 7));
-
-      /* "attack.pyx":47
- * 
- *     else: # White pawn
- *         if (bitboard >> 7) & not_a_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard >> 7)
- * 
- */
-    }
-
-    /* "attack.pyx":50
- *             attacks |= (bitboard >> 7)
- * 
- *         if (bitboard >> 9) & not_h_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard >> 9)
- * 
- */
-    __pyx_t_1 = (((__pyx_v_bitboard >> 9) & __pyx_v_6attack_not_h_file) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":51
- * 
- *         if (bitboard >> 9) & not_h_file:
- *             attacks |= (bitboard >> 9)             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-      __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 9));
-
-      /* "attack.pyx":50
- *             attacks |= (bitboard >> 7)
- * 
- *         if (bitboard >> 9) & not_h_file:             # <<<<<<<<<<<<<<
- *             attacks |= (bitboard >> 9)
- * 
- */
-    }
-  }
-  __pyx_L3:;
-
-  /* "attack.pyx":53
- *             attacks |= (bitboard >> 9)
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 mask_knight_attacks(int square):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":34
- * ]
- * 
- * cdef U64 mask_pawn_attacks(int side, int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":55
- *     return attacks
- * 
- * cdef U64 mask_knight_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_knight_attacks(int __pyx_v_square) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  __pyx_t_6helper_U64 __pyx_v_bitboard;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("mask_knight_attacks", 0);
-
-  /* "attack.pyx":56
- * 
- * cdef U64 mask_knight_attacks(int square):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- *     cdef U64 bitboard = set_bit(0ULL, square)
- * 
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":57
- * cdef U64 mask_knight_attacks(int square):
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)             # <<<<<<<<<<<<<<
- * 
- *     # Knight attack offsets 17, 15, 10, 6
- */
-  __pyx_v_bitboard = __pyx_f_6helper_set_bit(0ULL, __pyx_v_square);
-
-  /* "attack.pyx":60
- * 
- *     # Knight attack offsets 17, 15, 10, 6
- *     if (bitboard >> 17) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 17)
- *     if (bitboard >> 15) & not_a_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 17) & __pyx_v_6attack_not_h_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":61
- *     # Knight attack offsets 17, 15, 10, 6
- *     if (bitboard >> 17) & not_h_file:
- *         attacks |= (bitboard >> 17)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 15) & not_a_file:
- *         attacks |= (bitboard >> 15)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 17));
-
-    /* "attack.pyx":60
- * 
- *     # Knight attack offsets 17, 15, 10, 6
- *     if (bitboard >> 17) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 17)
- *     if (bitboard >> 15) & not_a_file:
- */
-  }
-
-  /* "attack.pyx":62
- *     if (bitboard >> 17) & not_h_file:
- *         attacks |= (bitboard >> 17)
- *     if (bitboard >> 15) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 15)
- *     if (bitboard >> 10) & not_hg_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 15) & __pyx_v_6attack_not_a_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":63
- *         attacks |= (bitboard >> 17)
- *     if (bitboard >> 15) & not_a_file:
- *         attacks |= (bitboard >> 15)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 10) & not_hg_file:
- *         attacks |= (bitboard >> 10)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 15));
-
-    /* "attack.pyx":62
- *     if (bitboard >> 17) & not_h_file:
- *         attacks |= (bitboard >> 17)
- *     if (bitboard >> 15) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 15)
- *     if (bitboard >> 10) & not_hg_file:
- */
-  }
-
-  /* "attack.pyx":64
- *     if (bitboard >> 15) & not_a_file:
- *         attacks |= (bitboard >> 15)
- *     if (bitboard >> 10) & not_hg_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 10)
- *     if (bitboard >> 6) & not_ab_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 10) & __pyx_v_6attack_not_hg_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":65
- *         attacks |= (bitboard >> 15)
- *     if (bitboard >> 10) & not_hg_file:
- *         attacks |= (bitboard >> 10)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 6) & not_ab_file:
- *         attacks |= (bitboard >> 6)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 10));
-
-    /* "attack.pyx":64
- *     if (bitboard >> 15) & not_a_file:
- *         attacks |= (bitboard >> 15)
- *     if (bitboard >> 10) & not_hg_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 10)
- *     if (bitboard >> 6) & not_ab_file:
- */
-  }
-
-  /* "attack.pyx":66
- *     if (bitboard >> 10) & not_hg_file:
- *         attacks |= (bitboard >> 10)
- *     if (bitboard >> 6) & not_ab_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 6)
- * 
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 6) & __pyx_v_6attack_not_ab_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":67
- *         attacks |= (bitboard >> 10)
- *     if (bitboard >> 6) & not_ab_file:
- *         attacks |= (bitboard >> 6)             # <<<<<<<<<<<<<<
- * 
- *     if (bitboard << 17) & not_a_file:
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 6));
-
-    /* "attack.pyx":66
- *     if (bitboard >> 10) & not_hg_file:
- *         attacks |= (bitboard >> 10)
- *     if (bitboard >> 6) & not_ab_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 6)
- * 
- */
-  }
-
-  /* "attack.pyx":69
- *         attacks |= (bitboard >> 6)
- * 
- *     if (bitboard << 17) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 17)
- *     if (bitboard << 15) & not_h_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 17) & __pyx_v_6attack_not_a_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":70
- * 
- *     if (bitboard << 17) & not_a_file:
- *         attacks |= (bitboard << 17)             # <<<<<<<<<<<<<<
- *     if (bitboard << 15) & not_h_file:
- *         attacks |= (bitboard << 15)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 17));
-
-    /* "attack.pyx":69
- *         attacks |= (bitboard >> 6)
- * 
- *     if (bitboard << 17) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 17)
- *     if (bitboard << 15) & not_h_file:
- */
-  }
-
-  /* "attack.pyx":71
- *     if (bitboard << 17) & not_a_file:
- *         attacks |= (bitboard << 17)
- *     if (bitboard << 15) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 15)
- *     if (bitboard << 10) & not_ab_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 15) & __pyx_v_6attack_not_h_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":72
- *         attacks |= (bitboard << 17)
- *     if (bitboard << 15) & not_h_file:
- *         attacks |= (bitboard << 15)             # <<<<<<<<<<<<<<
- *     if (bitboard << 10) & not_ab_file:
- *         attacks |= (bitboard << 10)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 15));
-
-    /* "attack.pyx":71
- *     if (bitboard << 17) & not_a_file:
- *         attacks |= (bitboard << 17)
- *     if (bitboard << 15) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 15)
- *     if (bitboard << 10) & not_ab_file:
- */
-  }
-
-  /* "attack.pyx":73
- *     if (bitboard << 15) & not_h_file:
- *         attacks |= (bitboard << 15)
- *     if (bitboard << 10) & not_ab_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 10)
- *     if (bitboard << 6) & not_hg_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 10) & __pyx_v_6attack_not_ab_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":74
- *         attacks |= (bitboard << 15)
- *     if (bitboard << 10) & not_ab_file:
- *         attacks |= (bitboard << 10)             # <<<<<<<<<<<<<<
- *     if (bitboard << 6) & not_hg_file:
- *         attacks |= (bitboard << 6)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 10));
-
-    /* "attack.pyx":73
- *     if (bitboard << 15) & not_h_file:
- *         attacks |= (bitboard << 15)
- *     if (bitboard << 10) & not_ab_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 10)
- *     if (bitboard << 6) & not_hg_file:
- */
-  }
-
-  /* "attack.pyx":75
- *     if (bitboard << 10) & not_ab_file:
- *         attacks |= (bitboard << 10)
- *     if (bitboard << 6) & not_hg_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 6)
- * 
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 6) & __pyx_v_6attack_not_hg_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":76
- *         attacks |= (bitboard << 10)
- *     if (bitboard << 6) & not_hg_file:
- *         attacks |= (bitboard << 6)             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 6));
-
-    /* "attack.pyx":75
- *     if (bitboard << 10) & not_ab_file:
- *         attacks |= (bitboard << 10)
- *     if (bitboard << 6) & not_hg_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 6)
- * 
- */
-  }
-
-  /* "attack.pyx":78
- *         attacks |= (bitboard << 6)
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 mask_king_attacks(int square):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":55
- *     return attacks
- * 
- * cdef U64 mask_knight_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":80
- *     return attacks
- * 
- * cdef U64 mask_king_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_king_attacks(int __pyx_v_square) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  __pyx_t_6helper_U64 __pyx_v_bitboard;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("mask_king_attacks", 0);
-
-  /* "attack.pyx":81
- * 
- * cdef U64 mask_king_attacks(int square):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- *     cdef U64 bitboard = set_bit(0ULL, square)
- * 
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":82
- * cdef U64 mask_king_attacks(int square):
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)             # <<<<<<<<<<<<<<
- * 
- *     # King attack offsets 1, 7, 8, 9
- */
-  __pyx_v_bitboard = __pyx_f_6helper_set_bit(0ULL, __pyx_v_square);
-
-  /* "attack.pyx":85
- * 
- *     # King attack offsets 1, 7, 8, 9
- *     if bitboard >> 8:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 8)
- *     if (bitboard >> 9) & not_h_file:
- */
-  __pyx_t_1 = ((__pyx_v_bitboard >> 8) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":86
- *     # King attack offsets 1, 7, 8, 9
- *     if bitboard >> 8:
- *         attacks |= (bitboard >> 8)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 9) & not_h_file:
- *         attacks |= (bitboard >> 9)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 8));
-
-    /* "attack.pyx":85
- * 
- *     # King attack offsets 1, 7, 8, 9
- *     if bitboard >> 8:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 8)
- *     if (bitboard >> 9) & not_h_file:
- */
-  }
-
-  /* "attack.pyx":87
- *     if bitboard >> 8:
- *         attacks |= (bitboard >> 8)
- *     if (bitboard >> 9) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 9)
- *     if (bitboard >> 7) & not_a_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 9) & __pyx_v_6attack_not_h_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":88
- *         attacks |= (bitboard >> 8)
- *     if (bitboard >> 9) & not_h_file:
- *         attacks |= (bitboard >> 9)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 7) & not_a_file:
- *         attacks |= (bitboard >> 7)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 9));
-
-    /* "attack.pyx":87
- *     if bitboard >> 8:
- *         attacks |= (bitboard >> 8)
- *     if (bitboard >> 9) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 9)
- *     if (bitboard >> 7) & not_a_file:
- */
-  }
-
-  /* "attack.pyx":89
- *     if (bitboard >> 9) & not_h_file:
- *         attacks |= (bitboard >> 9)
- *     if (bitboard >> 7) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 7)
- *     if (bitboard >> 1) & not_h_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 7) & __pyx_v_6attack_not_a_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":90
- *         attacks |= (bitboard >> 9)
- *     if (bitboard >> 7) & not_a_file:
- *         attacks |= (bitboard >> 7)             # <<<<<<<<<<<<<<
- *     if (bitboard >> 1) & not_h_file:
- *         attacks |= (bitboard >> 1)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 7));
-
-    /* "attack.pyx":89
- *     if (bitboard >> 9) & not_h_file:
- *         attacks |= (bitboard >> 9)
- *     if (bitboard >> 7) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 7)
- *     if (bitboard >> 1) & not_h_file:
- */
-  }
-
-  /* "attack.pyx":91
- *     if (bitboard >> 7) & not_a_file:
- *         attacks |= (bitboard >> 7)
- *     if (bitboard >> 1) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 1)
- * 
- */
-  __pyx_t_1 = (((__pyx_v_bitboard >> 1) & __pyx_v_6attack_not_h_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":92
- *         attacks |= (bitboard >> 7)
- *     if (bitboard >> 1) & not_h_file:
- *         attacks |= (bitboard >> 1)             # <<<<<<<<<<<<<<
- * 
- *     if bitboard << 8:
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard >> 1));
-
-    /* "attack.pyx":91
- *     if (bitboard >> 7) & not_a_file:
- *         attacks |= (bitboard >> 7)
- *     if (bitboard >> 1) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard >> 1)
- * 
- */
-  }
-
-  /* "attack.pyx":94
- *         attacks |= (bitboard >> 1)
- * 
- *     if bitboard << 8:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 8)
- *     if (bitboard << 9) & not_a_file:
- */
-  __pyx_t_1 = ((__pyx_v_bitboard << 8) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":95
- * 
- *     if bitboard << 8:
- *         attacks |= (bitboard << 8)             # <<<<<<<<<<<<<<
- *     if (bitboard << 9) & not_a_file:
- *         attacks |= (bitboard << 9)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 8));
-
-    /* "attack.pyx":94
- *         attacks |= (bitboard >> 1)
- * 
- *     if bitboard << 8:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 8)
- *     if (bitboard << 9) & not_a_file:
- */
-  }
-
-  /* "attack.pyx":96
- *     if bitboard << 8:
- *         attacks |= (bitboard << 8)
- *     if (bitboard << 9) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 9)
- *     if (bitboard << 7) & not_h_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 9) & __pyx_v_6attack_not_a_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":97
- *         attacks |= (bitboard << 8)
- *     if (bitboard << 9) & not_a_file:
- *         attacks |= (bitboard << 9)             # <<<<<<<<<<<<<<
- *     if (bitboard << 7) & not_h_file:
- *         attacks |= (bitboard << 7)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 9));
-
-    /* "attack.pyx":96
- *     if bitboard << 8:
- *         attacks |= (bitboard << 8)
- *     if (bitboard << 9) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 9)
- *     if (bitboard << 7) & not_h_file:
- */
-  }
-
-  /* "attack.pyx":98
- *     if (bitboard << 9) & not_a_file:
- *         attacks |= (bitboard << 9)
- *     if (bitboard << 7) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 7)
- *     if (bitboard << 1) & not_a_file:
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 7) & __pyx_v_6attack_not_h_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":99
- *         attacks |= (bitboard << 9)
- *     if (bitboard << 7) & not_h_file:
- *         attacks |= (bitboard << 7)             # <<<<<<<<<<<<<<
- *     if (bitboard << 1) & not_a_file:
- *         attacks |= (bitboard << 1)
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 7));
-
-    /* "attack.pyx":98
- *     if (bitboard << 9) & not_a_file:
- *         attacks |= (bitboard << 9)
- *     if (bitboard << 7) & not_h_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 7)
- *     if (bitboard << 1) & not_a_file:
- */
-  }
-
-  /* "attack.pyx":100
- *     if (bitboard << 7) & not_h_file:
- *         attacks |= (bitboard << 7)
- *     if (bitboard << 1) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 1)
- * 
- */
-  __pyx_t_1 = (((__pyx_v_bitboard << 1) & __pyx_v_6attack_not_a_file) != 0);
-  if (__pyx_t_1) {
-
-    /* "attack.pyx":101
- *         attacks |= (bitboard << 7)
- *     if (bitboard << 1) & not_a_file:
- *         attacks |= (bitboard << 1)             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (__pyx_v_bitboard << 1));
-
-    /* "attack.pyx":100
- *     if (bitboard << 7) & not_h_file:
- *         attacks |= (bitboard << 7)
- *     if (bitboard << 1) & not_a_file:             # <<<<<<<<<<<<<<
- *         attacks |= (bitboard << 1)
- * 
- */
-  }
-
-  /* "attack.pyx":103
- *         attacks |= (bitboard << 1)
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 mask_bishop_attacks(int square):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":80
- *     return attacks
- * 
- * cdef U64 mask_king_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- *     cdef U64 bitboard = set_bit(0ULL, square)
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":105
- *     return attacks
- * 
- * cdef U64 mask_bishop_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_bishop_attacks(int __pyx_v_square) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  int __pyx_v_tr;
-  int __pyx_v_tf;
-  int __pyx_v_r;
-  int __pyx_v_f;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("mask_bishop_attacks", 0);
-
-  /* "attack.pyx":106
- * 
- * cdef U64 mask_bishop_attacks(int square):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- * 
- *     cdef int tr = square // 8 # target rank
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":108
- *     cdef U64 attacks = 0ULL
- * 
- *     cdef int tr = square // 8 # target rank             # <<<<<<<<<<<<<<
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1
- */
-  __pyx_v_tr = __Pyx_div_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":109
- * 
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file             # <<<<<<<<<<<<<<
- *     cdef int r = tr + 1
- *     cdef int f = tf + 1
- */
-  __pyx_v_tf = __Pyx_mod_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":110
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1             # <<<<<<<<<<<<<<
- *     cdef int f = tf + 1
- * 
- */
-  __pyx_v_r = (__pyx_v_tr + 1);
-
-  /* "attack.pyx":111
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1
- *     cdef int f = tf + 1             # <<<<<<<<<<<<<<
- * 
- *     while r <= 6 and f <= 6:
- */
-  __pyx_v_f = (__pyx_v_tf + 1);
-
-  /* "attack.pyx":113
- *     cdef int f = tf + 1
- * 
- *     while r <= 6 and f <= 6:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r <= 6) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L5_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f <= 6) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L5_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":114
- * 
- *     while r <= 6 and f <= 6:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         r += 1
- *         f += 1
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":115
- *     while r <= 6 and f <= 6:
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1             # <<<<<<<<<<<<<<
- *         f += 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r + 1);
-
-    /* "attack.pyx":116
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1
- *         f += 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr - 1
- */
-    __pyx_v_f = (__pyx_v_f + 1);
-  }
-
-  /* "attack.pyx":118
- *         f += 1
- * 
- *     r = tr - 1             # <<<<<<<<<<<<<<
- *     f = tf + 1
- *     while r >= 1 and f <= 6:
- */
-  __pyx_v_r = (__pyx_v_tr - 1);
-
-  /* "attack.pyx":119
- * 
- *     r = tr - 1
- *     f = tf + 1             # <<<<<<<<<<<<<<
- *     while r >= 1 and f <= 6:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf + 1);
-
-  /* "attack.pyx":120
- *     r = tr - 1
- *     f = tf + 1
- *     while r >= 1 and f <= 6:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r >= 1) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L9_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f <= 6) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L9_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":121
- *     f = tf + 1
- *     while r >= 1 and f <= 6:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         r -= 1
- *         f += 1
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":122
- *     while r >= 1 and f <= 6:
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1             # <<<<<<<<<<<<<<
- *         f += 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r - 1);
-
-    /* "attack.pyx":123
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1
- *         f += 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr + 1
- */
-    __pyx_v_f = (__pyx_v_f + 1);
-  }
-
-  /* "attack.pyx":125
- *         f += 1
- * 
- *     r = tr + 1             # <<<<<<<<<<<<<<
- *     f = tf - 1
- *     while r <= 6 and f >= 1:
- */
-  __pyx_v_r = (__pyx_v_tr + 1);
-
-  /* "attack.pyx":126
- * 
- *     r = tr + 1
- *     f = tf - 1             # <<<<<<<<<<<<<<
- *     while r <= 6 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf - 1);
-
-  /* "attack.pyx":127
- *     r = tr + 1
- *     f = tf - 1
- *     while r <= 6 and f >= 1:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r <= 6) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L13_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f >= 1) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L13_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":128
- *     f = tf - 1
- *     while r <= 6 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         r += 1
- *         f -= 1
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":129
- *     while r <= 6 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1             # <<<<<<<<<<<<<<
- *         f -= 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r + 1);
-
-    /* "attack.pyx":130
- *         attacks |= (1ULL << (r * 8 + f))
- *         r += 1
- *         f -= 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr - 1
- */
-    __pyx_v_f = (__pyx_v_f - 1);
-  }
-
-  /* "attack.pyx":132
- *         f -= 1
- * 
- *     r = tr - 1             # <<<<<<<<<<<<<<
- *     f = tf - 1
- *     while r >= 1 and f >= 1:
- */
-  __pyx_v_r = (__pyx_v_tr - 1);
-
-  /* "attack.pyx":133
- * 
- *     r = tr - 1
- *     f = tf - 1             # <<<<<<<<<<<<<<
- *     while r >= 1 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf - 1);
-
-  /* "attack.pyx":134
- *     r = tr - 1
- *     f = tf - 1
- *     while r >= 1 and f >= 1:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r >= 1) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L17_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f >= 1) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L17_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":135
- *     f = tf - 1
- *     while r >= 1 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         r -= 1
- *         f -= 1
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":136
- *     while r >= 1 and f >= 1:
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1             # <<<<<<<<<<<<<<
- *         f -= 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r - 1);
-
-    /* "attack.pyx":137
- *         attacks |= (1ULL << (r * 8 + f))
- *         r -= 1
- *         f -= 1             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-    __pyx_v_f = (__pyx_v_f - 1);
-  }
-
-  /* "attack.pyx":139
- *         f -= 1
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 bishop_attacks_on_the_fly(int square, U64 block):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":105
- *     return attacks
- * 
- * cdef U64 mask_bishop_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":141
- *     return attacks
- * 
- * cdef U64 bishop_attacks_on_the_fly(int square, U64 block):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_bishop_attacks_on_the_fly(int __pyx_v_square, __pyx_t_6helper_U64 __pyx_v_block) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  int __pyx_v_tr;
-  int __pyx_v_tf;
-  int __pyx_v_r;
-  int __pyx_v_f;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("bishop_attacks_on_the_fly", 0);
-
-  /* "attack.pyx":142
- * 
- * cdef U64 bishop_attacks_on_the_fly(int square, U64 block):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- * 
- *     cdef int tr = square // 8 # target rank
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":144
- *     cdef U64 attacks = 0ULL
- * 
- *     cdef int tr = square // 8 # target rank             # <<<<<<<<<<<<<<
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1
- */
-  __pyx_v_tr = __Pyx_div_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":145
- * 
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file             # <<<<<<<<<<<<<<
- *     cdef int r = tr + 1
- *     cdef int f = tf + 1
- */
-  __pyx_v_tf = __Pyx_mod_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":146
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1             # <<<<<<<<<<<<<<
- *     cdef int f = tf + 1
- * 
- */
-  __pyx_v_r = (__pyx_v_tr + 1);
-
-  /* "attack.pyx":147
- *     cdef int tf = square % 8 # target file
- *     cdef int r = tr + 1
- *     cdef int f = tf + 1             # <<<<<<<<<<<<<<
- * 
- *     while r <= 7 and f <= 7:
- */
-  __pyx_v_f = (__pyx_v_tf + 1);
-
-  /* "attack.pyx":149
- *     cdef int f = tf + 1
- * 
- *     while r <= 7 and f <= 7:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r <= 7) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L5_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f <= 7) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L5_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":150
- * 
- *     while r <= 7 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":151
- *     while r <= 7 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r += 1
- */
-    __pyx_t_1 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":152
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- *         r += 1
- *         f += 1
- */
-      goto __pyx_L4_break;
-
-      /* "attack.pyx":151
- *     while r <= 7 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r += 1
- */
-    }
-
-    /* "attack.pyx":153
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- *         r += 1             # <<<<<<<<<<<<<<
- *         f += 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r + 1);
-
-    /* "attack.pyx":154
- *             break
- *         r += 1
- *         f += 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr - 1
- */
-    __pyx_v_f = (__pyx_v_f + 1);
-  }
-  __pyx_L4_break:;
-
-  /* "attack.pyx":156
- *         f += 1
- * 
- *     r = tr - 1             # <<<<<<<<<<<<<<
- *     f = tf + 1
- *     while r >= 0 and f <= 7:
- */
-  __pyx_v_r = (__pyx_v_tr - 1);
-
-  /* "attack.pyx":157
- * 
- *     r = tr - 1
- *     f = tf + 1             # <<<<<<<<<<<<<<
- *     while r >= 0 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf + 1);
-
-  /* "attack.pyx":158
- *     r = tr - 1
- *     f = tf + 1
- *     while r >= 0 and f <= 7:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r >= 0) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L10_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f <= 7) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L10_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":159
- *     f = tf + 1
- *     while r >= 0 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":160
- *     while r >= 0 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r -= 1
- */
-    __pyx_t_1 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":161
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- *         r -= 1
- *         f += 1
- */
-      goto __pyx_L9_break;
-
-      /* "attack.pyx":160
- *     while r >= 0 and f <= 7:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r -= 1
- */
-    }
-
-    /* "attack.pyx":162
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- *         r -= 1             # <<<<<<<<<<<<<<
- *         f += 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r - 1);
-
-    /* "attack.pyx":163
- *             break
- *         r -= 1
- *         f += 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr + 1
- */
-    __pyx_v_f = (__pyx_v_f + 1);
-  }
-  __pyx_L9_break:;
-
-  /* "attack.pyx":165
- *         f += 1
- * 
- *     r = tr + 1             # <<<<<<<<<<<<<<
- *     f = tf - 1
- *     while r <= 7 and f >= 0:
- */
-  __pyx_v_r = (__pyx_v_tr + 1);
-
-  /* "attack.pyx":166
- * 
- *     r = tr + 1
- *     f = tf - 1             # <<<<<<<<<<<<<<
- *     while r <= 7 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf - 1);
-
-  /* "attack.pyx":167
- *     r = tr + 1
- *     f = tf - 1
- *     while r <= 7 and f >= 0:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r <= 7) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L15_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f >= 0) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L15_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":168
- *     f = tf - 1
- *     while r <= 7 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":169
- *     while r <= 7 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r += 1
- */
-    __pyx_t_1 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":170
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- *         r += 1
- *         f -= 1
- */
-      goto __pyx_L14_break;
-
-      /* "attack.pyx":169
- *     while r <= 7 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r += 1
- */
-    }
-
-    /* "attack.pyx":171
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- *         r += 1             # <<<<<<<<<<<<<<
- *         f -= 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r + 1);
-
-    /* "attack.pyx":172
- *             break
- *         r += 1
- *         f -= 1             # <<<<<<<<<<<<<<
- * 
- *     r = tr - 1
- */
-    __pyx_v_f = (__pyx_v_f - 1);
-  }
-  __pyx_L14_break:;
-
-  /* "attack.pyx":174
- *         f -= 1
- * 
- *     r = tr - 1             # <<<<<<<<<<<<<<
- *     f = tf - 1
- *     while r >= 0 and f >= 0:
- */
-  __pyx_v_r = (__pyx_v_tr - 1);
-
-  /* "attack.pyx":175
- * 
- *     r = tr - 1
- *     f = tf - 1             # <<<<<<<<<<<<<<
- *     while r >= 0 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- */
-  __pyx_v_f = (__pyx_v_tf - 1);
-
-  /* "attack.pyx":176
- *     r = tr - 1
- *     f = tf - 1
- *     while r >= 0 and f >= 0:             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- */
-  while (1) {
-    __pyx_t_2 = ((__pyx_v_r >= 0) != 0);
-    if (__pyx_t_2) {
-    } else {
-      __pyx_t_1 = __pyx_t_2;
-      goto __pyx_L20_bool_binop_done;
-    }
-    __pyx_t_2 = ((__pyx_v_f >= 0) != 0);
-    __pyx_t_1 = __pyx_t_2;
-    __pyx_L20_bool_binop_done:;
-    if (!__pyx_t_1) break;
-
-    /* "attack.pyx":177
- *     f = tf - 1
- *     while r >= 0 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":178
- *     while r >= 0 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r -= 1
- */
-    __pyx_t_1 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_1) {
-
-      /* "attack.pyx":179
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- *         r -= 1
- *         f -= 1
- */
-      goto __pyx_L19_break;
-
-      /* "attack.pyx":178
- *     while r >= 0 and f >= 0:
- *         attacks |= (1ULL << (r * 8 + f))
- *         if (1ULL << (r * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- *         r -= 1
- */
-    }
-
-    /* "attack.pyx":180
- *         if (1ULL << (r * 8 + f)) & block:
- *             break
- *         r -= 1             # <<<<<<<<<<<<<<
- *         f -= 1
- * 
- */
-    __pyx_v_r = (__pyx_v_r - 1);
-
-    /* "attack.pyx":181
- *             break
- *         r -= 1
- *         f -= 1             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-    __pyx_v_f = (__pyx_v_f - 1);
-  }
-  __pyx_L19_break:;
-
-  /* "attack.pyx":183
- *         f -= 1
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 mask_rook_attacks(int square):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":141
- *     return attacks
- * 
- * cdef U64 bishop_attacks_on_the_fly(int square, U64 block):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":185
- *     return attacks
- * 
- * cdef U64 mask_rook_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_mask_rook_attacks(int __pyx_v_square) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  int __pyx_v_tr;
-  int __pyx_v_tf;
-  int __pyx_v_r;
-  int __pyx_v_f;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("mask_rook_attacks", 0);
-
-  /* "attack.pyx":186
- * 
- * cdef U64 mask_rook_attacks(int square):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- * 
- *     cdef int tr = square // 8 # target rank
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":188
- *     cdef U64 attacks = 0ULL
- * 
- *     cdef int tr = square // 8 # target rank             # <<<<<<<<<<<<<<
- *     cdef int tf = square % 8 # target file
- *     cdef int r, f
- */
-  __pyx_v_tr = __Pyx_div_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":189
- * 
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file             # <<<<<<<<<<<<<<
- *     cdef int r, f
- * 
- */
-  __pyx_v_tf = __Pyx_mod_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":192
- *     cdef int r, f
- * 
- *     for r in range(tr + 1, 7):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + tf))
- * 
- */
-  for (__pyx_t_1 = (__pyx_v_tr + 1); __pyx_t_1 < 7; __pyx_t_1+=1) {
-    __pyx_v_r = __pyx_t_1;
-
-    /* "attack.pyx":193
- * 
- *     for r in range(tr + 1, 7):
- *         attacks |= (1ULL << (r * 8 + tf))             # <<<<<<<<<<<<<<
- * 
- *     for f in range(tf + 1, 7):
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)));
-  }
-
-  /* "attack.pyx":195
- *         attacks |= (1ULL << (r * 8 + tf))
- * 
- *     for f in range(tf + 1, 7):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (tr * 8 + f))
- * 
- */
-  for (__pyx_t_1 = (__pyx_v_tf + 1); __pyx_t_1 < 7; __pyx_t_1+=1) {
-    __pyx_v_f = __pyx_t_1;
-
-    /* "attack.pyx":196
- * 
- *     for f in range(tf + 1, 7):
- *         attacks |= (1ULL << (tr * 8 + f))             # <<<<<<<<<<<<<<
- * 
- *     for r in range(tr - 1, 0, -1):
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)));
-  }
-
-  /* "attack.pyx":198
- *         attacks |= (1ULL << (tr * 8 + f))
- * 
- *     for r in range(tr - 1, 0, -1):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + tf))
- * 
- */
-  for (__pyx_t_1 = (__pyx_v_tr - 1); __pyx_t_1 > 0; __pyx_t_1-=1) {
-    __pyx_v_r = __pyx_t_1;
-
-    /* "attack.pyx":199
- * 
- *     for r in range(tr - 1, 0, -1):
- *         attacks |= (1ULL << (r * 8 + tf))             # <<<<<<<<<<<<<<
- * 
- *     for f in range(tf - 1, 0, -1):
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)));
-  }
-
-  /* "attack.pyx":201
- *         attacks |= (1ULL << (r * 8 + tf))
- * 
- *     for f in range(tf - 1, 0, -1):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (tr * 8 + f))
- * 
- */
-  for (__pyx_t_1 = (__pyx_v_tf - 1); __pyx_t_1 > 0; __pyx_t_1-=1) {
-    __pyx_v_f = __pyx_t_1;
-
-    /* "attack.pyx":202
- * 
- *     for f in range(tf - 1, 0, -1):
- *         attacks |= (1ULL << (tr * 8 + f))             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)));
-  }
-
-  /* "attack.pyx":204
- *         attacks |= (1ULL << (tr * 8 + f))
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef U64 rook_attacks_on_the_fly(int square, U64 block):
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":185
- *     return attacks
- * 
- * cdef U64 mask_rook_attacks(int square):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":206
- *     return attacks
- * 
- * cdef U64 rook_attacks_on_the_fly(int square, U64 block):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_rook_attacks_on_the_fly(int __pyx_v_square, __pyx_t_6helper_U64 __pyx_v_block) {
-  __pyx_t_6helper_U64 __pyx_v_attacks;
-  int __pyx_v_tr;
-  int __pyx_v_tf;
-  int __pyx_v_r;
-  int __pyx_v_f;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("rook_attacks_on_the_fly", 0);
-
-  /* "attack.pyx":207
- * 
- * cdef U64 rook_attacks_on_the_fly(int square, U64 block):
- *     cdef U64 attacks = 0ULL             # <<<<<<<<<<<<<<
- * 
- *     cdef int tr = square // 8 # target rank
- */
-  __pyx_v_attacks = 0ULL;
-
-  /* "attack.pyx":209
- *     cdef U64 attacks = 0ULL
- * 
- *     cdef int tr = square // 8 # target rank             # <<<<<<<<<<<<<<
- *     cdef int tf = square % 8 # target file
- *     cdef int r, f
- */
-  __pyx_v_tr = __Pyx_div_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":210
- * 
- *     cdef int tr = square // 8 # target rank
- *     cdef int tf = square % 8 # target file             # <<<<<<<<<<<<<<
- *     cdef int r, f
- * 
- */
-  __pyx_v_tf = __Pyx_mod_long(__pyx_v_square, 8);
-
-  /* "attack.pyx":213
- *     cdef int r, f
- * 
- *     for r in range(tr + 1, 8):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:
- */
-  for (__pyx_t_1 = (__pyx_v_tr + 1); __pyx_t_1 < 8; __pyx_t_1+=1) {
-    __pyx_v_r = __pyx_t_1;
-
-    /* "attack.pyx":214
- * 
- *     for r in range(tr + 1, 8):
- *         attacks |= (1ULL << (r * 8 + tf))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + tf)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)));
-
-    /* "attack.pyx":215
- *     for r in range(tr + 1, 8):
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    __pyx_t_2 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)) & __pyx_v_block) != 0);
-    if (__pyx_t_2) {
-
-      /* "attack.pyx":216
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:
- *             break             # <<<<<<<<<<<<<<
- * 
- *     for f in range(tf + 1, 8):
- */
-      goto __pyx_L4_break;
-
-      /* "attack.pyx":215
- *     for r in range(tr + 1, 8):
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    }
-  }
-  __pyx_L4_break:;
-
-  /* "attack.pyx":218
- *             break
- * 
- *     for f in range(tf + 1, 8):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:
- */
-  for (__pyx_t_1 = (__pyx_v_tf + 1); __pyx_t_1 < 8; __pyx_t_1+=1) {
-    __pyx_v_f = __pyx_t_1;
-
-    /* "attack.pyx":219
- * 
- *     for f in range(tf + 1, 8):
- *         attacks |= (1ULL << (tr * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (tr * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":220
- *     for f in range(tf + 1, 8):
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    __pyx_t_2 = (((1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_2) {
-
-      /* "attack.pyx":221
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- * 
- *     for r in range(tr - 1, -1, -1):
- */
-      goto __pyx_L7_break;
-
-      /* "attack.pyx":220
- *     for f in range(tf + 1, 8):
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    }
-  }
-  __pyx_L7_break:;
-
-  /* "attack.pyx":223
- *             break
- * 
- *     for r in range(tr - 1, -1, -1):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:
- */
-  for (__pyx_t_1 = (__pyx_v_tr - 1); __pyx_t_1 > -1; __pyx_t_1-=1) {
-    __pyx_v_r = __pyx_t_1;
-
-    /* "attack.pyx":224
- * 
- *     for r in range(tr - 1, -1, -1):
- *         attacks |= (1ULL << (r * 8 + tf))             # <<<<<<<<<<<<<<
- *         if (1ULL << (r * 8 + tf)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)));
-
-    /* "attack.pyx":225
- *     for r in range(tr - 1, -1, -1):
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    __pyx_t_2 = (((1ULL << ((__pyx_v_r * 8) + __pyx_v_tf)) & __pyx_v_block) != 0);
-    if (__pyx_t_2) {
-
-      /* "attack.pyx":226
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:
- *             break             # <<<<<<<<<<<<<<
- * 
- *     for f in range(tf - 1, -1, -1):
- */
-      goto __pyx_L10_break;
-
-      /* "attack.pyx":225
- *     for r in range(tr - 1, -1, -1):
- *         attacks |= (1ULL << (r * 8 + tf))
- *         if (1ULL << (r * 8 + tf)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    }
-  }
-  __pyx_L10_break:;
-
-  /* "attack.pyx":228
- *             break
- * 
- *     for f in range(tf - 1, -1, -1):             # <<<<<<<<<<<<<<
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:
- */
-  for (__pyx_t_1 = (__pyx_v_tf - 1); __pyx_t_1 > -1; __pyx_t_1-=1) {
-    __pyx_v_f = __pyx_t_1;
-
-    /* "attack.pyx":229
- * 
- *     for f in range(tf - 1, -1, -1):
- *         attacks |= (1ULL << (tr * 8 + f))             # <<<<<<<<<<<<<<
- *         if (1ULL << (tr * 8 + f)) & block:
- *             break
- */
-    __pyx_v_attacks = (__pyx_v_attacks | (1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)));
-
-    /* "attack.pyx":230
- *     for f in range(tf - 1, -1, -1):
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    __pyx_t_2 = (((1ULL << ((__pyx_v_tr * 8) + __pyx_v_f)) & __pyx_v_block) != 0);
-    if (__pyx_t_2) {
-
-      /* "attack.pyx":231
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:
- *             break             # <<<<<<<<<<<<<<
- * 
- *     return attacks
- */
-      goto __pyx_L13_break;
-
-      /* "attack.pyx":230
- *     for f in range(tf - 1, -1, -1):
- *         attacks |= (1ULL << (tr * 8 + f))
- *         if (1ULL << (tr * 8 + f)) & block:             # <<<<<<<<<<<<<<
- *             break
- * 
- */
-    }
-  }
-  __pyx_L13_break:;
-
-  /* "attack.pyx":233
- *             break
- * 
- *     return attacks             # <<<<<<<<<<<<<<
- * 
- * cdef init_leapers_attacks():
- */
-  __pyx_r = __pyx_v_attacks;
-  goto __pyx_L0;
-
-  /* "attack.pyx":206
- *     return attacks
- * 
- * cdef U64 rook_attacks_on_the_fly(int square, U64 block):             # <<<<<<<<<<<<<<
- *     cdef U64 attacks = 0ULL
- * 
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":235
- *     return attacks
- * 
- * cdef init_leapers_attacks():             # <<<<<<<<<<<<<<
- *     cdef int square
- *     for square in range(64):
- */
-
-static PyObject *__pyx_f_6attack_init_leapers_attacks(void) {
-  int __pyx_v_square;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __Pyx_RefNannySetupContext("init_leapers_attacks", 0);
-
-  /* "attack.pyx":237
- * cdef init_leapers_attacks():
- *     cdef int square
- *     for square in range(64):             # <<<<<<<<<<<<<<
- *         pawn_attacks[white][square] = mask_pawn_attacks(white, square)
- *         pawn_attacks[black][square] = mask_pawn_attacks(black, square)
- */
-  for (__pyx_t_1 = 0; __pyx_t_1 < 64; __pyx_t_1+=1) {
-    __pyx_v_square = __pyx_t_1;
-
-    /* "attack.pyx":238
- *     cdef int square
- *     for square in range(64):
- *         pawn_attacks[white][square] = mask_pawn_attacks(white, square)             # <<<<<<<<<<<<<<
- *         pawn_attacks[black][square] = mask_pawn_attacks(black, square)
- * 
- */
-    ((__pyx_v_6attack_pawn_attacks[__pyx_e_6attack_white])[__pyx_v_square]) = __pyx_f_6attack_mask_pawn_attacks(__pyx_e_6attack_white, __pyx_v_square);
-
-    /* "attack.pyx":239
- *     for square in range(64):
- *         pawn_attacks[white][square] = mask_pawn_attacks(white, square)
- *         pawn_attacks[black][square] = mask_pawn_attacks(black, square)             # <<<<<<<<<<<<<<
- * 
- *         knight_attacks[square] = mask_knight_attacks(square)
- */
-    ((__pyx_v_6attack_pawn_attacks[__pyx_e_6attack_black])[__pyx_v_square]) = __pyx_f_6attack_mask_pawn_attacks(__pyx_e_6attack_black, __pyx_v_square);
-
-    /* "attack.pyx":241
- *         pawn_attacks[black][square] = mask_pawn_attacks(black, square)
- * 
- *         knight_attacks[square] = mask_knight_attacks(square)             # <<<<<<<<<<<<<<
- * 
- *         king_attacks[square] = mask_king_attacks(square)
- */
-    (__pyx_v_6attack_knight_attacks[__pyx_v_square]) = __pyx_f_6attack_mask_knight_attacks(__pyx_v_square);
-
-    /* "attack.pyx":243
- *         knight_attacks[square] = mask_knight_attacks(square)
- * 
- *         king_attacks[square] = mask_king_attacks(square)             # <<<<<<<<<<<<<<
- * 
- * cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask):
- */
-    (__pyx_v_6attack_king_attacks[__pyx_v_square]) = __pyx_f_6attack_mask_king_attacks(__pyx_v_square);
-  }
-
-  /* "attack.pyx":235
- *     return attacks
- * 
- * cdef init_leapers_attacks():             # <<<<<<<<<<<<<<
- *     cdef int square
- *     for square in range(64):
- */
-
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":245
- *         king_attacks[square] = mask_king_attacks(square)
- * 
- * cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask):             # <<<<<<<<<<<<<<
- *     cdef U64 occupancy = 0ULL
- *     cdef int count, square
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_set_occupancy(int __pyx_v_index, int __pyx_v_bits_in_mask, __pyx_t_6helper_U64 __pyx_v_attack_mask) {
-  __pyx_t_6helper_U64 __pyx_v_occupancy;
-  int __pyx_v_count;
-  int __pyx_v_square;
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  __Pyx_RefNannySetupContext("set_occupancy", 0);
-
-  /* "attack.pyx":246
- * 
- * cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask):
- *     cdef U64 occupancy = 0ULL             # <<<<<<<<<<<<<<
- *     cdef int count, square
- * 
- */
-  __pyx_v_occupancy = 0ULL;
-
-  /* "attack.pyx":249
- *     cdef int count, square
- * 
- *     for count in range(bits_in_mask):             # <<<<<<<<<<<<<<
- *         square = get_ls1b_index(attack_mask)
- * 
- */
-  __pyx_t_1 = __pyx_v_bits_in_mask;
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_count = __pyx_t_3;
-
-    /* "attack.pyx":250
- * 
- *     for count in range(bits_in_mask):
- *         square = get_ls1b_index(attack_mask)             # <<<<<<<<<<<<<<
- * 
- *         attack_mask = pop_bit(attack_mask, square)
- */
-    __pyx_v_square = __pyx_f_6helper_get_ls1b_index(__pyx_v_attack_mask);
-
-    /* "attack.pyx":252
- *         square = get_ls1b_index(attack_mask)
- * 
- *         attack_mask = pop_bit(attack_mask, square)             # <<<<<<<<<<<<<<
- * 
- *         if index & (1 << count):
- */
-    __pyx_v_attack_mask = __pyx_f_6helper_pop_bit(__pyx_v_attack_mask, __pyx_v_square);
-
-    /* "attack.pyx":254
- *         attack_mask = pop_bit(attack_mask, square)
- * 
- *         if index & (1 << count):             # <<<<<<<<<<<<<<
- *             occupancy |= (1ULL << square)
- *     return occupancy
- */
-    __pyx_t_4 = ((__pyx_v_index & (1 << __pyx_v_count)) != 0);
-    if (__pyx_t_4) {
-
-      /* "attack.pyx":255
- * 
- *         if index & (1 << count):
- *             occupancy |= (1ULL << square)             # <<<<<<<<<<<<<<
- *     return occupancy
- * 
- */
-      __pyx_v_occupancy = (__pyx_v_occupancy | (1ULL << __pyx_v_square));
-
-      /* "attack.pyx":254
- *         attack_mask = pop_bit(attack_mask, square)
- * 
- *         if index & (1 << count):             # <<<<<<<<<<<<<<
- *             occupancy |= (1ULL << square)
- *     return occupancy
- */
-    }
-  }
-
-  /* "attack.pyx":256
- *         if index & (1 << count):
- *             occupancy |= (1ULL << square)
- *     return occupancy             # <<<<<<<<<<<<<<
- * 
- * cdef init_sliders_attacks(int bishop):
- */
-  __pyx_r = __pyx_v_occupancy;
-  goto __pyx_L0;
-
-  /* "attack.pyx":245
- *         king_attacks[square] = mask_king_attacks(square)
- * 
- * cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask):             # <<<<<<<<<<<<<<
- *     cdef U64 occupancy = 0ULL
- *     cdef int count, square
- */
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":258
- *     return occupancy
- * 
- * cdef init_sliders_attacks(int bishop):             # <<<<<<<<<<<<<<
- *     cdef int square, relevant_bits_count, occupancy_indicies, index, magic_index
- *     cdef U64 attack_mask, occupancy
- */
-
-static PyObject *__pyx_f_6attack_init_sliders_attacks(int __pyx_v_bishop) {
-  int __pyx_v_square;
-  int __pyx_v_relevant_bits_count;
-  int __pyx_v_occupancy_indicies;
-  int __pyx_v_index;
-  int __pyx_v_magic_index;
+static __pyx_t_6helper_U64 __pyx_f_9magic_num_find_magic_number(int __pyx_v_square, int __pyx_v_relevant_bits, int __pyx_v_bishop) {
+  __pyx_t_6helper_U64 __pyx_v_occupancies[0x1000];
+  __pyx_t_6helper_U64 __pyx_v_attacks[0x1000];
+  __pyx_t_6helper_U64 __pyx_v_used_attacks[0x1000];
   __pyx_t_6helper_U64 __pyx_v_attack_mask;
-  __pyx_t_6helper_U64 __pyx_v_occupancy;
-  PyObject *__pyx_r = NULL;
+  int __pyx_v_occupancy_indecies;
+  int __pyx_v_index;
+  CYTHON_UNUSED int __pyx_v_random_count;
+  int __pyx_v_fail;
+  int __pyx_v_magic_index;
+  __pyx_t_6helper_U64 __pyx_v_magic_number;
+  __pyx_t_6helper_U64 __pyx_r;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  __pyx_t_6helper_U64 __pyx_t_2;
+  __pyx_t_6helper_U64 __pyx_t_1;
+  int __pyx_t_2;
   int __pyx_t_3;
   int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  __Pyx_RefNannySetupContext("init_sliders_attacks", 0);
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("find_magic_number", 0);
 
-  /* "attack.pyx":261
- *     cdef int square, relevant_bits_count, occupancy_indicies, index, magic_index
- *     cdef U64 attack_mask, occupancy
- *     for square in range(64):             # <<<<<<<<<<<<<<
- *         bishop_masks[square] = mask_bishop_attacks(square)
- *         rook_masks[square] = mask_rook_attacks(square)
+  /* "magic_num.pyx":12
+ *     cdef U64 used_attacks[4096]
+ * 
+ *     cdef U64 attack_mask = mask_bishop_attacks(square) if bishop else mask_rook_attacks(square)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int occupancy_indecies = 1 << relevant_bits
  */
-  for (__pyx_t_1 = 0; __pyx_t_1 < 64; __pyx_t_1+=1) {
-    __pyx_v_square = __pyx_t_1;
+  if ((__pyx_v_bishop != 0)) {
+    __pyx_t_1 = __pyx_f_6attack_mask_bishop_attacks(__pyx_v_square);
+  } else {
+    __pyx_t_1 = __pyx_f_6attack_mask_rook_attacks(__pyx_v_square);
+  }
+  __pyx_v_attack_mask = __pyx_t_1;
 
-    /* "attack.pyx":262
- *     cdef U64 attack_mask, occupancy
- *     for square in range(64):
- *         bishop_masks[square] = mask_bishop_attacks(square)             # <<<<<<<<<<<<<<
- *         rook_masks[square] = mask_rook_attacks(square)
+  /* "magic_num.pyx":14
+ *     cdef U64 attack_mask = mask_bishop_attacks(square) if bishop else mask_rook_attacks(square)
+ * 
+ *     cdef int occupancy_indecies = 1 << relevant_bits             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int index
+ */
+  __pyx_v_occupancy_indecies = (1 << __pyx_v_relevant_bits);
+
+  /* "magic_num.pyx":17
+ * 
+ *     cdef int index
+ *     for index in range(occupancy_indecies):             # <<<<<<<<<<<<<<
+ *         occupancies[index] = set_occupancy(index, relevant_bits, attack_mask)
  * 
  */
-    (__pyx_v_6attack_bishop_masks[__pyx_v_square]) = __pyx_f_6attack_mask_bishop_attacks(__pyx_v_square);
+  __pyx_t_2 = __pyx_v_occupancy_indecies;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_index = __pyx_t_4;
 
-    /* "attack.pyx":263
- *     for square in range(64):
- *         bishop_masks[square] = mask_bishop_attacks(square)
- *         rook_masks[square] = mask_rook_attacks(square)             # <<<<<<<<<<<<<<
+    /* "magic_num.pyx":18
+ *     cdef int index
+ *     for index in range(occupancy_indecies):
+ *         occupancies[index] = set_occupancy(index, relevant_bits, attack_mask)             # <<<<<<<<<<<<<<
  * 
- *         attack_mask = bishop_masks[square] if bishop else rook_masks[square]
+ *         attacks[index] = bishop_attacks_on_the_fly(square, occupancies[index]) if bishop else rook_attacks_on_the_fly(square, occupancies[index])
  */
-    (__pyx_v_6attack_rook_masks[__pyx_v_square]) = __pyx_f_6attack_mask_rook_attacks(__pyx_v_square);
+    (__pyx_v_occupancies[__pyx_v_index]) = __pyx_f_6attack_set_occupancy(__pyx_v_index, __pyx_v_relevant_bits, __pyx_v_attack_mask);
 
-    /* "attack.pyx":265
- *         rook_masks[square] = mask_rook_attacks(square)
+    /* "magic_num.pyx":20
+ *         occupancies[index] = set_occupancy(index, relevant_bits, attack_mask)
  * 
- *         attack_mask = bishop_masks[square] if bishop else rook_masks[square]             # <<<<<<<<<<<<<<
+ *         attacks[index] = bishop_attacks_on_the_fly(square, occupancies[index]) if bishop else rook_attacks_on_the_fly(square, occupancies[index])             # <<<<<<<<<<<<<<
  * 
- *         relevant_bits_count = count_bits(attack_mask)
+ *     # Test magic number loop
  */
     if ((__pyx_v_bishop != 0)) {
-      __pyx_t_2 = (__pyx_v_6attack_bishop_masks[__pyx_v_square]);
+      __pyx_t_1 = __pyx_f_6attack_bishop_attacks_on_the_fly(__pyx_v_square, (__pyx_v_occupancies[__pyx_v_index]));
     } else {
-      __pyx_t_2 = (__pyx_v_6attack_rook_masks[__pyx_v_square]);
+      __pyx_t_1 = __pyx_f_6attack_rook_attacks_on_the_fly(__pyx_v_square, (__pyx_v_occupancies[__pyx_v_index]));
     }
-    __pyx_v_attack_mask = __pyx_t_2;
-
-    /* "attack.pyx":267
- *         attack_mask = bishop_masks[square] if bishop else rook_masks[square]
- * 
- *         relevant_bits_count = count_bits(attack_mask)             # <<<<<<<<<<<<<<
- *         occupancy_indicies = (1 << relevant_bits_count)
- * 
- */
-    __pyx_v_relevant_bits_count = __pyx_f_6helper_count_bits(__pyx_v_attack_mask);
-
-    /* "attack.pyx":268
- * 
- *         relevant_bits_count = count_bits(attack_mask)
- *         occupancy_indicies = (1 << relevant_bits_count)             # <<<<<<<<<<<<<<
- * 
- *         for index in range(occupancy_indicies):
- */
-    __pyx_v_occupancy_indicies = (1 << __pyx_v_relevant_bits_count);
-
-    /* "attack.pyx":270
- *         occupancy_indicies = (1 << relevant_bits_count)
- * 
- *         for index in range(occupancy_indicies):             # <<<<<<<<<<<<<<
- *             occupancy = set_occupancy(index, relevant_bits_count, attack_mask)
- *             if bishop:
- */
-    __pyx_t_3 = __pyx_v_occupancy_indicies;
-    __pyx_t_4 = __pyx_t_3;
-    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-      __pyx_v_index = __pyx_t_5;
-
-      /* "attack.pyx":271
- * 
- *         for index in range(occupancy_indicies):
- *             occupancy = set_occupancy(index, relevant_bits_count, attack_mask)             # <<<<<<<<<<<<<<
- *             if bishop:
- *                 magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])
- */
-      __pyx_v_occupancy = __pyx_f_6attack_set_occupancy(__pyx_v_index, __pyx_v_relevant_bits_count, __pyx_v_attack_mask);
-
-      /* "attack.pyx":272
- *         for index in range(occupancy_indicies):
- *             occupancy = set_occupancy(index, relevant_bits_count, attack_mask)
- *             if bishop:             # <<<<<<<<<<<<<<
- *                 magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])
- *                 bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)
- */
-      __pyx_t_6 = (__pyx_v_bishop != 0);
-      if (__pyx_t_6) {
-
-        /* "attack.pyx":273
- *             occupancy = set_occupancy(index, relevant_bits_count, attack_mask)
- *             if bishop:
- *                 magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])             # <<<<<<<<<<<<<<
- *                 bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)
- *             else:
- */
-        __pyx_v_magic_index = ((__pyx_v_occupancy * (__pyx_v_5const_bishop_magic_numbers[__pyx_v_square])) >> (64 - (__pyx_v_6attack_bishop_relevant_bits[__pyx_v_square])));
-
-        /* "attack.pyx":274
- *             if bishop:
- *                 magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])
- *                 bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)             # <<<<<<<<<<<<<<
- *             else:
- *                 magic_index = (occupancy * rook_magic_numbers[square]) >> (64 - rook_relevant_bits[square])
- */
-        ((__pyx_v_6attack_bishop_attacks[__pyx_v_square])[__pyx_v_magic_index]) = __pyx_f_6attack_bishop_attacks_on_the_fly(__pyx_v_square, __pyx_v_occupancy);
-
-        /* "attack.pyx":272
- *         for index in range(occupancy_indicies):
- *             occupancy = set_occupancy(index, relevant_bits_count, attack_mask)
- *             if bishop:             # <<<<<<<<<<<<<<
- *                 magic_index = (occupancy * bishop_magic_numbers[square]) >> (64 - bishop_relevant_bits[square])
- *                 bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)
- */
-        goto __pyx_L7;
-      }
-
-      /* "attack.pyx":276
- *                 bishop_attacks[square][magic_index] = bishop_attacks_on_the_fly(square, occupancy)
- *             else:
- *                 magic_index = (occupancy * rook_magic_numbers[square]) >> (64 - rook_relevant_bits[square])             # <<<<<<<<<<<<<<
- *                 rook_attacks[square][magic_index] = rook_attacks_on_the_fly(square, occupancy)
- * 
- */
-      /*else*/ {
-        __pyx_v_magic_index = ((__pyx_v_occupancy * (__pyx_v_5const_rook_magic_numbers[__pyx_v_square])) >> (64 - (__pyx_v_6attack_rook_relevant_bits[__pyx_v_square])));
-
-        /* "attack.pyx":277
- *             else:
- *                 magic_index = (occupancy * rook_magic_numbers[square]) >> (64 - rook_relevant_bits[square])
- *                 rook_attacks[square][magic_index] = rook_attacks_on_the_fly(square, occupancy)             # <<<<<<<<<<<<<<
- * 
- * cdef U64 get_bishop_attacks(int square, U64 occupancy):
- */
-        ((__pyx_v_6attack_rook_attacks[__pyx_v_square])[__pyx_v_magic_index]) = __pyx_f_6attack_rook_attacks_on_the_fly(__pyx_v_square, __pyx_v_occupancy);
-      }
-      __pyx_L7:;
-    }
+    (__pyx_v_attacks[__pyx_v_index]) = __pyx_t_1;
   }
 
-  /* "attack.pyx":258
- *     return occupancy
- * 
- * cdef init_sliders_attacks(int bishop):             # <<<<<<<<<<<<<<
- *     cdef int square, relevant_bits_count, occupancy_indicies, index, magic_index
- *     cdef U64 attack_mask, occupancy
+  /* "magic_num.pyx":25
+ *     cdef int random_count, fail, magic_index
+ *     cdef U64 magic_number
+ *     for random_count in range(100000000):             # <<<<<<<<<<<<<<
+ *         # Generate candidate
+ *         magic_number = generate_magic_number(&rand_state)
  */
+  for (__pyx_t_2 = 0; __pyx_t_2 < 0x5F5E100; __pyx_t_2+=1) {
+    __pyx_v_random_count = __pyx_t_2;
 
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":279
- *                 rook_attacks[square][magic_index] = rook_attacks_on_the_fly(square, occupancy)
+    /* "magic_num.pyx":27
+ *     for random_count in range(100000000):
+ *         # Generate candidate
+ *         magic_number = generate_magic_number(&rand_state)             # <<<<<<<<<<<<<<
  * 
- * cdef U64 get_bishop_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
- *     occupancy &= bishop_masks[square]
- *     occupancy *= bishop_magic_numbers[square]
+ *         # Skip invalid magic num
  */
+    __pyx_v_magic_number = __pyx_f_4rand_generate_magic_number((&__pyx_v_4rand_rand_state));
 
-static __pyx_t_6helper_U64 __pyx_f_6attack_get_bishop_attacks(int __pyx_v_square, __pyx_t_6helper_U64 __pyx_v_occupancy) {
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("get_bishop_attacks", 0);
-
-  /* "attack.pyx":280
+    /* "magic_num.pyx":30
  * 
- * cdef U64 get_bishop_attacks(int square, U64 occupancy):
- *     occupancy &= bishop_masks[square]             # <<<<<<<<<<<<<<
- *     occupancy *= bishop_magic_numbers[square]
- *     occupancy >>= 64 - bishop_relevant_bits[square]
- */
-  __pyx_v_occupancy = (__pyx_v_occupancy & (__pyx_v_6attack_bishop_masks[__pyx_v_square]));
-
-  /* "attack.pyx":281
- * cdef U64 get_bishop_attacks(int square, U64 occupancy):
- *     occupancy &= bishop_masks[square]
- *     occupancy *= bishop_magic_numbers[square]             # <<<<<<<<<<<<<<
- *     occupancy >>= 64 - bishop_relevant_bits[square]
+ *         # Skip invalid magic num
+ *         if count_bits((attack_mask * magic_number) & 0xFF00000000000000) < 6:             # <<<<<<<<<<<<<<
+ *             continue
  * 
  */
-  __pyx_v_occupancy = (__pyx_v_occupancy * (__pyx_v_5const_bishop_magic_numbers[__pyx_v_square]));
+    __pyx_t_5 = __Pyx_PyInt_From_unsigned_PY_LONG_LONG((__pyx_v_attack_mask * __pyx_v_magic_number)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = PyNumber_And(__pyx_t_5, __pyx_int_18374686479671623680); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_1 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_6); if (unlikely((__pyx_t_1 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_7 = ((__pyx_f_6helper_count_bits(__pyx_t_1) < 6) != 0);
+    if (__pyx_t_7) {
 
-  /* "attack.pyx":282
- *     occupancy &= bishop_masks[square]
- *     occupancy *= bishop_magic_numbers[square]
- *     occupancy >>= 64 - bishop_relevant_bits[square]             # <<<<<<<<<<<<<<
+      /* "magic_num.pyx":31
+ *         # Skip invalid magic num
+ *         if count_bits((attack_mask * magic_number) & 0xFF00000000000000) < 6:
+ *             continue             # <<<<<<<<<<<<<<
  * 
- *     return bishop_attacks[square][occupancy]
+ *         # init used attacks
  */
-  __pyx_v_occupancy = (__pyx_v_occupancy >> (64 - (__pyx_v_6attack_bishop_relevant_bits[__pyx_v_square])));
+      goto __pyx_L5_continue;
 
-  /* "attack.pyx":284
- *     occupancy >>= 64 - bishop_relevant_bits[square]
+      /* "magic_num.pyx":30
  * 
- *     return bishop_attacks[square][occupancy]             # <<<<<<<<<<<<<<
+ *         # Skip invalid magic num
+ *         if count_bits((attack_mask * magic_number) & 0xFF00000000000000) < 6:             # <<<<<<<<<<<<<<
+ *             continue
  * 
- * cdef U64 get_rook_attacks(int square, U64 occupancy):
  */
-  __pyx_r = ((__pyx_v_6attack_bishop_attacks[__pyx_v_square])[__pyx_v_occupancy]);
+    }
+
+    /* "magic_num.pyx":34
+ * 
+ *         # init used attacks
+ *         memset(used_attacks, 0ULL, sizeof(used_attacks))             # <<<<<<<<<<<<<<
+ * 
+ *         # test magic index
+ */
+    (void)(memset(__pyx_v_used_attacks, 0ULL, (sizeof(__pyx_v_used_attacks))));
+
+    /* "magic_num.pyx":37
+ * 
+ *         # test magic index
+ *         index = 0             # <<<<<<<<<<<<<<
+ *         fail = 0
+ *         while not(fail) and index < occupancy_indecies:
+ */
+    __pyx_v_index = 0;
+
+    /* "magic_num.pyx":38
+ *         # test magic index
+ *         index = 0
+ *         fail = 0             # <<<<<<<<<<<<<<
+ *         while not(fail) and index < occupancy_indecies:
+ *             magic_index = <int>((occupancies[index] * magic_number) >> (64 - relevant_bits))
+ */
+    __pyx_v_fail = 0;
+
+    /* "magic_num.pyx":39
+ *         index = 0
+ *         fail = 0
+ *         while not(fail) and index < occupancy_indecies:             # <<<<<<<<<<<<<<
+ *             magic_index = <int>((occupancies[index] * magic_number) >> (64 - relevant_bits))
+ * 
+ */
+    while (1) {
+      __pyx_t_8 = ((!(__pyx_v_fail != 0)) != 0);
+      if (__pyx_t_8) {
+      } else {
+        __pyx_t_7 = __pyx_t_8;
+        goto __pyx_L10_bool_binop_done;
+      }
+      __pyx_t_8 = ((__pyx_v_index < __pyx_v_occupancy_indecies) != 0);
+      __pyx_t_7 = __pyx_t_8;
+      __pyx_L10_bool_binop_done:;
+      if (!__pyx_t_7) break;
+
+      /* "magic_num.pyx":40
+ *         fail = 0
+ *         while not(fail) and index < occupancy_indecies:
+ *             magic_index = <int>((occupancies[index] * magic_number) >> (64 - relevant_bits))             # <<<<<<<<<<<<<<
+ * 
+ *             # if magic index works
+ */
+      __pyx_v_magic_index = ((int)(((__pyx_v_occupancies[__pyx_v_index]) * __pyx_v_magic_number) >> (64 - __pyx_v_relevant_bits)));
+
+      /* "magic_num.pyx":43
+ * 
+ *             # if magic index works
+ *             if used_attacks[magic_index] == 0ULL:             # <<<<<<<<<<<<<<
+ *                 # init used attacks
+ *                 used_attacks[magic_index] = attacks[index]
+ */
+      __pyx_t_7 = (((__pyx_v_used_attacks[__pyx_v_magic_index]) == 0ULL) != 0);
+      if (__pyx_t_7) {
+
+        /* "magic_num.pyx":45
+ *             if used_attacks[magic_index] == 0ULL:
+ *                 # init used attacks
+ *                 used_attacks[magic_index] = attacks[index]             # <<<<<<<<<<<<<<
+ * 
+ *             elif used_attacks[magic_index] != attacks[index]:
+ */
+        (__pyx_v_used_attacks[__pyx_v_magic_index]) = (__pyx_v_attacks[__pyx_v_index]);
+
+        /* "magic_num.pyx":43
+ * 
+ *             # if magic index works
+ *             if used_attacks[magic_index] == 0ULL:             # <<<<<<<<<<<<<<
+ *                 # init used attacks
+ *                 used_attacks[magic_index] = attacks[index]
+ */
+        goto __pyx_L12;
+      }
+
+      /* "magic_num.pyx":47
+ *                 used_attacks[magic_index] = attacks[index]
+ * 
+ *             elif used_attacks[magic_index] != attacks[index]:             # <<<<<<<<<<<<<<
+ *                 # magic index doesn't work
+ *                 fail = 1
+ */
+      __pyx_t_7 = (((__pyx_v_used_attacks[__pyx_v_magic_index]) != (__pyx_v_attacks[__pyx_v_index])) != 0);
+      if (__pyx_t_7) {
+
+        /* "magic_num.pyx":49
+ *             elif used_attacks[magic_index] != attacks[index]:
+ *                 # magic index doesn't work
+ *                 fail = 1             # <<<<<<<<<<<<<<
+ * 
+ *             index += 1
+ */
+        __pyx_v_fail = 1;
+
+        /* "magic_num.pyx":47
+ *                 used_attacks[magic_index] = attacks[index]
+ * 
+ *             elif used_attacks[magic_index] != attacks[index]:             # <<<<<<<<<<<<<<
+ *                 # magic index doesn't work
+ *                 fail = 1
+ */
+      }
+      __pyx_L12:;
+
+      /* "magic_num.pyx":51
+ *                 fail = 1
+ * 
+ *             index += 1             # <<<<<<<<<<<<<<
+ * 
+ *         if not(fail):
+ */
+      __pyx_v_index = (__pyx_v_index + 1);
+    }
+
+    /* "magic_num.pyx":53
+ *             index += 1
+ * 
+ *         if not(fail):             # <<<<<<<<<<<<<<
+ *             return magic_number
+ * 
+ */
+    __pyx_t_7 = ((!(__pyx_v_fail != 0)) != 0);
+    if (__pyx_t_7) {
+
+      /* "magic_num.pyx":54
+ * 
+ *         if not(fail):
+ *             return magic_number             # <<<<<<<<<<<<<<
+ * 
+ *     printf("  Magic nuber fails!")
+ */
+      __pyx_r = __pyx_v_magic_number;
+      goto __pyx_L0;
+
+      /* "magic_num.pyx":53
+ *             index += 1
+ * 
+ *         if not(fail):             # <<<<<<<<<<<<<<
+ *             return magic_number
+ * 
+ */
+    }
+    __pyx_L5_continue:;
+  }
+
+  /* "magic_num.pyx":56
+ *             return magic_number
+ * 
+ *     printf("  Magic nuber fails!")             # <<<<<<<<<<<<<<
+ *     return 0ULL
+ */
+  (void)(printf(((char const *)"  Magic nuber fails!")));
+
+  /* "magic_num.pyx":57
+ * 
+ *     printf("  Magic nuber fails!")
+ *     return 0ULL             # <<<<<<<<<<<<<<
+ */
+  __pyx_r = 0ULL;
   goto __pyx_L0;
 
-  /* "attack.pyx":279
- *                 rook_attacks[square][magic_index] = rook_attacks_on_the_fly(square, occupancy)
+  /* "magic_num.pyx":7
+ * from helper cimport count_bits
  * 
- * cdef U64 get_bishop_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
- *     occupancy &= bishop_masks[square]
- *     occupancy *= bishop_magic_numbers[square]
+ * cdef U64 find_magic_number(int square, int relevant_bits, int bishop):             # <<<<<<<<<<<<<<
+ *     cdef U64 occupancies[4096]
+ *     cdef U64 attacks[4096]
  */
 
   /* function exit code */
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "attack.pyx":286
- *     return bishop_attacks[square][occupancy]
- * 
- * cdef U64 get_rook_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
- *     occupancy &= rook_masks[square]
- *     occupancy *= rook_magic_numbers[square]
- */
-
-static __pyx_t_6helper_U64 __pyx_f_6attack_get_rook_attacks(int __pyx_v_square, __pyx_t_6helper_U64 __pyx_v_occupancy) {
-  __pyx_t_6helper_U64 __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("get_rook_attacks", 0);
-
-  /* "attack.pyx":287
- * 
- * cdef U64 get_rook_attacks(int square, U64 occupancy):
- *     occupancy &= rook_masks[square]             # <<<<<<<<<<<<<<
- *     occupancy *= rook_magic_numbers[square]
- *     occupancy >>= 64 - rook_relevant_bits[square]
- */
-  __pyx_v_occupancy = (__pyx_v_occupancy & (__pyx_v_6attack_rook_masks[__pyx_v_square]));
-
-  /* "attack.pyx":288
- * cdef U64 get_rook_attacks(int square, U64 occupancy):
- *     occupancy &= rook_masks[square]
- *     occupancy *= rook_magic_numbers[square]             # <<<<<<<<<<<<<<
- *     occupancy >>= 64 - rook_relevant_bits[square]
- * 
- */
-  __pyx_v_occupancy = (__pyx_v_occupancy * (__pyx_v_5const_rook_magic_numbers[__pyx_v_square]));
-
-  /* "attack.pyx":289
- *     occupancy &= rook_masks[square]
- *     occupancy *= rook_magic_numbers[square]
- *     occupancy >>= 64 - rook_relevant_bits[square]             # <<<<<<<<<<<<<<
- * 
- *     return rook_attacks[square][occupancy]
- */
-  __pyx_v_occupancy = (__pyx_v_occupancy >> (64 - (__pyx_v_6attack_rook_relevant_bits[__pyx_v_square])));
-
-  /* "attack.pyx":291
- *     occupancy >>= 64 - rook_relevant_bits[square]
- * 
- *     return rook_attacks[square][occupancy]             # <<<<<<<<<<<<<<
- * 
- * init_leapers_attacks()
- */
-  __pyx_r = ((__pyx_v_6attack_rook_attacks[__pyx_v_square])[__pyx_v_occupancy]);
-  goto __pyx_L0;
-
-  /* "attack.pyx":286
- *     return bishop_attacks[square][occupancy]
- * 
- * cdef U64 get_rook_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
- *     occupancy &= rook_masks[square]
- *     occupancy *= rook_magic_numbers[square]
- */
-
-  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_WriteUnraisable("magic_num.find_magic_number", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3703,17 +1529,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_attack(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_magic_num(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_attack},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_magic_num},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "attack",
+    "magic_num",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -3742,25 +1568,15 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_n_s_bishop_attacks, __pyx_k_bishop_attacks, sizeof(__pyx_k_bishop_attacks), 0, 0, 1, 1},
-  {&__pyx_n_s_bishop_masks, __pyx_k_bishop_masks, sizeof(__pyx_k_bishop_masks), 0, 0, 1, 1},
-  {&__pyx_n_s_bishop_relevant_bits, __pyx_k_bishop_relevant_bits, sizeof(__pyx_k_bishop_relevant_bits), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_king_attacks, __pyx_k_king_attacks, sizeof(__pyx_k_king_attacks), 0, 0, 1, 1},
-  {&__pyx_n_s_knight_attacks, __pyx_k_knight_attacks, sizeof(__pyx_k_knight_attacks), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_pawn_attacks, __pyx_k_pawn_attacks, sizeof(__pyx_k_pawn_attacks), 0, 0, 1, 1},
-  {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_rook_attacks, __pyx_k_rook_attacks, sizeof(__pyx_k_rook_attacks), 0, 0, 1, 1},
-  {&__pyx_n_s_rook_masks, __pyx_k_rook_masks, sizeof(__pyx_k_rook_masks), 0, 0, 1, 1},
-  {&__pyx_n_s_rook_relevant_bits, __pyx_k_rook_relevant_bits, sizeof(__pyx_k_rook_relevant_bits), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 17, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3775,6 +1591,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_int_18374686479671623680 = PyInt_FromString((char *)"18374686479671623680", 0, 0); if (unlikely(!__pyx_int_18374686479671623680)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3798,25 +1615,10 @@ static int __Pyx_modinit_global_init_code(void) {
 
 static int __Pyx_modinit_variable_export_code(void) {
   __Pyx_RefNannyDeclarations
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_export_code", 0);
   /*--- Variable export code ---*/
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_pawn_attacks, (void *)&__pyx_v_6attack_pawn_attacks, "__pyx_t_6helper_U64 [2][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_knight_attacks, (void *)&__pyx_v_6attack_knight_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_king_attacks, (void *)&__pyx_v_6attack_king_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_masks, (void *)&__pyx_v_6attack_bishop_masks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_attacks, (void *)&__pyx_v_6attack_bishop_attacks, "__pyx_t_6helper_U64 [64][0x200]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_masks, (void *)&__pyx_v_6attack_rook_masks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_attacks, (void *)&__pyx_v_6attack_rook_attacks, "__pyx_t_6helper_U64 [64][0x1000]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_relevant_bits, (void *)&__pyx_v_6attack_bishop_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_relevant_bits, (void *)&__pyx_v_6attack_rook_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static int __Pyx_modinit_function_export_code(void) {
@@ -3826,13 +1628,7 @@ static int __Pyx_modinit_function_export_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("mask_bishop_attacks", (void (*)(void))__pyx_f_6attack_mask_bishop_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("mask_rook_attacks", (void (*)(void))__pyx_f_6attack_mask_rook_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("bishop_attacks_on_the_fly", (void (*)(void))__pyx_f_6attack_bishop_attacks_on_the_fly, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("rook_attacks_on_the_fly", (void (*)(void))__pyx_f_6attack_rook_attacks_on_the_fly, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("set_occupancy", (void (*)(void))__pyx_f_6attack_set_occupancy, "__pyx_t_6helper_U64 (int, int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("get_bishop_attacks", (void (*)(void))__pyx_f_6attack_get_bishop_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("get_rook_attacks", (void (*)(void))__pyx_f_6attack_get_rook_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("find_magic_number", (void (*)(void))__pyx_f_9magic_num_find_magic_number, "__pyx_t_6helper_U64 (int, int, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3864,11 +1660,17 @@ static int __Pyx_modinit_variable_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_import_code", 0);
   /*--- Variable import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("const"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "square_to_coord", (void **)&__pyx_vp_5const_square_to_coord, "char *[64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_magic_numbers", (void **)&__pyx_vp_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_magic_numbers", (void **)&__pyx_vp_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "pawn_attacks", (void **)&__pyx_vp_6attack_pawn_attacks, "__pyx_t_6helper_U64 [2][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "knight_attacks", (void **)&__pyx_vp_6attack_knight_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "king_attacks", (void **)&__pyx_vp_6attack_king_attacks, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_relevant_bits", (void **)&__pyx_vp_6attack_bishop_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_relevant_bits", (void **)&__pyx_vp_6attack_rook_relevant_bits, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyImport_ImportModule("rand"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "rand_state", (void **)&__pyx_vp_4rand_rand_state, "unsigned int") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -3888,10 +1690,19 @@ static int __Pyx_modinit_function_import_code(void) {
   /*--- Function import code ---*/
   __pyx_t_1 = PyImport_ImportModule("helper"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "set_bit", (void (**)(void))&__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "pop_bit", (void (**)(void))&__pyx_f_6helper_pop_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "count_bits", (void (**)(void))&__pyx_f_6helper_count_bits, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_ls1b_index", (void (**)(void))&__pyx_f_6helper_get_ls1b_index, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportFunction(__pyx_t_1, "mask_bishop_attacks", (void (**)(void))&__pyx_f_6attack_mask_bishop_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "mask_rook_attacks", (void (**)(void))&__pyx_f_6attack_mask_rook_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "bishop_attacks_on_the_fly", (void (**)(void))&__pyx_f_6attack_bishop_attacks_on_the_fly, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "rook_attacks_on_the_fly", (void (**)(void))&__pyx_f_6attack_rook_attacks_on_the_fly, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "set_occupancy", (void (**)(void))&__pyx_f_6attack_set_occupancy, "__pyx_t_6helper_U64 (int, int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyImport_ImportModule("rand"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportFunction(__pyx_t_1, "generate_magic_number", (void (**)(void))&__pyx_f_4rand_generate_magic_number, "__pyx_t_6helper_U64 (unsigned int *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -3920,11 +1731,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC initattack(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC initattack(void)
+__Pyx_PyMODINIT_FUNC initmagic_num(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initmagic_num(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_attack(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_attack(void)
+__Pyx_PyMODINIT_FUNC PyInit_magic_num(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_magic_num(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -3991,13 +1802,11 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_attack(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_magic_num(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
-  static int __pyx_t_1[64];
-  static int __pyx_t_2[64];
-  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4005,7 +1814,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_attack(PyObject *__pyx_pyinit_modu
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'attack' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'magic_num' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -4020,7 +1829,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_attack(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_magic_num(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -4057,7 +1866,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("attack", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("magic_num", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -4075,14 +1884,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_attack) {
+  if (__pyx_module_is_main_magic_num) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "attack")) {
-      if (unlikely(PyDict_SetItemString(modules, "attack", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "magic_num")) {
+      if (unlikely(PyDict_SetItemString(modules, "magic_num", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4092,7 +1901,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_InitCachedConstants() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
-  if (unlikely(__Pyx_modinit_variable_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_variable_export_code();
   if (unlikely(__Pyx_modinit_function_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
@@ -4103,240 +1912,28 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "attack.pyx":6
- * 
- * # Bit masks for certain files
- * cdef U64 not_a_file = 18374403900871474942ULL             # <<<<<<<<<<<<<<
- * cdef U64 not_ab_file = 18229723555195321596ULL
- * cdef U64 not_h_file = 9187201950435737471ULL
+  /* "magic_num.pyx":1
+ * from libc.stdio cimport printf             # <<<<<<<<<<<<<<
+ * from libc.string cimport memset
+ * from attack cimport mask_bishop_attacks, mask_rook_attacks, bishop_attacks_on_the_fly, rook_attacks_on_the_fly, set_occupancy
  */
-  __pyx_v_6attack_not_a_file = 18374403900871474942ULL;
-
-  /* "attack.pyx":7
- * # Bit masks for certain files
- * cdef U64 not_a_file = 18374403900871474942ULL
- * cdef U64 not_ab_file = 18229723555195321596ULL             # <<<<<<<<<<<<<<
- * cdef U64 not_h_file = 9187201950435737471ULL
- * cdef U64 not_hg_file = 4557430888798830399ULL
- */
-  __pyx_v_6attack_not_ab_file = 18229723555195321596ULL;
-
-  /* "attack.pyx":8
- * cdef U64 not_a_file = 18374403900871474942ULL
- * cdef U64 not_ab_file = 18229723555195321596ULL
- * cdef U64 not_h_file = 9187201950435737471ULL             # <<<<<<<<<<<<<<
- * cdef U64 not_hg_file = 4557430888798830399ULL
- * 
- */
-  __pyx_v_6attack_not_h_file = 9187201950435737471ULL;
-
-  /* "attack.pyx":9
- * cdef U64 not_ab_file = 18229723555195321596ULL
- * cdef U64 not_h_file = 9187201950435737471ULL
- * cdef U64 not_hg_file = 4557430888798830399ULL             # <<<<<<<<<<<<<<
- * 
- * # Occupancy bit count for every square on board
- */
-  __pyx_v_6attack_not_hg_file = 4557430888798830399ULL;
-
-  /* "attack.pyx":12
- * 
- * # Occupancy bit count for every square on board
- * bishop_relevant_bits[:] = [             # <<<<<<<<<<<<<<
- *     6, 5, 5, 5, 5, 5, 5, 6,
- *     5, 5, 5, 5, 5, 5, 5, 5,
- */
-  __pyx_t_1[0] = 6;
-  __pyx_t_1[1] = 5;
-  __pyx_t_1[2] = 5;
-  __pyx_t_1[3] = 5;
-  __pyx_t_1[4] = 5;
-  __pyx_t_1[5] = 5;
-  __pyx_t_1[6] = 5;
-  __pyx_t_1[7] = 6;
-  __pyx_t_1[8] = 5;
-  __pyx_t_1[9] = 5;
-  __pyx_t_1[10] = 5;
-  __pyx_t_1[11] = 5;
-  __pyx_t_1[12] = 5;
-  __pyx_t_1[13] = 5;
-  __pyx_t_1[14] = 5;
-  __pyx_t_1[15] = 5;
-  __pyx_t_1[16] = 5;
-  __pyx_t_1[17] = 5;
-  __pyx_t_1[18] = 7;
-  __pyx_t_1[19] = 7;
-  __pyx_t_1[20] = 7;
-  __pyx_t_1[21] = 7;
-  __pyx_t_1[22] = 5;
-  __pyx_t_1[23] = 5;
-  __pyx_t_1[24] = 5;
-  __pyx_t_1[25] = 5;
-  __pyx_t_1[26] = 7;
-  __pyx_t_1[27] = 9;
-  __pyx_t_1[28] = 9;
-  __pyx_t_1[29] = 7;
-  __pyx_t_1[30] = 5;
-  __pyx_t_1[31] = 5;
-  __pyx_t_1[32] = 5;
-  __pyx_t_1[33] = 5;
-  __pyx_t_1[34] = 7;
-  __pyx_t_1[35] = 9;
-  __pyx_t_1[36] = 9;
-  __pyx_t_1[37] = 7;
-  __pyx_t_1[38] = 5;
-  __pyx_t_1[39] = 5;
-  __pyx_t_1[40] = 5;
-  __pyx_t_1[41] = 5;
-  __pyx_t_1[42] = 7;
-  __pyx_t_1[43] = 7;
-  __pyx_t_1[44] = 7;
-  __pyx_t_1[45] = 7;
-  __pyx_t_1[46] = 5;
-  __pyx_t_1[47] = 5;
-  __pyx_t_1[48] = 5;
-  __pyx_t_1[49] = 5;
-  __pyx_t_1[50] = 5;
-  __pyx_t_1[51] = 5;
-  __pyx_t_1[52] = 5;
-  __pyx_t_1[53] = 5;
-  __pyx_t_1[54] = 5;
-  __pyx_t_1[55] = 5;
-  __pyx_t_1[56] = 6;
-  __pyx_t_1[57] = 5;
-  __pyx_t_1[58] = 5;
-  __pyx_t_1[59] = 5;
-  __pyx_t_1[60] = 5;
-  __pyx_t_1[61] = 5;
-  __pyx_t_1[62] = 5;
-  __pyx_t_1[63] = 6;
-  memcpy(&(__pyx_v_6attack_bishop_relevant_bits[0]), __pyx_t_1, sizeof(__pyx_v_6attack_bishop_relevant_bits[0]) * (64));
-
-  /* "attack.pyx":23
- * ]
- * 
- * rook_relevant_bits[:] = [             # <<<<<<<<<<<<<<
- *     12, 11, 11, 11, 11, 11, 11, 12,
- *     11, 10, 10, 10, 10, 10, 10, 11,
- */
-  __pyx_t_2[0] = 12;
-  __pyx_t_2[1] = 11;
-  __pyx_t_2[2] = 11;
-  __pyx_t_2[3] = 11;
-  __pyx_t_2[4] = 11;
-  __pyx_t_2[5] = 11;
-  __pyx_t_2[6] = 11;
-  __pyx_t_2[7] = 12;
-  __pyx_t_2[8] = 11;
-  __pyx_t_2[9] = 10;
-  __pyx_t_2[10] = 10;
-  __pyx_t_2[11] = 10;
-  __pyx_t_2[12] = 10;
-  __pyx_t_2[13] = 10;
-  __pyx_t_2[14] = 10;
-  __pyx_t_2[15] = 11;
-  __pyx_t_2[16] = 11;
-  __pyx_t_2[17] = 10;
-  __pyx_t_2[18] = 10;
-  __pyx_t_2[19] = 10;
-  __pyx_t_2[20] = 10;
-  __pyx_t_2[21] = 10;
-  __pyx_t_2[22] = 10;
-  __pyx_t_2[23] = 11;
-  __pyx_t_2[24] = 11;
-  __pyx_t_2[25] = 10;
-  __pyx_t_2[26] = 10;
-  __pyx_t_2[27] = 10;
-  __pyx_t_2[28] = 10;
-  __pyx_t_2[29] = 10;
-  __pyx_t_2[30] = 10;
-  __pyx_t_2[31] = 11;
-  __pyx_t_2[32] = 11;
-  __pyx_t_2[33] = 10;
-  __pyx_t_2[34] = 10;
-  __pyx_t_2[35] = 10;
-  __pyx_t_2[36] = 10;
-  __pyx_t_2[37] = 10;
-  __pyx_t_2[38] = 10;
-  __pyx_t_2[39] = 11;
-  __pyx_t_2[40] = 11;
-  __pyx_t_2[41] = 10;
-  __pyx_t_2[42] = 10;
-  __pyx_t_2[43] = 10;
-  __pyx_t_2[44] = 10;
-  __pyx_t_2[45] = 10;
-  __pyx_t_2[46] = 10;
-  __pyx_t_2[47] = 11;
-  __pyx_t_2[48] = 11;
-  __pyx_t_2[49] = 10;
-  __pyx_t_2[50] = 10;
-  __pyx_t_2[51] = 10;
-  __pyx_t_2[52] = 10;
-  __pyx_t_2[53] = 10;
-  __pyx_t_2[54] = 10;
-  __pyx_t_2[55] = 11;
-  __pyx_t_2[56] = 12;
-  __pyx_t_2[57] = 11;
-  __pyx_t_2[58] = 11;
-  __pyx_t_2[59] = 11;
-  __pyx_t_2[60] = 11;
-  __pyx_t_2[61] = 11;
-  __pyx_t_2[62] = 11;
-  __pyx_t_2[63] = 12;
-  memcpy(&(__pyx_v_6attack_rook_relevant_bits[0]), __pyx_t_2, sizeof(__pyx_v_6attack_rook_relevant_bits[0]) * (64));
-
-  /* "attack.pyx":293
- *     return rook_attacks[square][occupancy]
- * 
- * init_leapers_attacks()             # <<<<<<<<<<<<<<
- * init_sliders_attacks(bishop)
- * init_sliders_attacks(rook)
- */
-  __pyx_t_3 = __pyx_f_6attack_init_leapers_attacks(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 293, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "attack.pyx":294
- * 
- * init_leapers_attacks()
- * init_sliders_attacks(bishop)             # <<<<<<<<<<<<<<
- * init_sliders_attacks(rook)
- */
-  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_bishop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "attack.pyx":295
- * init_leapers_attacks()
- * init_sliders_attacks(bishop)
- * init_sliders_attacks(rook)             # <<<<<<<<<<<<<<
- */
-  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_rook); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 295, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "attack.pyx":1
- * from helper cimport set_bit, pop_bit, count_bits, get_ls1b_index             # <<<<<<<<<<<<<<
- * from const cimport rook_magic_numbers, bishop_magic_numbers
- * 
- */
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_3) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /*--- Wrapped vars code ---*/
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init attack", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init magic_num", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init attack");
+    PyErr_SetString(PyExc_ImportError, "init magic_num");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -4395,19 +1992,70 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
-/* DivInt[long] */
-static CYTHON_INLINE long __Pyx_div_long(long a, long b) {
-    long q = a / b;
-    long r = a - q*b;
-    q -= ((r != 0) & ((r ^ b) < 0));
-    return q;
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
 }
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
 
-/* ModInt[long] */
-static CYTHON_INLINE long __Pyx_mod_long(long a, long b) {
-    long r = a % b;
-    r += ((r != 0) & ((r ^ b) < 0)) * b;
-    return r;
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
 }
 
 /* PyDictVersioning */
@@ -4433,30 +2081,6 @@ static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UIN
     if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
         return 0;
     return obj_dict_version == __Pyx_get_object_dict_version(obj);
-}
-#endif
-
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
 }
 #endif
 
@@ -4696,31 +2320,31 @@ bad:
     }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int neg_one = (int) -1, const_zero = (int) 0;
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic pop
 #endif
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
+        if (sizeof(int) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(long) <= sizeof(long)) {
+        if (sizeof(int) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -4728,7 +2352,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
+        return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
 }
@@ -4930,31 +2554,31 @@ raise_neg_overflow:
 }
 
 /* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_PY_LONG_LONG(unsigned PY_LONG_LONG value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
+    const unsigned PY_LONG_LONG neg_one = (unsigned PY_LONG_LONG) -1, const_zero = (unsigned PY_LONG_LONG) 0;
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic pop
 #endif
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
+        if (sizeof(unsigned PY_LONG_LONG) < sizeof(long)) {
             return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
+        } else if (sizeof(unsigned PY_LONG_LONG) <= sizeof(unsigned long)) {
             return PyLong_FromUnsignedLong((unsigned long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+        } else if (sizeof(unsigned PY_LONG_LONG) <= sizeof(unsigned PY_LONG_LONG)) {
             return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
 #endif
         }
     } else {
-        if (sizeof(int) <= sizeof(long)) {
+        if (sizeof(unsigned PY_LONG_LONG) <= sizeof(long)) {
             return PyInt_FromLong((long) value);
 #ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+        } else if (sizeof(unsigned PY_LONG_LONG) <= sizeof(PY_LONG_LONG)) {
             return PyLong_FromLongLong((PY_LONG_LONG) value);
 #endif
         }
@@ -4962,7 +2586,241 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
+        return _PyLong_FromByteArray(bytes, sizeof(unsigned PY_LONG_LONG),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE unsigned PY_LONG_LONG __Pyx_PyInt_As_unsigned_PY_LONG_LONG(PyObject *x) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const unsigned PY_LONG_LONG neg_one = (unsigned PY_LONG_LONG) -1, const_zero = (unsigned PY_LONG_LONG) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(unsigned PY_LONG_LONG) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (unsigned PY_LONG_LONG) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned PY_LONG_LONG) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) >= 2 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) >= 3 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) >= 4 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (unsigned PY_LONG_LONG) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(unsigned PY_LONG_LONG) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned PY_LONG_LONG, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned PY_LONG_LONG) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned PY_LONG_LONG, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (unsigned PY_LONG_LONG) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((unsigned PY_LONG_LONG)-1)*(((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) ((((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((unsigned PY_LONG_LONG)-1)*(((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) ((((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) (((unsigned PY_LONG_LONG)-1)*(((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(unsigned PY_LONG_LONG) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(unsigned PY_LONG_LONG, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(unsigned PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                            return (unsigned PY_LONG_LONG) ((((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(unsigned PY_LONG_LONG) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned PY_LONG_LONG, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(unsigned PY_LONG_LONG) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(unsigned PY_LONG_LONG, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            unsigned PY_LONG_LONG val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (unsigned PY_LONG_LONG) -1;
+        }
+    } else {
+        unsigned PY_LONG_LONG val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (unsigned PY_LONG_LONG) -1;
+        val = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to unsigned PY_LONG_LONG");
+    return (unsigned PY_LONG_LONG) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to unsigned PY_LONG_LONG");
+    return (unsigned PY_LONG_LONG) -1;
+}
+
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
 }
@@ -5277,51 +3135,6 @@ static int __Pyx_check_binary_version(void) {
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
-}
-
-/* PyObjectSetAttrStr */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
-    PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_setattro))
-        return tp->tp_setattro(obj, attr_name, value);
-#if PY_MAJOR_VERSION < 3
-    if (likely(tp->tp_setattr))
-        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
-#endif
-    return PyObject_SetAttr(obj, attr_name, value);
-}
-#endif
-
-/* VoidPtrExport */
-static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
-    PyObject *d;
-    PyObject *cobj = 0;
-    d = PyDict_GetItem(__pyx_d, __pyx_n_s_pyx_capi);
-    Py_XINCREF(d);
-    if (!d) {
-        d = PyDict_New();
-        if (!d)
-            goto bad;
-        if (__Pyx_PyObject_SetAttrStr(__pyx_m, __pyx_n_s_pyx_capi, d) < 0)
-            goto bad;
-    }
-#if PY_VERSION_HEX >= 0x02070000
-    cobj = PyCapsule_New(p, sig, 0);
-#else
-    cobj = PyCObject_FromVoidPtrAndDesc(p, (void *)sig, 0);
-#endif
-    if (!cobj)
-        goto bad;
-    if (PyDict_SetItem(d, name, cobj) < 0)
-        goto bad;
-    Py_DECREF(cobj);
-    Py_DECREF(d);
-    return 0;
-bad:
-    Py_XDECREF(cobj);
-    Py_XDECREF(d);
-    return -1;
 }
 
 /* FunctionExport */
