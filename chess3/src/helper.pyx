@@ -1,6 +1,5 @@
 from libc.stdio cimport printf
 
-
 cdef U64 get_bit(U64 bitboard, int square):
     return 1 if bitboard & (1ULL << square) else 0
 

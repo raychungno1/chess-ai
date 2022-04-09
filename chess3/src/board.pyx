@@ -1,16 +1,20 @@
 from libc.stdio cimport printf
 from helper cimport U64, print_bitboard, set_bit
 from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks
+from const cimport ascii_pieces, char_to_piece
 
-cdef U64 occupancy = 0ULL
-occupancy = set_bit(occupancy, c5)
-occupancy = set_bit(occupancy, f2)
-occupancy = set_bit(occupancy, g7)
-occupancy = set_bit(occupancy, b2)
-occupancy = set_bit(occupancy, b5)
-occupancy = set_bit(occupancy, e2)
-occupancy = set_bit(occupancy, e7)
 
-print_bitboard(occupancy)
-print_bitboard(get_bishop_attacks(d4, occupancy))
-print_bitboard(get_rook_attacks(e5, occupancy))
+cdef class Board:
+    def __init__(self):
+        self.side = -1
+        self.enpassant = no_sq
+        self.castling = 0
+
+cdef Board chess = Board()
+chess.bitboards[P] = set_bit(chess.bitboards[P], e2)
+print_bitboard(chess.bitboards[P])
+
+printf("%c\n", ascii_pieces[P]) 
+printf("%c\n", ascii_pieces[char_to_piece("K")]) 
+printf("%d\n", char_to_piece("P")) 
+printf("%d\n", char_to_piece("K")) 

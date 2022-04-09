@@ -1119,6 +1119,9 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
 /* VoidPtrExport.proto */
 static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig);
 
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
@@ -1129,6 +1132,8 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 static char *__pyx_v_5const_square_to_coord[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_rook_magic_numbers[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_bishop_magic_numbers[64];
+static char __pyx_v_5const_ascii_pieces[12];
+static int __pyx_v_5const_char_pieces[0x72];
 #define __Pyx_MODULE_NAME "const"
 extern int __pyx_module_is_main_const;
 int __pyx_module_is_main_const = 0;
@@ -1138,10 +1143,12 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_ascii_pieces[] = "ascii_pieces";
 static const char __pyx_k_square_to_coord[] = "square_to_coord";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_rook_magic_numbers[] = "rook_magic_numbers";
 static const char __pyx_k_bishop_magic_numbers[] = "bishop_magic_numbers";
+static PyObject *__pyx_n_s_ascii_pieces;
 static PyObject *__pyx_n_s_bishop_magic_numbers;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_main;
@@ -1151,6 +1158,42 @@ static PyObject *__pyx_n_s_rook_magic_numbers;
 static PyObject *__pyx_n_s_square_to_coord;
 static PyObject *__pyx_n_s_test;
 /* Late includes */
+
+/* "const.pyx":165
+ * char_pieces['k'] = 11
+ * 
+ * cdef int char_to_piece(char c):             # <<<<<<<<<<<<<<
+ *     return char_pieces[c]
+ * 
+ */
+
+static int __pyx_f_5const_char_to_piece(char __pyx_v_c) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("char_to_piece", 0);
+
+  /* "const.pyx":166
+ * 
+ * cdef int char_to_piece(char c):
+ *     return char_pieces[c]             # <<<<<<<<<<<<<<
+ * 
+ */
+  __pyx_r = (__pyx_v_5const_char_pieces[__pyx_v_c]);
+  goto __pyx_L0;
+
+  /* "const.pyx":165
+ * char_pieces['k'] = 11
+ * 
+ * cdef int char_to_piece(char c):             # <<<<<<<<<<<<<<
+ *     return char_pieces[c]
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
 
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
@@ -1198,6 +1241,7 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_n_s_ascii_pieces, __pyx_k_ascii_pieces, sizeof(__pyx_k_ascii_pieces), 0, 0, 1, 1},
   {&__pyx_n_s_bishop_magic_numbers, __pyx_k_bishop_magic_numbers, sizeof(__pyx_k_bishop_magic_numbers), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
@@ -1252,6 +1296,7 @@ static int __Pyx_modinit_variable_export_code(void) {
   if (__Pyx_ExportVoidPtr(__pyx_n_s_square_to_coord, (void *)&__pyx_v_5const_square_to_coord, "char *[64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_magic_numbers, (void *)&__pyx_v_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_magic_numbers, (void *)&__pyx_v_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_ascii_pieces, (void *)&__pyx_v_5const_ascii_pieces, "char [12]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1261,10 +1306,17 @@ static int __Pyx_modinit_variable_export_code(void) {
 
 static int __Pyx_modinit_function_export_code(void) {
   __Pyx_RefNannyDeclarations
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("char_to_piece", (void (*)(void))__pyx_f_5const_char_to_piece, "int (char)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(void) {
@@ -1396,7 +1448,8 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_const(PyObject *__pyx_pyinit_modul
   static char *__pyx_t_1[64];
   static __pyx_t_6helper_U64 __pyx_t_2[64];
   static __pyx_t_6helper_U64 __pyx_t_3[64];
-  PyObject *__pyx_t_4 = NULL;
+  static char __pyx_t_4[12];
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1492,7 +1545,7 @@ if (!__Pyx_RefNanny) {
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code();
   if (unlikely(__Pyx_modinit_variable_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
-  (void)__Pyx_modinit_function_export_code();
+  if (unlikely(__Pyx_modinit_function_export_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
@@ -1719,21 +1772,150 @@ if (!__Pyx_RefNanny) {
   __pyx_t_3[63] = 0x4010011029020020ULL;
   memcpy(&(__pyx_v_5const_bishop_magic_numbers[0]), __pyx_t_3, sizeof(__pyx_v_5const_bishop_magic_numbers[0]) * (64));
 
+  /* "const.pyx":146
+ * ]
+ * 
+ * ascii_pieces[:] = [             # <<<<<<<<<<<<<<
+ *     "P", "N", "B", "R", "Q", "K",
+ *     "p", "n", "b", "r", "q", "k"
+ */
+  __pyx_t_4[0] = 'P';
+  __pyx_t_4[1] = 'N';
+  __pyx_t_4[2] = 'B';
+  __pyx_t_4[3] = 'R';
+  __pyx_t_4[4] = 'Q';
+  __pyx_t_4[5] = 'K';
+  __pyx_t_4[6] = 'p';
+  __pyx_t_4[7] = 'n';
+  __pyx_t_4[8] = 'b';
+  __pyx_t_4[9] = 'r';
+  __pyx_t_4[10] = 'q';
+  __pyx_t_4[11] = 'k';
+  memcpy(&(__pyx_v_5const_ascii_pieces[0]), __pyx_t_4, sizeof(__pyx_v_5const_ascii_pieces[0]) * (12));
+
+  /* "const.pyx":152
+ * 
+ * cdef int char_pieces[114]
+ * char_pieces['P'] = 0             # <<<<<<<<<<<<<<
+ * char_pieces['N'] = 1
+ * char_pieces['B'] = 2
+ */
+  (__pyx_v_5const_char_pieces['P']) = 0;
+
+  /* "const.pyx":153
+ * cdef int char_pieces[114]
+ * char_pieces['P'] = 0
+ * char_pieces['N'] = 1             # <<<<<<<<<<<<<<
+ * char_pieces['B'] = 2
+ * char_pieces['R'] = 3
+ */
+  (__pyx_v_5const_char_pieces['N']) = 1;
+
+  /* "const.pyx":154
+ * char_pieces['P'] = 0
+ * char_pieces['N'] = 1
+ * char_pieces['B'] = 2             # <<<<<<<<<<<<<<
+ * char_pieces['R'] = 3
+ * char_pieces['Q'] = 4
+ */
+  (__pyx_v_5const_char_pieces['B']) = 2;
+
+  /* "const.pyx":155
+ * char_pieces['N'] = 1
+ * char_pieces['B'] = 2
+ * char_pieces['R'] = 3             # <<<<<<<<<<<<<<
+ * char_pieces['Q'] = 4
+ * char_pieces['K'] = 5
+ */
+  (__pyx_v_5const_char_pieces['R']) = 3;
+
+  /* "const.pyx":156
+ * char_pieces['B'] = 2
+ * char_pieces['R'] = 3
+ * char_pieces['Q'] = 4             # <<<<<<<<<<<<<<
+ * char_pieces['K'] = 5
+ * char_pieces['p'] = 6
+ */
+  (__pyx_v_5const_char_pieces['Q']) = 4;
+
+  /* "const.pyx":157
+ * char_pieces['R'] = 3
+ * char_pieces['Q'] = 4
+ * char_pieces['K'] = 5             # <<<<<<<<<<<<<<
+ * char_pieces['p'] = 6
+ * char_pieces['n'] = 7
+ */
+  (__pyx_v_5const_char_pieces['K']) = 5;
+
+  /* "const.pyx":158
+ * char_pieces['Q'] = 4
+ * char_pieces['K'] = 5
+ * char_pieces['p'] = 6             # <<<<<<<<<<<<<<
+ * char_pieces['n'] = 7
+ * char_pieces['b'] = 8
+ */
+  (__pyx_v_5const_char_pieces['p']) = 6;
+
+  /* "const.pyx":159
+ * char_pieces['K'] = 5
+ * char_pieces['p'] = 6
+ * char_pieces['n'] = 7             # <<<<<<<<<<<<<<
+ * char_pieces['b'] = 8
+ * char_pieces['r'] = 9
+ */
+  (__pyx_v_5const_char_pieces['n']) = 7;
+
+  /* "const.pyx":160
+ * char_pieces['p'] = 6
+ * char_pieces['n'] = 7
+ * char_pieces['b'] = 8             # <<<<<<<<<<<<<<
+ * char_pieces['r'] = 9
+ * char_pieces['q'] = 10
+ */
+  (__pyx_v_5const_char_pieces['b']) = 8;
+
+  /* "const.pyx":161
+ * char_pieces['n'] = 7
+ * char_pieces['b'] = 8
+ * char_pieces['r'] = 9             # <<<<<<<<<<<<<<
+ * char_pieces['q'] = 10
+ * char_pieces['k'] = 11
+ */
+  (__pyx_v_5const_char_pieces['r']) = 9;
+
+  /* "const.pyx":162
+ * char_pieces['b'] = 8
+ * char_pieces['r'] = 9
+ * char_pieces['q'] = 10             # <<<<<<<<<<<<<<
+ * char_pieces['k'] = 11
+ * 
+ */
+  (__pyx_v_5const_char_pieces['q']) = 10;
+
+  /* "const.pyx":163
+ * char_pieces['r'] = 9
+ * char_pieces['q'] = 10
+ * char_pieces['k'] = 11             # <<<<<<<<<<<<<<
+ * 
+ * cdef int char_to_piece(char c):
+ */
+  (__pyx_v_5const_char_pieces['k']) = 11;
+
   /* "const.pyx":1
  * square_to_coord[:] = [             # <<<<<<<<<<<<<<
  *     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
  *     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_4) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_5) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /*--- Wrapped vars code ---*/
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init const", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -2651,6 +2833,43 @@ static int __Pyx_ExportVoidPtr(PyObject *name, void *p, const char *sig) {
     if (!cobj)
         goto bad;
     if (PyDict_SetItem(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
+}
+
+/* FunctionExport */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
         goto bad;
     Py_DECREF(cobj);
     Py_DECREF(d);

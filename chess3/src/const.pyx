@@ -142,3 +142,26 @@ bishop_magic_numbers[:] = [
     0x8918844842082200ULL,
     0x4010011029020020ULL
 ]
+
+ascii_pieces[:] = [
+    "P", "N", "B", "R", "Q", "K",
+    "p", "n", "b", "r", "q", "k"
+]
+
+cdef int char_pieces[114]
+char_pieces['P'] = 0
+char_pieces['N'] = 1
+char_pieces['B'] = 2
+char_pieces['R'] = 3
+char_pieces['Q'] = 4
+char_pieces['K'] = 5
+char_pieces['p'] = 6
+char_pieces['n'] = 7
+char_pieces['b'] = 8
+char_pieces['r'] = 9
+char_pieces['q'] = 10
+char_pieces['k'] = 11
+
+cdef int char_to_piece(char c):
+    return char_pieces[c]
+    
