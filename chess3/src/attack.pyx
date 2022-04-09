@@ -79,6 +79,63 @@ cdef U64 mask_king_attacks(int square):
 
     return attacks
 
+cdef U64 mask_bishop_attacks(int square):
+    cdef U64 attacks = 0ULL
+
+    cdef int tr = square // 8 # target rank
+    cdef int tf = square % 8 # target file
+    cdef int r = tr + 1
+    cdef int f = tf + 1
+    
+    while r <= 6 and f <= 6:
+        attacks |= (1ULL << (r * 8 + f))
+        r += 1
+        f += 1
+
+    r = tr - 1
+    f = tf + 1
+    while r >= 1 and f <= 6:
+        attacks |= (1ULL << (r * 8 + f))
+        r -= 1
+        f += 1
+
+    r = tr + 1
+    f = tf - 1
+    while r <= 6 and f >= 1:
+        attacks |= (1ULL << (r * 8 + f))
+        r += 1
+        f -= 1
+
+    r = tr - 1
+    f = tf - 1
+    while r >= 1 and f >= 1:
+        attacks |= (1ULL << (r * 8 + f))
+        r -= 1
+        f -= 1
+
+    return attacks
+
+cdef U64 mask_rook_attacks(int square):
+    cdef U64 attacks = 0ULL
+
+    cdef int tr = square // 8 # target rank
+    cdef int tf = square % 8 # target file
+    cdef int r, f
+    
+    for r in range(tr + 1, 7):
+        attacks |= (1ULL << (r * 8 + tf))
+
+    for f in range(tf + 1, 7):
+        attacks |= (1ULL << (tr * 8 + f))
+
+    for r in range(tr - 1, 0, -1):
+        attacks |= (1ULL << (r * 8 + tf))
+
+    for f in range(tf - 1, 0, -1):
+        attacks |= (1ULL << (tr * 8 + f))
+
+    return attacks
+
 cdef init_leapers_attacks():
     cdef int square
     for square in range(64):

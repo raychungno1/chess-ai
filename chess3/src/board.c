@@ -1214,6 +1214,7 @@ static __pyx_t_6helper_U64 (*__pyx_vp_6attack_knight_attacks)[64] = 0;
 #define __pyx_v_6attack_knight_attacks (*__pyx_vp_6attack_knight_attacks)
 static __pyx_t_6helper_U64 (*__pyx_vp_6attack_king_attacks)[64] = 0;
 #define __pyx_v_6attack_king_attacks (*__pyx_vp_6attack_king_attacks)
+static __pyx_t_6helper_U64 (*__pyx_f_6attack_mask_rook_attacks)(int); /*proto*/
 
 /* Module declarations from 'board' */
 static int __pyx_v_5board_square;
@@ -1393,6 +1394,10 @@ static int __Pyx_modinit_function_import_code(void) {
   if (__Pyx_ImportFunction(__pyx_t_1, "set_bit", (void (**)(void))&__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "pop_bit", (void (**)(void))&__pyx_f_6helper_pop_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "print_bitboard", (void (**)(void))&__pyx_f_6helper_print_bitboard, "PyObject *(__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyImport_ImportModule("attack"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportFunction(__pyx_t_1, "mask_rook_attacks", (void (**)(void))&__pyx_f_6attack_mask_rook_attacks, "__pyx_t_6helper_U64 (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -1604,10 +1609,11 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "board.pyx":7
- * # print_bitboard(mask_king_attacks(a8))
+ * # print_bitboard(mask_rook_attacks(d5))
  * cdef int square
  * for square in range(64):             # <<<<<<<<<<<<<<
- *     print_bitboard(king_attacks[square])
+ *     print_bitboard(mask_rook_attacks(square))
+ *     # print_bitboard(king_attacks[square])
  */
   for (__pyx_t_1 = 0; __pyx_t_1 < 64; __pyx_t_1+=1) {
     __pyx_v_5board_square = __pyx_t_1;
@@ -1615,16 +1621,17 @@ if (!__Pyx_RefNanny) {
     /* "board.pyx":8
  * cdef int square
  * for square in range(64):
- *     print_bitboard(king_attacks[square])             # <<<<<<<<<<<<<<
+ *     print_bitboard(mask_rook_attacks(square))             # <<<<<<<<<<<<<<
+ *     # print_bitboard(king_attacks[square])
  */
-    __pyx_t_2 = __pyx_f_6helper_print_bitboard((__pyx_v_6attack_king_attacks[__pyx_v_5board_square])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+    __pyx_t_2 = __pyx_f_6helper_print_bitboard(__pyx_f_6attack_mask_rook_attacks(__pyx_v_5board_square)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
 
   /* "board.pyx":1
  * from helper cimport U64, get_bit, set_bit, pop_bit, print_bitboard             # <<<<<<<<<<<<<<
- * from attack cimport pawn_attacks, knight_attacks, king_attacks
+ * from attack cimport pawn_attacks, knight_attacks, king_attacks, mask_rook_attacks
  * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
