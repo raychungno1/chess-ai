@@ -1512,6 +1512,8 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
 /* Module declarations from 'helper' */
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_get_bit)(__pyx_t_6helper_U64, int); /*proto*/
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_set_bit)(__pyx_t_6helper_U64, int); /*proto*/
+static __pyx_t_6helper_U64 (*__pyx_f_6helper_pop_bit)(__pyx_t_6helper_U64, int); /*proto*/
+static int (*__pyx_f_6helper_get_ls1b_index)(__pyx_t_6helper_U64); /*proto*/
 static PyObject *(*__pyx_f_6helper_print_bitboard)(__pyx_t_6helper_U64); /*proto*/
 
 /* Module declarations from 'libc.string' */
@@ -1615,8 +1617,8 @@ static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_pyx_unpickle_Board[] = "__pyx_unpickle_Board";
-static const char __pyx_k_print_attacked_squares[] = "print_attacked_squares";
 static const char __pyx_k_Incompatible_checksums_s_vs_0x30[] = "Incompatible checksums (%s vs 0x30bd93e = (bitboards, castling, enpassant, occupancies, side))";
+static const char __pyx_k_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P[] = "r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ";
 static PyObject *__pyx_n_s_Board;
 static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0x30;
 static PyObject *__pyx_n_s_IndexError;
@@ -1635,7 +1637,6 @@ static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_n_s_parse_fen;
 static PyObject *__pyx_n_s_pickle;
-static PyObject *__pyx_n_s_print_attacked_squares;
 static PyObject *__pyx_n_s_print_board;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -1644,6 +1645,7 @@ static PyObject *__pyx_n_s_pyx_state;
 static PyObject *__pyx_n_s_pyx_type;
 static PyObject *__pyx_n_s_pyx_unpickle_Board;
 static PyObject *__pyx_n_s_pyx_vtable;
+static PyObject *__pyx_kp_b_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
@@ -1676,7 +1678,8 @@ static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_51108158;
 static PyObject *__pyx_tuple_;
-static PyObject *__pyx_codeobj__2;
+static PyObject *__pyx_tuple__2;
+static PyObject *__pyx_codeobj__3;
 /* Late includes */
 
 /* "board.pyx":9
@@ -3210,7 +3213,7 @@ static int __pyx_f_5board_5Board_is_square_attacked(struct __pyx_obj_5board_Boar
  *         if king_attacks[square] & (self.bitboards[K] if (side == white) else self.bitboards[k]):
  *             return 1             # <<<<<<<<<<<<<<
  * 
- * 
+ *         return 0
  */
     __pyx_r = 1;
     goto __pyx_L0;
@@ -3224,8 +3227,8 @@ static int __pyx_f_5board_5Board_is_square_attacked(struct __pyx_obj_5board_Boar
  */
   }
 
-  /* "board.pyx":150
- * 
+  /* "board.pyx":149
+ *             return 1
  * 
  *         return 0             # <<<<<<<<<<<<<<
  * 
@@ -3248,7 +3251,7 @@ static int __pyx_f_5board_5Board_is_square_attacked(struct __pyx_obj_5board_Boar
   return __pyx_r;
 }
 
-/* "board.pyx":152
+/* "board.pyx":151
  *         return 0
  * 
  *     def print_attacked_squares(self, int side):             # <<<<<<<<<<<<<<
@@ -3267,7 +3270,7 @@ static PyObject *__pyx_pw_5board_5Board_7print_attacked_squares(PyObject *__pyx_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_attacked_squares (wrapper)", 0);
   assert(__pyx_arg_side); {
-    __pyx_v_side = __Pyx_PyInt_As_int(__pyx_arg_side); if (unlikely((__pyx_v_side == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 152, __pyx_L3_error)
+    __pyx_v_side = __Pyx_PyInt_As_int(__pyx_arg_side); if (unlikely((__pyx_v_side == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3294,7 +3297,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
   long __pyx_t_4;
   __Pyx_RefNannySetupContext("print_attacked_squares", 0);
 
-  /* "board.pyx":153
+  /* "board.pyx":152
  * 
  *     def print_attacked_squares(self, int side):
  *         printf("\n")             # <<<<<<<<<<<<<<
@@ -3303,7 +3306,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
  */
   (void)(printf(((char const *)"\n")));
 
-  /* "board.pyx":155
+  /* "board.pyx":154
  *         printf("\n")
  *         cdef int rank, file, square
  *         for rank in range(8):             # <<<<<<<<<<<<<<
@@ -3313,7 +3316,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
   for (__pyx_t_1 = 0; __pyx_t_1 < 8; __pyx_t_1+=1) {
     __pyx_v_rank = __pyx_t_1;
 
-    /* "board.pyx":156
+    /* "board.pyx":155
  *         cdef int rank, file, square
  *         for rank in range(8):
  *             for file in range(8):             # <<<<<<<<<<<<<<
@@ -3323,7 +3326,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
     for (__pyx_t_2 = 0; __pyx_t_2 < 8; __pyx_t_2+=1) {
       __pyx_v_file = __pyx_t_2;
 
-      /* "board.pyx":157
+      /* "board.pyx":156
  *         for rank in range(8):
  *             for file in range(8):
  *                 square = 8 * rank + file             # <<<<<<<<<<<<<<
@@ -3332,7 +3335,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
  */
       __pyx_v_square = ((8 * __pyx_v_rank) + __pyx_v_file);
 
-      /* "board.pyx":159
+      /* "board.pyx":158
  *                 square = 8 * rank + file
  * 
  *                 if not(file):             # <<<<<<<<<<<<<<
@@ -3342,7 +3345,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
       __pyx_t_3 = ((!(__pyx_v_file != 0)) != 0);
       if (__pyx_t_3) {
 
-        /* "board.pyx":160
+        /* "board.pyx":159
  * 
  *                 if not(file):
  *                     printf(" %d  ", 8 - rank)             # <<<<<<<<<<<<<<
@@ -3351,7 +3354,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
  */
         (void)(printf(((char const *)" %d  "), (8 - __pyx_v_rank)));
 
-        /* "board.pyx":159
+        /* "board.pyx":158
  *                 square = 8 * rank + file
  * 
  *                 if not(file):             # <<<<<<<<<<<<<<
@@ -3360,7 +3363,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
  */
       }
 
-      /* "board.pyx":162
+      /* "board.pyx":161
  *                     printf(" %d  ", 8 - rank)
  * 
  *                 printf("%d ", 1 if self.is_square_attacked(square, side) else 0)             # <<<<<<<<<<<<<<
@@ -3375,7 +3378,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
       (void)(printf(((char const *)"%d "), __pyx_t_4));
     }
 
-    /* "board.pyx":163
+    /* "board.pyx":162
  * 
  *                 printf("%d ", 1 if self.is_square_attacked(square, side) else 0)
  *             printf("\n")             # <<<<<<<<<<<<<<
@@ -3385,7 +3388,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
     (void)(printf(((char const *)"\n")));
   }
 
-  /* "board.pyx":164
+  /* "board.pyx":163
  *                 printf("%d ", 1 if self.is_square_attacked(square, side) else 0)
  *             printf("\n")
  *         printf("\n    a b c d e f g h\n\n") # File label             # <<<<<<<<<<<<<<
@@ -3394,7 +3397,7 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
  */
   (void)(printf(((char const *)"\n    a b c d e f g h\n\n")));
 
-  /* "board.pyx":152
+  /* "board.pyx":151
  *         return 0
  * 
  *     def print_attacked_squares(self, int side):             # <<<<<<<<<<<<<<
@@ -3409,28 +3412,35 @@ static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "board.pyx":166
+/* "board.pyx":165
  *         printf("\n    a b c d e f g h\n\n") # File label
  * 
  *     cpdef generate_moves(self):             # <<<<<<<<<<<<<<
- *         cdef int source_square, target_square
+ *         cdef int source_square, target_square, piece
  *         cdef U64 bitboard, attacks
  */
 
 static PyObject *__pyx_pw_5board_5Board_9generate_moves(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_skip_dispatch) {
-  CYTHON_UNUSED __pyx_t_6helper_U64 __pyx_v_bitboard;
-  __pyx_t_6helper_U64 __pyx_v_bb;
+  int __pyx_v_source_square;
+  int __pyx_v_target_square;
+  int __pyx_v_piece;
+  __pyx_t_6helper_U64 __pyx_v_bitboard;
+  __pyx_t_6helper_U64 __pyx_v_attacks;
+  PyObject *__pyx_v_bb = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  __pyx_t_6helper_U64 *__pyx_t_5;
-  __pyx_t_6helper_U64 *__pyx_t_6;
-  __pyx_t_6helper_U64 *__pyx_t_7;
-  int __pyx_t_8;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  PyObject *(*__pyx_t_7)(PyObject *);
+  __pyx_t_6helper_U64 __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_t_10;
+  int __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3444,7 +3454,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_generate_moves); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_generate_moves); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_9generate_moves)) {
         __Pyx_XDECREF(__pyx_r);
@@ -3461,7 +3471,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -3482,56 +3492,1255 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
     #endif
   }
 
-  /* "board.pyx":170
+  /* "board.pyx":169
  *         cdef U64 bitboard, attacks
  * 
- *         for bb in self.bitboards:             # <<<<<<<<<<<<<<
+ *         for piece, bb in enumerate(self.bitboards):             # <<<<<<<<<<<<<<
  *             bitboard = bb # generate copy of bitboard
  * 
  */
-  __pyx_t_6 = (__pyx_v_self->bitboards + 12);
-  for (__pyx_t_7 = __pyx_v_self->bitboards; __pyx_t_7 < __pyx_t_6; __pyx_t_7++) {
-    __pyx_t_5 = __pyx_t_7;
-    __pyx_v_bb = (__pyx_t_5[0]);
+  __pyx_t_5 = 0;
+  __pyx_t_1 = __Pyx_carray_to_py___pyx_t_6helper_U64(__pyx_v_self->bitboards, 12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
+    __pyx_t_7 = NULL;
+  } else {
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 169, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 169, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_7)) {
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 169, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 169, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 169, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_bb, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_v_piece = __pyx_t_5;
+    __pyx_t_5 = (__pyx_t_5 + 1);
 
-    /* "board.pyx":171
+    /* "board.pyx":170
  * 
- *         for bb in self.bitboards:
+ *         for piece, bb in enumerate(self.bitboards):
  *             bitboard = bb # generate copy of bitboard             # <<<<<<<<<<<<<<
  * 
  *             # Generate white pawns & white king castle
  */
-    __pyx_v_bitboard = __pyx_v_bb;
+    __pyx_t_8 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_v_bb); if (unlikely((__pyx_t_8 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L1_error)
+    __pyx_v_bitboard = __pyx_t_8;
 
-    /* "board.pyx":174
+    /* "board.pyx":173
  * 
  *             # Generate white pawns & white king castle
  *             if self.side == white:             # <<<<<<<<<<<<<<
- *                 pass
+ *                 if piece == P:
+ *                     while bitboard:
+ */
+    __pyx_t_9 = ((__pyx_v_self->side == __pyx_e_5board_white) != 0);
+    if (__pyx_t_9) {
+
+      /* "board.pyx":174
+ *             # Generate white pawns & white king castle
+ *             if self.side == white:
+ *                 if piece == P:             # <<<<<<<<<<<<<<
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ */
+      __pyx_t_9 = ((__pyx_v_piece == __pyx_e_5board_P) != 0);
+      if (__pyx_t_9) {
+
+        /* "board.pyx":175
+ *             if self.side == white:
+ *                 if piece == P:
+ *                     while bitboard:             # <<<<<<<<<<<<<<
+ *                         source_square = get_ls1b_index(bitboard)
+ *                         target_square = source_square - 8
+ */
+        while (1) {
+          __pyx_t_9 = (__pyx_v_bitboard != 0);
+          if (!__pyx_t_9) break;
+
+          /* "board.pyx":176
+ *                 if piece == P:
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)             # <<<<<<<<<<<<<<
+ *                         target_square = source_square - 8
  * 
  */
-    __pyx_t_8 = ((__pyx_v_self->side == __pyx_e_5board_white) != 0);
-    if (__pyx_t_8) {
+          __pyx_v_source_square = __pyx_f_6helper_get_ls1b_index(__pyx_v_bitboard);
+
+          /* "board.pyx":177
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ *                         target_square = source_square - 8             # <<<<<<<<<<<<<<
+ * 
+ *                         if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):
+ */
+          __pyx_v_target_square = (__pyx_v_source_square - 8);
+
+          /* "board.pyx":179
+ *                         target_square = source_square - 8
+ * 
+ *                         if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):             # <<<<<<<<<<<<<<
+ *                             # Promotion
+ *                             if source_square >= a7 and source_square <= h7:
+ */
+          __pyx_t_10 = ((__pyx_v_target_square >= __pyx_e_5board_a8) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L10_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_v_target_square) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L10_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":181
+ *                         if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):
+ *                             # Promotion
+ *                             if source_square >= a7 and source_square <= h7:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a7) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L13_bool_binop_done;
+            }
+            __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h7) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L13_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":182
+ *                             # Promotion
+ *                             if source_square >= a7 and source_square <= h7:
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sq\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":183
+ *                             if source_square >= a7 and source_square <= h7:
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sr\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":184
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sb\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":185
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             # Single pawn move
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sn\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":181
+ *                         if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):
+ *                             # Promotion
+ *                             if source_square >= a7 and source_square <= h7:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              goto __pyx_L12;
+            }
+
+            /* "board.pyx":189
+ *                             # Single pawn move
+ *                             else:
+ *                                 printf("pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                                 # Double pawn move
+ */
+            /*else*/ {
+              (void)(printf(((char const *)"pawn push: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":192
+ * 
+ *                                 # Double pawn move
+ *                                 if (source_square >= a2 and source_square <= h2) and not(get_bit(self.occupancies[both], target_square - 8)):             # <<<<<<<<<<<<<<
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square - 8])
+ * 
+ */
+              __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a2) != 0);
+              if (__pyx_t_10) {
+              } else {
+                __pyx_t_9 = __pyx_t_10;
+                goto __pyx_L16_bool_binop_done;
+              }
+              __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h2) != 0);
+              if (__pyx_t_10) {
+              } else {
+                __pyx_t_9 = __pyx_t_10;
+                goto __pyx_L16_bool_binop_done;
+              }
+              __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), (__pyx_v_target_square - 8)) != 0)) != 0);
+              __pyx_t_9 = __pyx_t_10;
+              __pyx_L16_bool_binop_done:;
+              if (__pyx_t_9) {
+
+                /* "board.pyx":193
+ *                                 # Double pawn move
+ *                                 if (source_square >= a2 and source_square <= h2) and not(get_bit(self.occupancies[both], target_square - 8)):
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square - 8])             # <<<<<<<<<<<<<<
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]
+ */
+                (void)(printf(((char const *)"double pawn push: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[(__pyx_v_target_square - 8)])));
+
+                /* "board.pyx":192
+ * 
+ *                                 # Double pawn move
+ *                                 if (source_square >= a2 and source_square <= h2) and not(get_bit(self.occupancies[both], target_square - 8)):             # <<<<<<<<<<<<<<
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square - 8])
+ * 
+ */
+              }
+            }
+            __pyx_L12:;
+
+            /* "board.pyx":179
+ *                         target_square = source_square - 8
+ * 
+ *                         if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):             # <<<<<<<<<<<<<<
+ *                             # Promotion
+ *                             if source_square >= a7 and source_square <= h7:
+ */
+          }
+
+          /* "board.pyx":195
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square - 8])
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]             # <<<<<<<<<<<<<<
+ *                         while attacks:
+ *                             target_square = get_ls1b_index(attacks)
+ */
+          __pyx_v_attacks = (((__pyx_v_6attack_pawn_attacks[__pyx_v_self->side])[__pyx_v_source_square]) & (__pyx_v_self->occupancies[__pyx_e_5board_black]));
+
+          /* "board.pyx":196
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]
+ *                         while attacks:             # <<<<<<<<<<<<<<
+ *                             target_square = get_ls1b_index(attacks)
+ * 
+ */
+          while (1) {
+            __pyx_t_9 = (__pyx_v_attacks != 0);
+            if (!__pyx_t_9) break;
+
+            /* "board.pyx":197
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]
+ *                         while attacks:
+ *                             target_square = get_ls1b_index(attacks)             # <<<<<<<<<<<<<<
+ * 
+ *                             # Capture promotion
+ */
+            __pyx_v_target_square = __pyx_f_6helper_get_ls1b_index(__pyx_v_attacks);
+
+            /* "board.pyx":200
+ * 
+ *                             # Capture promotion
+ *                             if source_square >= a7 and source_square <= h7:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a7) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L22_bool_binop_done;
+            }
+            __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h7) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L22_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":201
+ *                             # Capture promotion
+ *                             if source_square >= a7 and source_square <= h7:
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sq\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":202
+ *                             if source_square >= a7 and source_square <= h7:
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sr\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":203
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sb\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":204
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             # Normal pawn capture
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sn\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":200
+ * 
+ *                             # Capture promotion
+ *                             if source_square >= a7 and source_square <= h7:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              goto __pyx_L21;
+            }
+
+            /* "board.pyx":208
+ *                             # Normal pawn capture
+ *                             else:
+ *                                 printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             attacks = pop_bit(attacks, target_square)
+ */
+            /*else*/ {
+              (void)(printf(((char const *)"pawn capture: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+            }
+            __pyx_L21:;
+
+            /* "board.pyx":210
+ *                                 printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ *                             attacks = pop_bit(attacks, target_square)             # <<<<<<<<<<<<<<
+ * 
+ *                         # Enpassant
+ */
+            __pyx_v_attacks = __pyx_f_6helper_pop_bit(__pyx_v_attacks, __pyx_v_target_square);
+          }
+
+          /* "board.pyx":213
+ * 
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:             # <<<<<<<<<<<<<<
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ */
+          __pyx_t_9 = ((__pyx_v_self->enpassant != __pyx_e_5board_no_sq) != 0);
+          if (__pyx_t_9) {
+
+            /* "board.pyx":214
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)             # <<<<<<<<<<<<<<
+ *                             if attacks:
+ *                                 target_square = self.enpassant
+ */
+            __pyx_v_attacks = (((__pyx_v_6attack_pawn_attacks[__pyx_v_self->side])[__pyx_v_source_square]) & (1ULL << __pyx_v_self->enpassant));
+
+            /* "board.pyx":215
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:             # <<<<<<<<<<<<<<
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_9 = (__pyx_v_attacks != 0);
+            if (__pyx_t_9) {
+
+              /* "board.pyx":216
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ *                                 target_square = self.enpassant             # <<<<<<<<<<<<<<
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              __pyx_t_11 = __pyx_v_self->enpassant;
+              __pyx_v_target_square = __pyx_t_11;
+
+              /* "board.pyx":217
+ *                             if attacks:
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                         bitboard = pop_bit(bitboard, source_square)
+ */
+              (void)(printf(((char const *)"pawn enpassant capture: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":215
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:             # <<<<<<<<<<<<<<
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            }
+
+            /* "board.pyx":213
+ * 
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:             # <<<<<<<<<<<<<<
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ */
+          }
+
+          /* "board.pyx":219
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ *                         bitboard = pop_bit(bitboard, source_square)             # <<<<<<<<<<<<<<
+ * 
+ *                 # Castling moves
+ */
+          __pyx_v_bitboard = __pyx_f_6helper_pop_bit(__pyx_v_bitboard, __pyx_v_source_square);
+        }
+
+        /* "board.pyx":174
+ *             # Generate white pawns & white king castle
+ *             if self.side == white:
+ *                 if piece == P:             # <<<<<<<<<<<<<<
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ */
+      }
+
+      /* "board.pyx":222
+ * 
+ *                 # Castling moves
+ *                 if piece == K:             # <<<<<<<<<<<<<<
+ *                     # Kingside
+ *                     if self.castling & wk:
+ */
+      __pyx_t_9 = ((__pyx_v_piece == __pyx_e_5board_K) != 0);
+      if (__pyx_t_9) {
+
+        /* "board.pyx":224
+ *                 if piece == K:
+ *                     # Kingside
+ *                     if self.castling & wk:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+ */
+        __pyx_t_9 = ((__pyx_v_self->castling & __pyx_e_5board_wk) != 0);
+        if (__pyx_t_9) {
+
+          /* "board.pyx":225
+ *                     # Kingside
+ *                     if self.castling & wk:
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+ *                                 printf("castling move: e1g1\n")
+ */
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_f1) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L29_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_g1) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L29_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":226
+ *                     if self.castling & wk:
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e1g1\n")
+ * 
+ */
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_e1, __pyx_e_5board_black) != 0)) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L32_bool_binop_done;
+            }
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_f1, __pyx_e_5board_black) != 0)) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L32_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":227
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+ *                                 printf("castling move: e1g1\n")             # <<<<<<<<<<<<<<
+ * 
+ *                     # Queenside
+ */
+              (void)(printf(((char const *)"castling move: e1g1\n")));
+
+              /* "board.pyx":226
+ *                     if self.castling & wk:
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e1g1\n")
+ * 
+ */
+            }
+
+            /* "board.pyx":225
+ *                     # Kingside
+ *                     if self.castling & wk:
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+ *                                 printf("castling move: e1g1\n")
+ */
+          }
+
+          /* "board.pyx":224
+ *                 if piece == K:
+ *                     # Kingside
+ *                     if self.castling & wk:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+ */
+        }
+
+        /* "board.pyx":230
+ * 
+ *                     # Queenside
+ *                     if self.castling & wq:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+ */
+        __pyx_t_9 = ((__pyx_v_self->castling & __pyx_e_5board_wq) != 0);
+        if (__pyx_t_9) {
+
+          /* "board.pyx":231
+ *                     # Queenside
+ *                     if self.castling & wq:
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+ *                                 printf("castling move: e1c1\n")
+ */
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_d1) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L36_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_c1) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L36_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_b1) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L36_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":232
+ *                     if self.castling & wq:
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e1c1\n")
+ * 
+ */
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_e1, __pyx_e_5board_black) != 0)) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L40_bool_binop_done;
+            }
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_d1, __pyx_e_5board_black) != 0)) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L40_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":233
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+ *                                 printf("castling move: e1c1\n")             # <<<<<<<<<<<<<<
+ * 
+ *             # Generate black pawns & black king castle
+ */
+              (void)(printf(((char const *)"castling move: e1c1\n")));
+
+              /* "board.pyx":232
+ *                     if self.castling & wq:
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e1c1\n")
+ * 
+ */
+            }
+
+            /* "board.pyx":231
+ *                     # Queenside
+ *                     if self.castling & wq:
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+ *                                 printf("castling move: e1c1\n")
+ */
+          }
+
+          /* "board.pyx":230
+ * 
+ *                     # Queenside
+ *                     if self.castling & wq:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+ *                             if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+ */
+        }
+
+        /* "board.pyx":222
+ * 
+ *                 # Castling moves
+ *                 if piece == K:             # <<<<<<<<<<<<<<
+ *                     # Kingside
+ *                     if self.castling & wk:
+ */
+      }
+
+      /* "board.pyx":173
+ * 
+ *             # Generate white pawns & white king castle
+ *             if self.side == white:             # <<<<<<<<<<<<<<
+ *                 if piece == P:
+ *                     while bitboard:
+ */
       goto __pyx_L5;
     }
 
-    /* "board.pyx":179
+    /* "board.pyx":237
  *             # Generate black pawns & black king castle
  *             else:
- *                 pass             # <<<<<<<<<<<<<<
+ *                 if piece == p:             # <<<<<<<<<<<<<<
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ */
+    /*else*/ {
+      __pyx_t_9 = ((__pyx_v_piece == __pyx_e_5board_p) != 0);
+      if (__pyx_t_9) {
+
+        /* "board.pyx":238
+ *             else:
+ *                 if piece == p:
+ *                     while bitboard:             # <<<<<<<<<<<<<<
+ *                         source_square = get_ls1b_index(bitboard)
+ *                         target_square = source_square + 8
+ */
+        while (1) {
+          __pyx_t_9 = (__pyx_v_bitboard != 0);
+          if (!__pyx_t_9) break;
+
+          /* "board.pyx":239
+ *                 if piece == p:
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)             # <<<<<<<<<<<<<<
+ *                         target_square = source_square + 8
+ * 
+ */
+          __pyx_v_source_square = __pyx_f_6helper_get_ls1b_index(__pyx_v_bitboard);
+
+          /* "board.pyx":240
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ *                         target_square = source_square + 8             # <<<<<<<<<<<<<<
+ * 
+ *                         if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):
+ */
+          __pyx_v_target_square = (__pyx_v_source_square + 8);
+
+          /* "board.pyx":242
+ *                         target_square = source_square + 8
+ * 
+ *                         if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):             # <<<<<<<<<<<<<<
+ *                             # Promotion
+ *                             if source_square >= a2 and source_square <= h2:
+ */
+          __pyx_t_10 = ((__pyx_v_target_square <= __pyx_e_5board_h1) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L46_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_v_target_square) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L46_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":244
+ *                         if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):
+ *                             # Promotion
+ *                             if source_square >= a2 and source_square <= h2:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a2) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L49_bool_binop_done;
+            }
+            __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h2) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L49_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":245
+ *                             # Promotion
+ *                             if source_square >= a2 and source_square <= h2:
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sq\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":246
+ *                             if source_square >= a2 and source_square <= h2:
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sr\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":247
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sb\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":248
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             # Single pawn move
+ */
+              (void)(printf(((char const *)"pawn promotion: %s%sn\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":244
+ *                         if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):
+ *                             # Promotion
+ *                             if source_square >= a2 and source_square <= h2:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              goto __pyx_L48;
+            }
+
+            /* "board.pyx":252
+ *                             # Single pawn move
+ *                             else:
+ *                                 printf("pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                                 # Double pawn move
+ */
+            /*else*/ {
+              (void)(printf(((char const *)"pawn push: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":255
+ * 
+ *                                 # Double pawn move
+ *                                 if (source_square >= a7 and source_square <= h7) and not(get_bit(self.occupancies[both], target_square + 8)):             # <<<<<<<<<<<<<<
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square + 8])
+ * 
+ */
+              __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a7) != 0);
+              if (__pyx_t_10) {
+              } else {
+                __pyx_t_9 = __pyx_t_10;
+                goto __pyx_L52_bool_binop_done;
+              }
+              __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h7) != 0);
+              if (__pyx_t_10) {
+              } else {
+                __pyx_t_9 = __pyx_t_10;
+                goto __pyx_L52_bool_binop_done;
+              }
+              __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), (__pyx_v_target_square + 8)) != 0)) != 0);
+              __pyx_t_9 = __pyx_t_10;
+              __pyx_L52_bool_binop_done:;
+              if (__pyx_t_9) {
+
+                /* "board.pyx":256
+ *                                 # Double pawn move
+ *                                 if (source_square >= a7 and source_square <= h7) and not(get_bit(self.occupancies[both], target_square + 8)):
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square + 8])             # <<<<<<<<<<<<<<
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]
+ */
+                (void)(printf(((char const *)"double pawn push: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[(__pyx_v_target_square + 8)])));
+
+                /* "board.pyx":255
+ * 
+ *                                 # Double pawn move
+ *                                 if (source_square >= a7 and source_square <= h7) and not(get_bit(self.occupancies[both], target_square + 8)):             # <<<<<<<<<<<<<<
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square + 8])
+ * 
+ */
+              }
+            }
+            __pyx_L48:;
+
+            /* "board.pyx":242
+ *                         target_square = source_square + 8
+ * 
+ *                         if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):             # <<<<<<<<<<<<<<
+ *                             # Promotion
+ *                             if source_square >= a2 and source_square <= h2:
+ */
+          }
+
+          /* "board.pyx":258
+ *                                     printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square + 8])
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]             # <<<<<<<<<<<<<<
+ *                         while attacks:
+ *                             target_square = get_ls1b_index(attacks)
+ */
+          __pyx_v_attacks = (((__pyx_v_6attack_pawn_attacks[__pyx_v_self->side])[__pyx_v_source_square]) & (__pyx_v_self->occupancies[__pyx_e_5board_white]));
+
+          /* "board.pyx":259
+ * 
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]
+ *                         while attacks:             # <<<<<<<<<<<<<<
+ *                             target_square = get_ls1b_index(attacks)
+ * 
+ */
+          while (1) {
+            __pyx_t_9 = (__pyx_v_attacks != 0);
+            if (!__pyx_t_9) break;
+
+            /* "board.pyx":260
+ *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]
+ *                         while attacks:
+ *                             target_square = get_ls1b_index(attacks)             # <<<<<<<<<<<<<<
+ * 
+ *                             # Capture promotion
+ */
+            __pyx_v_target_square = __pyx_f_6helper_get_ls1b_index(__pyx_v_attacks);
+
+            /* "board.pyx":263
+ * 
+ *                             # Capture promotion
+ *                             if source_square >= a2 and source_square <= h2:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_10 = ((__pyx_v_source_square >= __pyx_e_5board_a2) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L58_bool_binop_done;
+            }
+            __pyx_t_10 = ((__pyx_v_source_square <= __pyx_e_5board_h2) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L58_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":264
+ *                             # Capture promotion
+ *                             if source_square >= a2 and source_square <= h2:
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sq\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":265
+ *                             if source_square >= a2 and source_square <= h2:
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sr\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":266
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sb\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":267
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             # Normal pawn capture
+ */
+              (void)(printf(((char const *)"pawn promotion capture: %s%sn\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":263
+ * 
+ *                             # Capture promotion
+ *                             if source_square >= a2 and source_square <= h2:             # <<<<<<<<<<<<<<
+ *                                 printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+ *                                 printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+              goto __pyx_L57;
+            }
+
+            /* "board.pyx":271
+ *                             # Normal pawn capture
+ *                             else:
+ *                                 printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                             attacks = pop_bit(attacks, target_square)
+ */
+            /*else*/ {
+              (void)(printf(((char const *)"pawn capture: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+            }
+            __pyx_L57:;
+
+            /* "board.pyx":273
+ *                                 printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ *                             attacks = pop_bit(attacks, target_square)             # <<<<<<<<<<<<<<
+ * 
+ *                         # Enpassant
+ */
+            __pyx_v_attacks = __pyx_f_6helper_pop_bit(__pyx_v_attacks, __pyx_v_target_square);
+          }
+
+          /* "board.pyx":276
+ * 
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:             # <<<<<<<<<<<<<<
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ */
+          __pyx_t_9 = ((__pyx_v_self->enpassant != __pyx_e_5board_no_sq) != 0);
+          if (__pyx_t_9) {
+
+            /* "board.pyx":277
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)             # <<<<<<<<<<<<<<
+ *                             if attacks:
+ *                                 target_square = self.enpassant
+ */
+            __pyx_v_attacks = (((__pyx_v_6attack_pawn_attacks[__pyx_v_self->side])[__pyx_v_source_square]) & (1ULL << __pyx_v_self->enpassant));
+
+            /* "board.pyx":278
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:             # <<<<<<<<<<<<<<
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            __pyx_t_9 = (__pyx_v_attacks != 0);
+            if (__pyx_t_9) {
+
+              /* "board.pyx":279
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ *                                 target_square = self.enpassant             # <<<<<<<<<<<<<<
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ */
+              __pyx_t_11 = __pyx_v_self->enpassant;
+              __pyx_v_target_square = __pyx_t_11;
+
+              /* "board.pyx":280
+ *                             if attacks:
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])             # <<<<<<<<<<<<<<
+ * 
+ *                         bitboard = pop_bit(bitboard, source_square)
+ */
+              (void)(printf(((char const *)"pawn enpassant capture: %s%s\n"), (__pyx_v_5const_square_to_coord[__pyx_v_source_square]), (__pyx_v_5const_square_to_coord[__pyx_v_target_square])));
+
+              /* "board.pyx":278
+ *                         if self.enpassant != no_sq:
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:             # <<<<<<<<<<<<<<
+ *                                 target_square = self.enpassant
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ */
+            }
+
+            /* "board.pyx":276
+ * 
+ *                         # Enpassant
+ *                         if self.enpassant != no_sq:             # <<<<<<<<<<<<<<
+ *                             attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+ *                             if attacks:
+ */
+          }
+
+          /* "board.pyx":282
+ *                                 printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+ * 
+ *                         bitboard = pop_bit(bitboard, source_square)             # <<<<<<<<<<<<<<
+ * 
+ *                 # Castling moves
+ */
+          __pyx_v_bitboard = __pyx_f_6helper_pop_bit(__pyx_v_bitboard, __pyx_v_source_square);
+        }
+
+        /* "board.pyx":237
+ *             # Generate black pawns & black king castle
+ *             else:
+ *                 if piece == p:             # <<<<<<<<<<<<<<
+ *                     while bitboard:
+ *                         source_square = get_ls1b_index(bitboard)
+ */
+      }
+
+      /* "board.pyx":285
+ * 
+ *                 # Castling moves
+ *                 if piece == k:             # <<<<<<<<<<<<<<
+ *                     # Kingside
+ *                     if self.castling & bk:
+ */
+      __pyx_t_9 = ((__pyx_v_piece == __pyx_e_5board_k) != 0);
+      if (__pyx_t_9) {
+
+        /* "board.pyx":287
+ *                 if piece == k:
+ *                     # Kingside
+ *                     if self.castling & bk:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+ */
+        __pyx_t_9 = ((__pyx_v_self->castling & __pyx_e_5board_bk) != 0);
+        if (__pyx_t_9) {
+
+          /* "board.pyx":288
+ *                     # Kingside
+ *                     if self.castling & bk:
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+ *                                 printf("castling move: e8g8\n")
+ */
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_f8) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L65_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_g8) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L65_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":289
+ *                     if self.castling & bk:
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e8g8\n")
+ * 
+ */
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_e8, __pyx_e_5board_white) != 0)) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L68_bool_binop_done;
+            }
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_f8, __pyx_e_5board_white) != 0)) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L68_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":290
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+ *                                 printf("castling move: e8g8\n")             # <<<<<<<<<<<<<<
+ * 
+ *                     # Queenside
+ */
+              (void)(printf(((char const *)"castling move: e8g8\n")));
+
+              /* "board.pyx":289
+ *                     if self.castling & bk:
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e8g8\n")
+ * 
+ */
+            }
+
+            /* "board.pyx":288
+ *                     # Kingside
+ *                     if self.castling & bk:
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+ *                                 printf("castling move: e8g8\n")
+ */
+          }
+
+          /* "board.pyx":287
+ *                 if piece == k:
+ *                     # Kingside
+ *                     if self.castling & bk:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+ */
+        }
+
+        /* "board.pyx":293
+ * 
+ *                     # Queenside
+ *                     if self.castling & bq:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+ */
+        __pyx_t_9 = ((__pyx_v_self->castling & __pyx_e_5board_bq) != 0);
+        if (__pyx_t_9) {
+
+          /* "board.pyx":294
+ *                     # Queenside
+ *                     if self.castling & bq:
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+ *                                 printf("castling move: e8c8\n")
+ */
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_d8) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L72_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_c8) != 0)) != 0);
+          if (__pyx_t_10) {
+          } else {
+            __pyx_t_9 = __pyx_t_10;
+            goto __pyx_L72_bool_binop_done;
+          }
+          __pyx_t_10 = ((!(__pyx_f_6helper_get_bit((__pyx_v_self->occupancies[__pyx_e_5board_both]), __pyx_e_5board_b8) != 0)) != 0);
+          __pyx_t_9 = __pyx_t_10;
+          __pyx_L72_bool_binop_done:;
+          if (__pyx_t_9) {
+
+            /* "board.pyx":295
+ *                     if self.castling & bq:
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e8c8\n")
+ * 
+ */
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_e8, __pyx_e_5board_white) != 0)) != 0);
+            if (__pyx_t_10) {
+            } else {
+              __pyx_t_9 = __pyx_t_10;
+              goto __pyx_L76_bool_binop_done;
+            }
+            __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_e_5board_d8, __pyx_e_5board_white) != 0)) != 0);
+            __pyx_t_9 = __pyx_t_10;
+            __pyx_L76_bool_binop_done:;
+            if (__pyx_t_9) {
+
+              /* "board.pyx":296
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+ *                                 printf("castling move: e8c8\n")             # <<<<<<<<<<<<<<
  * 
  *             # Generate knight moves
  */
-    /*else*/ {
+              (void)(printf(((char const *)"castling move: e8c8\n")));
+
+              /* "board.pyx":295
+ *                     if self.castling & bq:
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):             # <<<<<<<<<<<<<<
+ *                                 printf("castling move: e8c8\n")
+ * 
+ */
+            }
+
+            /* "board.pyx":294
+ *                     # Queenside
+ *                     if self.castling & bq:
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):             # <<<<<<<<<<<<<<
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+ *                                 printf("castling move: e8c8\n")
+ */
+          }
+
+          /* "board.pyx":293
+ * 
+ *                     # Queenside
+ *                     if self.castling & bq:             # <<<<<<<<<<<<<<
+ *                         if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+ *                             if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+ */
+        }
+
+        /* "board.pyx":285
+ * 
+ *                 # Castling moves
+ *                 if piece == k:             # <<<<<<<<<<<<<<
+ *                     # Kingside
+ *                     if self.castling & bk:
+ */
+      }
     }
     __pyx_L5:;
-  }
 
-  /* "board.pyx":166
+    /* "board.pyx":169
+ *         cdef U64 bitboard, attacks
+ * 
+ *         for piece, bb in enumerate(self.bitboards):             # <<<<<<<<<<<<<<
+ *             bitboard = bb # generate copy of bitboard
+ * 
+ */
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "board.pyx":165
  *         printf("\n    a b c d e f g h\n\n") # File label
  * 
  *     cpdef generate_moves(self):             # <<<<<<<<<<<<<<
- *         cdef int source_square, target_square
+ *         cdef int source_square, target_square, piece
  *         cdef U64 bitboard, attacks
  */
 
@@ -3546,6 +4755,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
   __Pyx_AddTraceback("board.Board.generate_moves", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_bb);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3573,7 +4783,7 @@ static PyObject *__pyx_pf_5board_5Board_8generate_moves(struct __pyx_obj_5board_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("generate_moves", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5board_5Board_generate_moves(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5board_5Board_generate_moves(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5535,7 +6745,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_n_s_parse_fen, __pyx_k_parse_fen, sizeof(__pyx_k_parse_fen), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
-  {&__pyx_n_s_print_attacked_squares, __pyx_k_print_attacked_squares, sizeof(__pyx_k_print_attacked_squares), 0, 0, 1, 1},
   {&__pyx_n_s_print_board, __pyx_k_print_board, sizeof(__pyx_k_print_board), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -5544,6 +6753,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_type, __pyx_k_pyx_type, sizeof(__pyx_k_pyx_type), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_Board, __pyx_k_pyx_unpickle_Board, sizeof(__pyx_k_pyx_unpickle_Board), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
+  {&__pyx_kp_b_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P, __pyx_k_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P, sizeof(__pyx_k_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P), 0, 0, 0, 0},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
@@ -5570,15 +6780,26 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
+  /* "board.pyx":305
+ * 
+ * cdef Board chess = Board()
+ * chess.parse_fen(b"r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")             # <<<<<<<<<<<<<<
+ * chess.print_board()
+ * chess.generate_moves()
+ */
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_b_r3k2r_p1qRqpb1_bn2pnp1_3PN3_1p2P); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 305, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
+
   /* "(tree fragment)":1
  * def __pyx_unpickle_Board(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_tuple_ = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple_)) __PYX_ERR(2, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Board, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(2, 1, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(2, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Board, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(2, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5718,6 +6939,8 @@ static int __Pyx_modinit_function_import_code(void) {
   __Pyx_GOTREF(__pyx_t_1);
   if (__Pyx_ImportFunction(__pyx_t_1, "get_bit", (void (**)(void))&__pyx_f_6helper_get_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "set_bit", (void (**)(void))&__pyx_f_6helper_set_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "pop_bit", (void (**)(void))&__pyx_f_6helper_pop_bit, "__pyx_t_6helper_U64 (__pyx_t_6helper_U64, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_ls1b_index", (void (**)(void))&__pyx_f_6helper_get_ls1b_index, "int (__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "print_bitboard", (void (**)(void))&__pyx_f_6helper_print_bitboard, "PyObject *(__pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("const"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -5834,7 +7057,6 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_board(PyObject *__pyx_pyinit_modul
 {
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5940,64 +7162,57 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "board.pyx":187
+  /* "board.pyx":304
  *             # Generate king moves
  * 
  * cdef Board chess = Board()             # <<<<<<<<<<<<<<
- * chess.parse_fen(start_position)
+ * chess.parse_fen(b"r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
  * chess.print_board()
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_5board_Board)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_5board_Board)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 304, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XGOTREF(((PyObject *)__pyx_v_5board_chess));
   __Pyx_DECREF_SET(__pyx_v_5board_chess, ((struct __pyx_obj_5board_Board *)__pyx_t_1));
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "board.pyx":188
+  /* "board.pyx":305
  * 
  * cdef Board chess = Board()
- * chess.parse_fen(start_position)             # <<<<<<<<<<<<<<
+ * chess.parse_fen(b"r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")             # <<<<<<<<<<<<<<
  * chess.print_board()
- * # print_bitboard(chess.occupancies[both])
+ * chess.generate_moves()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_5board_chess), __pyx_n_s_parse_fen); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_5board_chess), __pyx_n_s_parse_fen); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 305, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyBytes_FromString(__pyx_v_5const_start_position); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 305, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "board.pyx":189
+  /* "board.pyx":306
  * cdef Board chess = Board()
- * chess.parse_fen(start_position)
+ * chess.parse_fen(b"r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
  * chess.print_board()             # <<<<<<<<<<<<<<
+ * chess.generate_moves()
  * # print_bitboard(chess.occupancies[both])
- * chess.print_attacked_squares(black)
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_5board_chess), __pyx_n_s_print_board); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 189, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_5board_chess), __pyx_n_s_print_board); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "board.pyx":191
- * chess.print_board()
- * # print_bitboard(chess.occupancies[both])
- * chess.print_attacked_squares(black)             # <<<<<<<<<<<<<<
- */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_5board_chess), __pyx_n_s_print_attacked_squares); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_e_5board_black); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 191, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "board.pyx":307
+ * chess.parse_fen(b"r3k2r/p1qRqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
+ * chess.print_board()
+ * chess.generate_moves()             # <<<<<<<<<<<<<<
+ * # print_bitboard(chess.occupancies[both])
+ * # chess.print_attacked_squares(black)
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_5board_chess->__pyx_vtab)->generate_moves(__pyx_v_5board_chess, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "(tree fragment)":1
@@ -6013,7 +7228,7 @@ if (!__Pyx_RefNanny) {
   /* "board.pyx":1
  * from libc.stdio cimport printf             # <<<<<<<<<<<<<<
  * from libc.string cimport memset
- * from helper cimport U64, print_bitboard, get_bit, set_bit
+ * from helper cimport U64, print_bitboard, get_bit, set_bit, pop_bit, get_ls1b_index
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6034,7 +7249,6 @@ if (!__Pyx_RefNanny) {
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init board", __pyx_clineno, __pyx_lineno, __pyx_filename);

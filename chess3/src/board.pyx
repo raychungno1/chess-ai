@@ -1,6 +1,6 @@
 from libc.stdio cimport printf
 from libc.string cimport memset
-from helper cimport U64, print_bitboard, get_bit, set_bit
+from helper cimport U64, print_bitboard, get_bit, set_bit, pop_bit, get_ls1b_index
 from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks, get_queen_attacks
 from const cimport square_to_coord, ascii_pieces, char_to_piece, empty_board, start_position, tricky_position, killer_position, cmk_position 
 
@@ -163,19 +163,137 @@ cdef class Board:
         printf("\n    a b c d e f g h\n\n") # File label
 
     cpdef generate_moves(self):
-        cdef int source_square, target_square
+        cdef int source_square, target_square, piece
         cdef U64 bitboard, attacks 
 
-        for bb in self.bitboards:
+        for piece, bb in enumerate(self.bitboards):
             bitboard = bb # generate copy of bitboard
 
             # Generate white pawns & white king castle
             if self.side == white:
-                pass
+                if piece == P:
+                    while bitboard:
+                        source_square = get_ls1b_index(bitboard)
+                        target_square = source_square - 8
+
+                        if target_square >= a8 and not(get_bit(self.occupancies[both], target_square)):
+                            # Promotion
+                            if source_square >= a7 and source_square <= h7:
+                                printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            # Single pawn move
+                            else:
+                                printf("pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+                                
+                                # Double pawn move
+                                if (source_square >= a2 and source_square <= h2) and not(get_bit(self.occupancies[both], target_square - 8)):
+                                    printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square - 8])
+                        
+                        attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]
+                        while attacks:
+                            target_square = get_ls1b_index(attacks)
+
+                            # Capture promotion
+                            if source_square >= a7 and source_square <= h7:
+                                printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            # Normal pawn capture
+                            else:
+                                printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            attacks = pop_bit(attacks, target_square)
+
+                        # Enpassant
+                        if self.enpassant != no_sq:
+                            attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+                            if attacks:
+                                target_square = self.enpassant
+                                printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                        bitboard = pop_bit(bitboard, source_square)
+
+                # Castling moves
+                if piece == K:
+                    # Kingside
+                    if self.castling & wk:
+                        if not(get_bit(self.occupancies[both], f1)) and not(get_bit(self.occupancies[both], g1)):
+                            if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(f1, black)):
+                                printf("castling move: e1g1\n")
+
+                    # Queenside
+                    if self.castling & wq:
+                        if not(get_bit(self.occupancies[both], d1)) and not(get_bit(self.occupancies[both], c1)) and not(get_bit(self.occupancies[both], b1)):
+                            if not(self.is_square_attacked(e1, black)) and not(self.is_square_attacked(d1, black)):
+                                printf("castling move: e1c1\n")
 
             # Generate black pawns & black king castle
             else:
-                pass
+                if piece == p:
+                    while bitboard:
+                        source_square = get_ls1b_index(bitboard)
+                        target_square = source_square + 8
+
+                        if target_square <= h1 and not(get_bit(self.occupancies[both], target_square)):
+                            # Promotion
+                            if source_square >= a2 and source_square <= h2:
+                                printf("pawn promotion: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            # Single pawn move
+                            else:
+                                printf("pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+                                
+                                # Double pawn move
+                                if (source_square >= a7 and source_square <= h7) and not(get_bit(self.occupancies[both], target_square + 8)):
+                                    printf("double pawn push: %s%s\n", square_to_coord[source_square], square_to_coord[target_square + 8])
+                        
+                        attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]
+                        while attacks:
+                            target_square = get_ls1b_index(attacks)
+
+                            # Capture promotion
+                            if source_square >= a2 and source_square <= h2:
+                                printf("pawn promotion capture: %s%sq\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sr\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sb\n", square_to_coord[source_square], square_to_coord[target_square])
+                                printf("pawn promotion capture: %s%sn\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            # Normal pawn capture
+                            else:
+                                printf("pawn capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                            attacks = pop_bit(attacks, target_square)
+
+                        # Enpassant
+                        if self.enpassant != no_sq:
+                            attacks = pawn_attacks[self.side][source_square] & (1ULL << self.enpassant)
+                            if attacks:
+                                target_square = self.enpassant
+                                printf("pawn enpassant capture: %s%s\n", square_to_coord[source_square], square_to_coord[target_square])
+
+                        bitboard = pop_bit(bitboard, source_square)
+
+                # Castling moves
+                if piece == k:
+                    # Kingside
+                    if self.castling & bk:
+                        if not(get_bit(self.occupancies[both], f8)) and not(get_bit(self.occupancies[both], g8)):
+                            if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(f8, white)):
+                                printf("castling move: e8g8\n")
+
+                    # Queenside
+                    if self.castling & bq:
+                        if not(get_bit(self.occupancies[both], d8)) and not(get_bit(self.occupancies[both], c8)) and not(get_bit(self.occupancies[both], b8)):
+                            if not(self.is_square_attacked(e8, white)) and not(self.is_square_attacked(d8, white)):
+                                printf("castling move: e8c8\n")
 
             # Generate knight moves
             # Generate bishop moves
@@ -184,7 +302,8 @@ cdef class Board:
             # Generate king moves
 
 cdef Board chess = Board()
-chess.parse_fen(start_position)
+chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ")
 chess.print_board()
+chess.generate_moves()
 # print_bitboard(chess.occupancies[both])
-chess.print_attacked_squares(black)
+# chess.print_attacked_squares(black)
