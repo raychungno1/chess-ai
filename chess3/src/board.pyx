@@ -124,26 +124,67 @@ cdef class Board:
         # General occupancies
         self.occupancies[2] = self.occupancies[0] | self.occupancies[1]
 
+    cdef int is_square_attacked(self, int square, int side):
+        if side == white and pawn_attacks[black][square] & self.bitboards[P]:
+            return 1
+
+        if side == black and pawn_attacks[white][square] & self.bitboards[p]:
+            return 1
+
+        if knight_attacks[square] & (self.bitboards[N] if (side == white) else self.bitboards[n]):
+            return 1
+
+        if get_bishop_attacks(square, self.occupancies[both]) & (self.bitboards[B] if (side == white) else self.bitboards[b]):
+            return 1
+
+        if get_rook_attacks(square, self.occupancies[both]) & (self.bitboards[R] if (side == white) else self.bitboards[r]):
+            return 1
+
+        if get_queen_attacks(square, self.occupancies[both]) & (self.bitboards[Q] if (side == white) else self.bitboards[q]):
+            return 1
+
+        if king_attacks[square] & (self.bitboards[K] if (side == white) else self.bitboards[k]):
+            return 1
+
+        return 0
+
+    def print_attacked_squares(self, int side):
+        printf("\n")
+        cdef int rank, file, square
+        for rank in range(8):
+            for file in range(8):
+                square = 8 * rank + file
+
+                if not(file):
+                    printf(" %d  ", 8 - rank)
+
+                printf("%d ", 1 if self.is_square_attacked(square, side) else 0)
+            printf("\n")
+        printf("\n    a b c d e f g h\n\n") # File label
+
+    cpdef generate_moves(self):
+        cdef int source_square, target_square
+        cdef U64 bitboard, attacks 
+
+        for bb in self.bitboards:
+            bitboard = bb # generate copy of bitboard
+
+            # Generate white pawns & white king castle
+            if self.side == white:
+                pass
+
+            # Generate black pawns & black king castle
+            else:
+                pass
+
+            # Generate knight moves
+            # Generate bishop moves
+            # Generate rook moves
+            # Generate queen moves
+            # Generate king moves
+
 cdef Board chess = Board()
-# printf("FEN: %s\n", cmk_position)
-# chess.parse_fen(start_position)
-# chess.print_board()
-
-# chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b Kk e6 0 1 ")
-# chess.print_board()
-
-# chess.parse_fen(b"r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 w q a3 0 9 ")
-# chess.print_board()
-
-cdef occupancy = 0ULL
-occupancy = set_bit(occupancy, b6)
-occupancy = set_bit(occupancy, d6)
-occupancy = set_bit(occupancy, f6)
-occupancy = set_bit(occupancy, g4)
-occupancy = set_bit(occupancy, b4)
-occupancy = set_bit(occupancy, c3)
-occupancy = set_bit(occupancy, d3)
-occupancy = set_bit(occupancy, e3)
-print_bitboard(get_queen_attacks(d4, occupancy))
-
-
+chess.parse_fen(start_position)
+chess.print_board()
+# print_bitboard(chess.occupancies[both])
+chess.print_attacked_squares(black)
