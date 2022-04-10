@@ -30,3 +30,4 @@ cdef U64 set_occupancy(int index, int bits_in_mask, U64 attack_mask)
 
 cdef U64 get_bishop_attacks(int square, U64 occupancy)
 cdef U64 get_rook_attacks(int square, U64 occupancy)
+cdef U64 get_queen_attacks(int square, U64 occupancy)

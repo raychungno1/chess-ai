@@ -1181,6 +1181,20 @@ static __pyx_t_6helper_U64 (*__pyx_vp_5const_rook_magic_numbers)[64] = 0;
 #define __pyx_v_5const_rook_magic_numbers (*__pyx_vp_5const_rook_magic_numbers)
 static __pyx_t_6helper_U64 (*__pyx_vp_5const_bishop_magic_numbers)[64] = 0;
 #define __pyx_v_5const_bishop_magic_numbers (*__pyx_vp_5const_bishop_magic_numbers)
+static char (*__pyx_vp_5const_ascii_pieces)[12] = 0;
+#define __pyx_v_5const_ascii_pieces (*__pyx_vp_5const_ascii_pieces)
+static char **__pyx_vp_5const_empty_board = 0;
+#define __pyx_v_5const_empty_board (*__pyx_vp_5const_empty_board)
+static char **__pyx_vp_5const_start_position = 0;
+#define __pyx_v_5const_start_position (*__pyx_vp_5const_start_position)
+static char **__pyx_vp_5const_tricky_position = 0;
+#define __pyx_v_5const_tricky_position (*__pyx_vp_5const_tricky_position)
+static char **__pyx_vp_5const_killer_position = 0;
+#define __pyx_v_5const_killer_position (*__pyx_vp_5const_killer_position)
+static char **__pyx_vp_5const_cmk_position = 0;
+#define __pyx_v_5const_cmk_position (*__pyx_vp_5const_cmk_position)
+static char **__pyx_vp_5const_last = 0;
+#define __pyx_v_5const_last (*__pyx_vp_5const_last)
 
 /* Module declarations from 'attack' */
 static __pyx_t_6helper_U64 __pyx_v_6attack_pawn_attacks[2][64];
@@ -3677,7 +3691,7 @@ static __pyx_t_6helper_U64 __pyx_f_6attack_get_rook_attacks(int __pyx_v_square, 
  * 
  *     return rook_attacks[square][occupancy]             # <<<<<<<<<<<<<<
  * 
- * init_leapers_attacks()
+ * cdef U64 get_queen_attacks(int square, U64 occupancy):
  */
   __pyx_r = ((__pyx_v_6attack_rook_attacks[__pyx_v_square])[__pyx_v_occupancy]);
   goto __pyx_L0;
@@ -3688,6 +3702,145 @@ static __pyx_t_6helper_U64 __pyx_f_6attack_get_rook_attacks(int __pyx_v_square, 
  * cdef U64 get_rook_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
  *     occupancy &= rook_masks[square]
  *     occupancy *= rook_magic_numbers[square]
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "attack.pyx":293
+ *     return rook_attacks[square][occupancy]
+ * 
+ * cdef U64 get_queen_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
+ *     cdef U64 queen_attacks = 0ULL
+ * 
+ */
+
+static __pyx_t_6helper_U64 __pyx_f_6attack_get_queen_attacks(int __pyx_v_square, __pyx_t_6helper_U64 __pyx_v_occupancy) {
+  __pyx_t_6helper_U64 __pyx_v_queen_attacks;
+  __pyx_t_6helper_U64 __pyx_v_bishop_occupancy;
+  __pyx_t_6helper_U64 __pyx_v_rook_occupancy;
+  __pyx_t_6helper_U64 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_queen_attacks", 0);
+
+  /* "attack.pyx":294
+ * 
+ * cdef U64 get_queen_attacks(int square, U64 occupancy):
+ *     cdef U64 queen_attacks = 0ULL             # <<<<<<<<<<<<<<
+ * 
+ *     cdef U64 bishop_occupancy = occupancy
+ */
+  __pyx_v_queen_attacks = 0ULL;
+
+  /* "attack.pyx":296
+ *     cdef U64 queen_attacks = 0ULL
+ * 
+ *     cdef U64 bishop_occupancy = occupancy             # <<<<<<<<<<<<<<
+ *     cdef U64 rook_occupancy = occupancy
+ * 
+ */
+  __pyx_v_bishop_occupancy = __pyx_v_occupancy;
+
+  /* "attack.pyx":297
+ * 
+ *     cdef U64 bishop_occupancy = occupancy
+ *     cdef U64 rook_occupancy = occupancy             # <<<<<<<<<<<<<<
+ * 
+ *     bishop_occupancy &= bishop_masks[square]
+ */
+  __pyx_v_rook_occupancy = __pyx_v_occupancy;
+
+  /* "attack.pyx":299
+ *     cdef U64 rook_occupancy = occupancy
+ * 
+ *     bishop_occupancy &= bishop_masks[square]             # <<<<<<<<<<<<<<
+ *     bishop_occupancy *= bishop_magic_numbers[square]
+ *     bishop_occupancy >>= 64 - bishop_relevant_bits[square]
+ */
+  __pyx_v_bishop_occupancy = (__pyx_v_bishop_occupancy & (__pyx_v_6attack_bishop_masks[__pyx_v_square]));
+
+  /* "attack.pyx":300
+ * 
+ *     bishop_occupancy &= bishop_masks[square]
+ *     bishop_occupancy *= bishop_magic_numbers[square]             # <<<<<<<<<<<<<<
+ *     bishop_occupancy >>= 64 - bishop_relevant_bits[square]
+ * 
+ */
+  __pyx_v_bishop_occupancy = (__pyx_v_bishop_occupancy * (__pyx_v_5const_bishop_magic_numbers[__pyx_v_square]));
+
+  /* "attack.pyx":301
+ *     bishop_occupancy &= bishop_masks[square]
+ *     bishop_occupancy *= bishop_magic_numbers[square]
+ *     bishop_occupancy >>= 64 - bishop_relevant_bits[square]             # <<<<<<<<<<<<<<
+ * 
+ *     queen_attacks = bishop_attacks[square][bishop_occupancy]
+ */
+  __pyx_v_bishop_occupancy = (__pyx_v_bishop_occupancy >> (64 - (__pyx_v_6attack_bishop_relevant_bits[__pyx_v_square])));
+
+  /* "attack.pyx":303
+ *     bishop_occupancy >>= 64 - bishop_relevant_bits[square]
+ * 
+ *     queen_attacks = bishop_attacks[square][bishop_occupancy]             # <<<<<<<<<<<<<<
+ * 
+ *     rook_occupancy &= rook_masks[square]
+ */
+  __pyx_v_queen_attacks = ((__pyx_v_6attack_bishop_attacks[__pyx_v_square])[__pyx_v_bishop_occupancy]);
+
+  /* "attack.pyx":305
+ *     queen_attacks = bishop_attacks[square][bishop_occupancy]
+ * 
+ *     rook_occupancy &= rook_masks[square]             # <<<<<<<<<<<<<<
+ *     rook_occupancy *= rook_magic_numbers[square]
+ *     rook_occupancy >>= 64 - rook_relevant_bits[square]
+ */
+  __pyx_v_rook_occupancy = (__pyx_v_rook_occupancy & (__pyx_v_6attack_rook_masks[__pyx_v_square]));
+
+  /* "attack.pyx":306
+ * 
+ *     rook_occupancy &= rook_masks[square]
+ *     rook_occupancy *= rook_magic_numbers[square]             # <<<<<<<<<<<<<<
+ *     rook_occupancy >>= 64 - rook_relevant_bits[square]
+ * 
+ */
+  __pyx_v_rook_occupancy = (__pyx_v_rook_occupancy * (__pyx_v_5const_rook_magic_numbers[__pyx_v_square]));
+
+  /* "attack.pyx":307
+ *     rook_occupancy &= rook_masks[square]
+ *     rook_occupancy *= rook_magic_numbers[square]
+ *     rook_occupancy >>= 64 - rook_relevant_bits[square]             # <<<<<<<<<<<<<<
+ * 
+ *     queen_attacks |= rook_attacks[square][rook_occupancy]
+ */
+  __pyx_v_rook_occupancy = (__pyx_v_rook_occupancy >> (64 - (__pyx_v_6attack_rook_relevant_bits[__pyx_v_square])));
+
+  /* "attack.pyx":309
+ *     rook_occupancy >>= 64 - rook_relevant_bits[square]
+ * 
+ *     queen_attacks |= rook_attacks[square][rook_occupancy]             # <<<<<<<<<<<<<<
+ * 
+ *     return queen_attacks
+ */
+  __pyx_v_queen_attacks = (__pyx_v_queen_attacks | ((__pyx_v_6attack_rook_attacks[__pyx_v_square])[__pyx_v_rook_occupancy]));
+
+  /* "attack.pyx":311
+ *     queen_attacks |= rook_attacks[square][rook_occupancy]
+ * 
+ *     return queen_attacks             # <<<<<<<<<<<<<<
+ * 
+ * init_leapers_attacks()
+ */
+  __pyx_r = __pyx_v_queen_attacks;
+  goto __pyx_L0;
+
+  /* "attack.pyx":293
+ *     return rook_attacks[square][occupancy]
+ * 
+ * cdef U64 get_queen_attacks(int square, U64 occupancy):             # <<<<<<<<<<<<<<
+ *     cdef U64 queen_attacks = 0ULL
+ * 
  */
 
   /* function exit code */
@@ -3833,6 +3986,7 @@ static int __Pyx_modinit_function_export_code(void) {
   if (__Pyx_ExportFunction("set_occupancy", (void (*)(void))__pyx_f_6attack_set_occupancy, "__pyx_t_6helper_U64 (int, int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("get_bishop_attacks", (void (*)(void))__pyx_f_6attack_get_bishop_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("get_rook_attacks", (void (*)(void))__pyx_f_6attack_get_rook_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("get_queen_attacks", (void (*)(void))__pyx_f_6attack_get_queen_attacks, "__pyx_t_6helper_U64 (int, __pyx_t_6helper_U64)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3869,6 +4023,13 @@ static int __Pyx_modinit_variable_import_code(void) {
   if (__Pyx_ImportVoidPtr(__pyx_t_1, "square_to_coord", (void **)&__pyx_vp_5const_square_to_coord, "char *[64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportVoidPtr(__pyx_t_1, "rook_magic_numbers", (void **)&__pyx_vp_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportVoidPtr(__pyx_t_1, "bishop_magic_numbers", (void **)&__pyx_vp_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "ascii_pieces", (void **)&__pyx_vp_5const_ascii_pieces, "char [12]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "empty_board", (void **)&__pyx_vp_5const_empty_board, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "start_position", (void **)&__pyx_vp_5const_start_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "tricky_position", (void **)&__pyx_vp_5const_tricky_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "killer_position", (void **)&__pyx_vp_5const_killer_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "cmk_position", (void **)&__pyx_vp_5const_cmk_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportVoidPtr(__pyx_t_1, "last", (void **)&__pyx_vp_5const_last, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -4285,33 +4446,33 @@ if (!__Pyx_RefNanny) {
   __pyx_t_2[63] = 12;
   memcpy(&(__pyx_v_6attack_rook_relevant_bits[0]), __pyx_t_2, sizeof(__pyx_v_6attack_rook_relevant_bits[0]) * (64));
 
-  /* "attack.pyx":293
- *     return rook_attacks[square][occupancy]
+  /* "attack.pyx":313
+ *     return queen_attacks
  * 
  * init_leapers_attacks()             # <<<<<<<<<<<<<<
  * init_sliders_attacks(bishop)
  * init_sliders_attacks(rook)
  */
-  __pyx_t_3 = __pyx_f_6attack_init_leapers_attacks(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 293, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6attack_init_leapers_attacks(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "attack.pyx":294
+  /* "attack.pyx":314
  * 
  * init_leapers_attacks()
  * init_sliders_attacks(bishop)             # <<<<<<<<<<<<<<
  * init_sliders_attacks(rook)
  */
-  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_bishop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_bishop); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "attack.pyx":295
+  /* "attack.pyx":315
  * init_leapers_attacks()
  * init_sliders_attacks(bishop)
  * init_sliders_attacks(rook)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_rook); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 295, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6attack_init_sliders_attacks(__pyx_e_6attack_rook); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 

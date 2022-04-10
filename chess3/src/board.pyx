@@ -1,7 +1,7 @@
 from libc.stdio cimport printf
 from libc.string cimport memset
 from helper cimport U64, print_bitboard, get_bit, set_bit
-from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks
+from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks, get_queen_attacks
 from const cimport square_to_coord, ascii_pieces, char_to_piece, empty_board, start_position, tricky_position, killer_position, cmk_position 
 
 
@@ -126,11 +126,24 @@ cdef class Board:
 
 cdef Board chess = Board()
 # printf("FEN: %s\n", cmk_position)
-chess.parse_fen(start_position)
-chess.print_board()
+# chess.parse_fen(start_position)
+# chess.print_board()
 
-chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b Kk e6 0 1 ")
-chess.print_board()
+# chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b Kk e6 0 1 ")
+# chess.print_board()
 
-chess.parse_fen(b"r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 w q a3 0 9 ")
-chess.print_board()
+# chess.parse_fen(b"r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 w q a3 0 9 ")
+# chess.print_board()
+
+cdef occupancy = 0ULL
+occupancy = set_bit(occupancy, b6)
+occupancy = set_bit(occupancy, d6)
+occupancy = set_bit(occupancy, f6)
+occupancy = set_bit(occupancy, g4)
+occupancy = set_bit(occupancy, b4)
+occupancy = set_bit(occupancy, c3)
+occupancy = set_bit(occupancy, d3)
+occupancy = set_bit(occupancy, e3)
+print_bitboard(get_queen_attacks(d4, occupancy))
+
+

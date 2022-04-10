@@ -290,6 +290,26 @@ cdef U64 get_rook_attacks(int square, U64 occupancy):
 
     return rook_attacks[square][occupancy]
 
+cdef U64 get_queen_attacks(int square, U64 occupancy):
+    cdef U64 queen_attacks = 0ULL
+    
+    cdef U64 bishop_occupancy = occupancy
+    cdef U64 rook_occupancy = occupancy
+
+    bishop_occupancy &= bishop_masks[square]
+    bishop_occupancy *= bishop_magic_numbers[square]
+    bishop_occupancy >>= 64 - bishop_relevant_bits[square]
+
+    queen_attacks = bishop_attacks[square][bishop_occupancy]
+
+    rook_occupancy &= rook_masks[square]
+    rook_occupancy *= rook_magic_numbers[square]
+    rook_occupancy >>= 64 - rook_relevant_bits[square]
+
+    queen_attacks |= rook_attacks[square][rook_occupancy]
+
+    return queen_attacks
+
 init_leapers_attacks()
 init_sliders_attacks(bishop)
 init_sliders_attacks(rook)
