@@ -6,6 +6,7 @@ setup(
         "src/board.pyx",
         "src/helper.pyx",
         "src/attack.pyx",
-        "src/const.pyx"
+        "src/const.pyx",
+        "src/move.pyx"
     ])
 )
