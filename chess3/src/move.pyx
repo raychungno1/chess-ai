@@ -52,12 +52,16 @@ cdef class Moves:
     def __init__(self):
         self.count = 0
 
-    cdef add_move(self, int move):
+    cpdef add_move(self, int move):
         self.moves[self.count] = move
         self.count += 1
 
     # for debug purposes
     cpdef print_move_list(self):
+        if not self.count:
+            printf("\n    Empty move list!\n\n")
+            return
+
         printf("\n    move    piece   capture   double   enpass   castling\n\n")
         
         cdef int i, move

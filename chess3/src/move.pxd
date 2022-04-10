@@ -15,5 +15,5 @@ cdef class Moves:
     cdef public int moves[256]
     cdef public int count
 
-    cdef add_move(self, int move)
+    cpdef add_move(self, int move)
     cpdef print_move_list(self)

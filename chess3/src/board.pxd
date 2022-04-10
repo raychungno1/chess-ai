@@ -1,4 +1,5 @@
 from helper cimport U64
+from move import Moves
 
 cdef enum:
     a8, b8, c8, d8, e8, f8, g8, h8,
@@ -25,4 +26,4 @@ cdef class Board:
     cdef public int side, enpassant, castling
 
     cdef int is_square_attacked(self, int square, int side)
-    cpdef generate_moves(self)
+    cpdef generate_moves(self, object move_list)
