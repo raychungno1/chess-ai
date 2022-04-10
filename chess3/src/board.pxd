@@ -21,5 +21,5 @@ cdef enum:
     
 cdef class Board:
     cdef public U64 bitboards[12]
-    cdef public U64 occupangies[3]
+    cdef public U64 occupancies[3]
     cdef public int side, enpassant, castling

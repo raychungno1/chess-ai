@@ -1133,30 +1133,48 @@ static char *__pyx_v_5const_square_to_coord[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_rook_magic_numbers[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_bishop_magic_numbers[64];
 static char __pyx_v_5const_ascii_pieces[12];
+static char *__pyx_v_5const_empty_board;
+static char *__pyx_v_5const_start_position;
+static char *__pyx_v_5const_tricky_position;
+static char *__pyx_v_5const_killer_position;
+static char *__pyx_v_5const_cmk_position;
+static char *__pyx_v_5const_last;
 static int __pyx_v_5const_char_pieces[0x72];
 #define __Pyx_MODULE_NAME "const"
 extern int __pyx_module_is_main_const;
 int __pyx_module_is_main_const = 0;
 
 /* Implementation of 'const' */
+static const char __pyx_k_last[] = "last";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
+static const char __pyx_k_empty_board[] = "empty_board";
 static const char __pyx_k_ascii_pieces[] = "ascii_pieces";
+static const char __pyx_k_cmk_position[] = "cmk_position";
+static const char __pyx_k_start_position[] = "start_position";
+static const char __pyx_k_killer_position[] = "killer_position";
 static const char __pyx_k_square_to_coord[] = "square_to_coord";
+static const char __pyx_k_tricky_position[] = "tricky_position";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_rook_magic_numbers[] = "rook_magic_numbers";
 static const char __pyx_k_bishop_magic_numbers[] = "bishop_magic_numbers";
 static PyObject *__pyx_n_s_ascii_pieces;
 static PyObject *__pyx_n_s_bishop_magic_numbers;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_n_s_cmk_position;
+static PyObject *__pyx_n_s_empty_board;
+static PyObject *__pyx_n_s_killer_position;
+static PyObject *__pyx_n_s_last;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_pyx_capi;
 static PyObject *__pyx_n_s_rook_magic_numbers;
 static PyObject *__pyx_n_s_square_to_coord;
+static PyObject *__pyx_n_s_start_position;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_tricky_position;
 /* Late includes */
 
 /* "const.pyx":165
@@ -1177,6 +1195,7 @@ static int __pyx_f_5const_char_to_piece(char __pyx_v_c) {
  * cdef int char_to_piece(char c):
  *     return char_pieces[c]             # <<<<<<<<<<<<<<
  * 
+ * empty_board = "8/8/8/8/8/8/8/8 w - - "
  */
   __pyx_r = (__pyx_v_5const_char_pieces[__pyx_v_c]);
   goto __pyx_L0;
@@ -1244,12 +1263,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ascii_pieces, __pyx_k_ascii_pieces, sizeof(__pyx_k_ascii_pieces), 0, 0, 1, 1},
   {&__pyx_n_s_bishop_magic_numbers, __pyx_k_bishop_magic_numbers, sizeof(__pyx_k_bishop_magic_numbers), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_cmk_position, __pyx_k_cmk_position, sizeof(__pyx_k_cmk_position), 0, 0, 1, 1},
+  {&__pyx_n_s_empty_board, __pyx_k_empty_board, sizeof(__pyx_k_empty_board), 0, 0, 1, 1},
+  {&__pyx_n_s_killer_position, __pyx_k_killer_position, sizeof(__pyx_k_killer_position), 0, 0, 1, 1},
+  {&__pyx_n_s_last, __pyx_k_last, sizeof(__pyx_k_last), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
   {&__pyx_n_s_rook_magic_numbers, __pyx_k_rook_magic_numbers, sizeof(__pyx_k_rook_magic_numbers), 0, 0, 1, 1},
   {&__pyx_n_s_square_to_coord, __pyx_k_square_to_coord, sizeof(__pyx_k_square_to_coord), 0, 0, 1, 1},
+  {&__pyx_n_s_start_position, __pyx_k_start_position, sizeof(__pyx_k_start_position), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_tricky_position, __pyx_k_tricky_position, sizeof(__pyx_k_tricky_position), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
@@ -1297,6 +1322,12 @@ static int __Pyx_modinit_variable_export_code(void) {
   if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_magic_numbers, (void *)&__pyx_v_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_magic_numbers, (void *)&__pyx_v_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_ascii_pieces, (void *)&__pyx_v_5const_ascii_pieces, "char [12]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_empty_board, (void *)&__pyx_v_5const_empty_board, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_start_position, (void *)&__pyx_v_5const_start_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_tricky_position, (void *)&__pyx_v_5const_tricky_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_killer_position, (void *)&__pyx_v_5const_killer_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_cmk_position, (void *)&__pyx_v_5const_cmk_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_last, (void *)&__pyx_v_5const_last, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1900,6 +1931,48 @@ if (!__Pyx_RefNanny) {
  * cdef int char_to_piece(char c):
  */
   (__pyx_v_5const_char_pieces['k']) = 11;
+
+  /* "const.pyx":168
+ *     return char_pieces[c]
+ * 
+ * empty_board = "8/8/8/8/8/8/8/8 w - - "             # <<<<<<<<<<<<<<
+ * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
+ * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
+ */
+  __pyx_v_5const_empty_board = ((char *)"8/8/8/8/8/8/8/8 w - - ");
+
+  /* "const.pyx":169
+ * 
+ * empty_board = "8/8/8/8/8/8/8/8 w - - "
+ * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "             # <<<<<<<<<<<<<<
+ * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
+ * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
+ */
+  __pyx_v_5const_start_position = ((char *)"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ");
+
+  /* "const.pyx":170
+ * empty_board = "8/8/8/8/8/8/8/8 w - - "
+ * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
+ * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "             # <<<<<<<<<<<<<<
+ * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
+ * cmk_position = "r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 "
+ */
+  __pyx_v_5const_tricky_position = ((char *)"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ");
+
+  /* "const.pyx":171
+ * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
+ * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
+ * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"             # <<<<<<<<<<<<<<
+ * cmk_position = "r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 "
+ */
+  __pyx_v_5const_killer_position = ((char *)"rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1");
+
+  /* "const.pyx":172
+ * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
+ * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
+ * cmk_position = "r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 "             # <<<<<<<<<<<<<<
+ */
+  __pyx_v_5const_cmk_position = ((char *)"r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 ");
 
   /* "const.pyx":1
  * square_to_coord[:] = [             # <<<<<<<<<<<<<<
