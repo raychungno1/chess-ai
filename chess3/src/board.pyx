@@ -564,6 +564,40 @@ cdef class Board:
         
         return nodes
 
+    cpdef int parse_move(self, char *move_str):
+        cdef Moves move_list = self.generate_moves()
+
+        cdef int source_square = (move_str[0] - <int>'a') + (8 - (move_str[1] - <int>'0')) * 8
+        cdef int target_square = (move_str[2] - <int>'a') + (8 - (move_str[3] - <int>'0')) * 8
+        cdef int promoted_piece = 0
+        
+        cdef int move_count, move
+        for move_count in range(move_list.count):
+            move = move_list.moves[move_count]
+
+            if source_square == get_move_source(move) and target_square == get_move_target(move):
+
+                promoted_piece = get_move_promoted(move)
+
+                if promoted_piece:
+                    if (promoted_piece == "Q" or promoted_piece == "q") and move_str[4] == 'q':
+                        return move
+                    
+                    elif (promoted_piece == "R" or promoted_piece == "r") and move_str[4] == 'r':
+                        return move
+
+                    elif (promoted_piece == "B" or promoted_piece == "b") and move_str[4] == 'b':
+                        return move
+
+                    elif (promoted_piece == "N" or promoted_piece == "n") and move_str[4] == 'n':
+                        return move
+
+                    continue
+
+                return move
+                
+        return 0
+
 # cdef Board chess = Board()
 # chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
 # chess.print_board()

@@ -37,4 +37,5 @@ cdef class Board:
     cpdef int make_move(self, int move, int move_flag)
     cpdef long perft(self, int depth)
     cpdef long perft_test(self, int depth)
+    cpdef int parse_move(self, char *move_str)
     
