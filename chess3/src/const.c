@@ -1133,6 +1133,7 @@ static char *__pyx_v_5const_square_to_coord[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_rook_magic_numbers[64];
 static __pyx_t_6helper_U64 __pyx_v_5const_bishop_magic_numbers[64];
 static char __pyx_v_5const_ascii_pieces[12];
+static int __pyx_v_5const_castling_rights[64];
 static char *__pyx_v_5const_empty_board;
 static char *__pyx_v_5const_start_position;
 static char *__pyx_v_5const_tricky_position;
@@ -1154,6 +1155,7 @@ static const char __pyx_k_empty_board[] = "empty_board";
 static const char __pyx_k_ascii_pieces[] = "ascii_pieces";
 static const char __pyx_k_cmk_position[] = "cmk_position";
 static const char __pyx_k_start_position[] = "start_position";
+static const char __pyx_k_castling_rights[] = "castling_rights";
 static const char __pyx_k_killer_position[] = "killer_position";
 static const char __pyx_k_square_to_coord[] = "square_to_coord";
 static const char __pyx_k_tricky_position[] = "tricky_position";
@@ -1162,6 +1164,7 @@ static const char __pyx_k_rook_magic_numbers[] = "rook_magic_numbers";
 static const char __pyx_k_bishop_magic_numbers[] = "bishop_magic_numbers";
 static PyObject *__pyx_n_s_ascii_pieces;
 static PyObject *__pyx_n_s_bishop_magic_numbers;
+static PyObject *__pyx_n_s_castling_rights;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_cmk_position;
 static PyObject *__pyx_n_s_empty_board;
@@ -1177,7 +1180,7 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_tricky_position;
 /* Late includes */
 
-/* "const.pyx":165
+/* "const.pyx":176
  * char_pieces['k'] = 11
  * 
  * cdef int char_to_piece(char c):             # <<<<<<<<<<<<<<
@@ -1190,17 +1193,17 @@ static int __pyx_f_5const_char_to_piece(char __pyx_v_c) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("char_to_piece", 0);
 
-  /* "const.pyx":166
+  /* "const.pyx":177
  * 
  * cdef int char_to_piece(char c):
  *     return char_pieces[c]             # <<<<<<<<<<<<<<
  * 
- * empty_board = "8/8/8/8/8/8/8/8 w - - "
+ * # cdef int castling_rights[64]
  */
   __pyx_r = (__pyx_v_5const_char_pieces[__pyx_v_c]);
   goto __pyx_L0;
 
-  /* "const.pyx":165
+  /* "const.pyx":176
  * char_pieces['k'] = 11
  * 
  * cdef int char_to_piece(char c):             # <<<<<<<<<<<<<<
@@ -1262,6 +1265,7 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ascii_pieces, __pyx_k_ascii_pieces, sizeof(__pyx_k_ascii_pieces), 0, 0, 1, 1},
   {&__pyx_n_s_bishop_magic_numbers, __pyx_k_bishop_magic_numbers, sizeof(__pyx_k_bishop_magic_numbers), 0, 0, 1, 1},
+  {&__pyx_n_s_castling_rights, __pyx_k_castling_rights, sizeof(__pyx_k_castling_rights), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_cmk_position, __pyx_k_cmk_position, sizeof(__pyx_k_cmk_position), 0, 0, 1, 1},
   {&__pyx_n_s_empty_board, __pyx_k_empty_board, sizeof(__pyx_k_empty_board), 0, 0, 1, 1},
@@ -1322,6 +1326,7 @@ static int __Pyx_modinit_variable_export_code(void) {
   if (__Pyx_ExportVoidPtr(__pyx_n_s_rook_magic_numbers, (void *)&__pyx_v_5const_rook_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_bishop_magic_numbers, (void *)&__pyx_v_5const_bishop_magic_numbers, "__pyx_t_6helper_U64 [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_ascii_pieces, (void *)&__pyx_v_5const_ascii_pieces, "char [12]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportVoidPtr(__pyx_n_s_castling_rights, (void *)&__pyx_v_5const_castling_rights, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_empty_board, (void *)&__pyx_v_5const_empty_board, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_start_position, (void *)&__pyx_v_5const_start_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_tricky_position, (void *)&__pyx_v_5const_tricky_position, "char *") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -1476,11 +1481,12 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_const(PyObject *__pyx_pyinit_modul
 #endif
 #endif
 {
-  static char *__pyx_t_1[64];
-  static __pyx_t_6helper_U64 __pyx_t_2[64];
+  static int __pyx_t_1[64];
+  static char *__pyx_t_2[64];
   static __pyx_t_6helper_U64 __pyx_t_3[64];
-  static char __pyx_t_4[12];
-  PyObject *__pyx_t_5 = NULL;
+  static __pyx_t_6helper_U64 __pyx_t_4[64];
+  static char __pyx_t_5[12];
+  PyObject *__pyx_t_6 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1587,244 +1593,317 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "const.pyx":1
+ * castling_rights[:] = [             # <<<<<<<<<<<<<<
+ *     7, 15, 15, 15,  3, 15, 15, 11,
+ *     15, 15, 15, 15, 15, 15, 15, 15,
+ */
+  __pyx_t_1[0] = 7;
+  __pyx_t_1[1] = 15;
+  __pyx_t_1[2] = 15;
+  __pyx_t_1[3] = 15;
+  __pyx_t_1[4] = 3;
+  __pyx_t_1[5] = 15;
+  __pyx_t_1[6] = 15;
+  __pyx_t_1[7] = 11;
+  __pyx_t_1[8] = 15;
+  __pyx_t_1[9] = 15;
+  __pyx_t_1[10] = 15;
+  __pyx_t_1[11] = 15;
+  __pyx_t_1[12] = 15;
+  __pyx_t_1[13] = 15;
+  __pyx_t_1[14] = 15;
+  __pyx_t_1[15] = 15;
+  __pyx_t_1[16] = 15;
+  __pyx_t_1[17] = 15;
+  __pyx_t_1[18] = 15;
+  __pyx_t_1[19] = 15;
+  __pyx_t_1[20] = 15;
+  __pyx_t_1[21] = 15;
+  __pyx_t_1[22] = 15;
+  __pyx_t_1[23] = 15;
+  __pyx_t_1[24] = 15;
+  __pyx_t_1[25] = 15;
+  __pyx_t_1[26] = 15;
+  __pyx_t_1[27] = 15;
+  __pyx_t_1[28] = 15;
+  __pyx_t_1[29] = 15;
+  __pyx_t_1[30] = 15;
+  __pyx_t_1[31] = 15;
+  __pyx_t_1[32] = 15;
+  __pyx_t_1[33] = 15;
+  __pyx_t_1[34] = 15;
+  __pyx_t_1[35] = 15;
+  __pyx_t_1[36] = 15;
+  __pyx_t_1[37] = 15;
+  __pyx_t_1[38] = 15;
+  __pyx_t_1[39] = 15;
+  __pyx_t_1[40] = 15;
+  __pyx_t_1[41] = 15;
+  __pyx_t_1[42] = 15;
+  __pyx_t_1[43] = 15;
+  __pyx_t_1[44] = 15;
+  __pyx_t_1[45] = 15;
+  __pyx_t_1[46] = 15;
+  __pyx_t_1[47] = 15;
+  __pyx_t_1[48] = 15;
+  __pyx_t_1[49] = 15;
+  __pyx_t_1[50] = 15;
+  __pyx_t_1[51] = 15;
+  __pyx_t_1[52] = 15;
+  __pyx_t_1[53] = 15;
+  __pyx_t_1[54] = 15;
+  __pyx_t_1[55] = 15;
+  __pyx_t_1[56] = 13;
+  __pyx_t_1[57] = 15;
+  __pyx_t_1[58] = 15;
+  __pyx_t_1[59] = 15;
+  __pyx_t_1[60] = 12;
+  __pyx_t_1[61] = 15;
+  __pyx_t_1[62] = 15;
+  __pyx_t_1[63] = 14;
+  memcpy(&(__pyx_v_5const_castling_rights[0]), __pyx_t_1, sizeof(__pyx_v_5const_castling_rights[0]) * (64));
+
+  /* "const.pyx":12
+ * ]
+ * 
  * square_to_coord[:] = [             # <<<<<<<<<<<<<<
  *     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
  *     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
  */
-  __pyx_t_1[0] = ((char *)"a8");
-  __pyx_t_1[1] = ((char *)"b8");
-  __pyx_t_1[2] = ((char *)"c8");
-  __pyx_t_1[3] = ((char *)"d8");
-  __pyx_t_1[4] = ((char *)"e8");
-  __pyx_t_1[5] = ((char *)"f8");
-  __pyx_t_1[6] = ((char *)"g8");
-  __pyx_t_1[7] = ((char *)"h8");
-  __pyx_t_1[8] = ((char *)"a7");
-  __pyx_t_1[9] = ((char *)"b7");
-  __pyx_t_1[10] = ((char *)"c7");
-  __pyx_t_1[11] = ((char *)"d7");
-  __pyx_t_1[12] = ((char *)"e7");
-  __pyx_t_1[13] = ((char *)"f7");
-  __pyx_t_1[14] = ((char *)"g7");
-  __pyx_t_1[15] = ((char *)"h7");
-  __pyx_t_1[16] = ((char *)"a6");
-  __pyx_t_1[17] = ((char *)"b6");
-  __pyx_t_1[18] = ((char *)"c6");
-  __pyx_t_1[19] = ((char *)"d6");
-  __pyx_t_1[20] = ((char *)"e6");
-  __pyx_t_1[21] = ((char *)"f6");
-  __pyx_t_1[22] = ((char *)"g6");
-  __pyx_t_1[23] = ((char *)"h6");
-  __pyx_t_1[24] = ((char *)"a5");
-  __pyx_t_1[25] = ((char *)"b5");
-  __pyx_t_1[26] = ((char *)"c5");
-  __pyx_t_1[27] = ((char *)"d5");
-  __pyx_t_1[28] = ((char *)"e5");
-  __pyx_t_1[29] = ((char *)"f5");
-  __pyx_t_1[30] = ((char *)"g5");
-  __pyx_t_1[31] = ((char *)"h5");
-  __pyx_t_1[32] = ((char *)"a4");
-  __pyx_t_1[33] = ((char *)"b4");
-  __pyx_t_1[34] = ((char *)"c4");
-  __pyx_t_1[35] = ((char *)"d4");
-  __pyx_t_1[36] = ((char *)"e4");
-  __pyx_t_1[37] = ((char *)"f4");
-  __pyx_t_1[38] = ((char *)"g4");
-  __pyx_t_1[39] = ((char *)"h4");
-  __pyx_t_1[40] = ((char *)"a3");
-  __pyx_t_1[41] = ((char *)"b3");
-  __pyx_t_1[42] = ((char *)"c3");
-  __pyx_t_1[43] = ((char *)"d3");
-  __pyx_t_1[44] = ((char *)"e3");
-  __pyx_t_1[45] = ((char *)"f3");
-  __pyx_t_1[46] = ((char *)"g3");
-  __pyx_t_1[47] = ((char *)"h3");
-  __pyx_t_1[48] = ((char *)"a2");
-  __pyx_t_1[49] = ((char *)"b2");
-  __pyx_t_1[50] = ((char *)"c2");
-  __pyx_t_1[51] = ((char *)"d2");
-  __pyx_t_1[52] = ((char *)"e2");
-  __pyx_t_1[53] = ((char *)"f2");
-  __pyx_t_1[54] = ((char *)"g2");
-  __pyx_t_1[55] = ((char *)"h2");
-  __pyx_t_1[56] = ((char *)"a1");
-  __pyx_t_1[57] = ((char *)"b1");
-  __pyx_t_1[58] = ((char *)"c1");
-  __pyx_t_1[59] = ((char *)"d1");
-  __pyx_t_1[60] = ((char *)"e1");
-  __pyx_t_1[61] = ((char *)"f1");
-  __pyx_t_1[62] = ((char *)"g1");
-  __pyx_t_1[63] = ((char *)"h1");
-  memcpy(&(__pyx_v_5const_square_to_coord[0]), __pyx_t_1, sizeof(__pyx_v_5const_square_to_coord[0]) * (64));
+  __pyx_t_2[0] = ((char *)"a8");
+  __pyx_t_2[1] = ((char *)"b8");
+  __pyx_t_2[2] = ((char *)"c8");
+  __pyx_t_2[3] = ((char *)"d8");
+  __pyx_t_2[4] = ((char *)"e8");
+  __pyx_t_2[5] = ((char *)"f8");
+  __pyx_t_2[6] = ((char *)"g8");
+  __pyx_t_2[7] = ((char *)"h8");
+  __pyx_t_2[8] = ((char *)"a7");
+  __pyx_t_2[9] = ((char *)"b7");
+  __pyx_t_2[10] = ((char *)"c7");
+  __pyx_t_2[11] = ((char *)"d7");
+  __pyx_t_2[12] = ((char *)"e7");
+  __pyx_t_2[13] = ((char *)"f7");
+  __pyx_t_2[14] = ((char *)"g7");
+  __pyx_t_2[15] = ((char *)"h7");
+  __pyx_t_2[16] = ((char *)"a6");
+  __pyx_t_2[17] = ((char *)"b6");
+  __pyx_t_2[18] = ((char *)"c6");
+  __pyx_t_2[19] = ((char *)"d6");
+  __pyx_t_2[20] = ((char *)"e6");
+  __pyx_t_2[21] = ((char *)"f6");
+  __pyx_t_2[22] = ((char *)"g6");
+  __pyx_t_2[23] = ((char *)"h6");
+  __pyx_t_2[24] = ((char *)"a5");
+  __pyx_t_2[25] = ((char *)"b5");
+  __pyx_t_2[26] = ((char *)"c5");
+  __pyx_t_2[27] = ((char *)"d5");
+  __pyx_t_2[28] = ((char *)"e5");
+  __pyx_t_2[29] = ((char *)"f5");
+  __pyx_t_2[30] = ((char *)"g5");
+  __pyx_t_2[31] = ((char *)"h5");
+  __pyx_t_2[32] = ((char *)"a4");
+  __pyx_t_2[33] = ((char *)"b4");
+  __pyx_t_2[34] = ((char *)"c4");
+  __pyx_t_2[35] = ((char *)"d4");
+  __pyx_t_2[36] = ((char *)"e4");
+  __pyx_t_2[37] = ((char *)"f4");
+  __pyx_t_2[38] = ((char *)"g4");
+  __pyx_t_2[39] = ((char *)"h4");
+  __pyx_t_2[40] = ((char *)"a3");
+  __pyx_t_2[41] = ((char *)"b3");
+  __pyx_t_2[42] = ((char *)"c3");
+  __pyx_t_2[43] = ((char *)"d3");
+  __pyx_t_2[44] = ((char *)"e3");
+  __pyx_t_2[45] = ((char *)"f3");
+  __pyx_t_2[46] = ((char *)"g3");
+  __pyx_t_2[47] = ((char *)"h3");
+  __pyx_t_2[48] = ((char *)"a2");
+  __pyx_t_2[49] = ((char *)"b2");
+  __pyx_t_2[50] = ((char *)"c2");
+  __pyx_t_2[51] = ((char *)"d2");
+  __pyx_t_2[52] = ((char *)"e2");
+  __pyx_t_2[53] = ((char *)"f2");
+  __pyx_t_2[54] = ((char *)"g2");
+  __pyx_t_2[55] = ((char *)"h2");
+  __pyx_t_2[56] = ((char *)"a1");
+  __pyx_t_2[57] = ((char *)"b1");
+  __pyx_t_2[58] = ((char *)"c1");
+  __pyx_t_2[59] = ((char *)"d1");
+  __pyx_t_2[60] = ((char *)"e1");
+  __pyx_t_2[61] = ((char *)"f1");
+  __pyx_t_2[62] = ((char *)"g1");
+  __pyx_t_2[63] = ((char *)"h1");
+  memcpy(&(__pyx_v_5const_square_to_coord[0]), __pyx_t_2, sizeof(__pyx_v_5const_square_to_coord[0]) * (64));
 
-  /* "const.pyx":12
+  /* "const.pyx":23
  * ]
  * 
  * rook_magic_numbers[:] = [             # <<<<<<<<<<<<<<
  *     0x8a80104000800020ULL,
  *     0x140002000100040ULL,
  */
-  __pyx_t_2[0] = 0x8a80104000800020ULL;
-  __pyx_t_2[1] = 0x140002000100040ULL;
-  __pyx_t_2[2] = 0x2801880a0017001ULL;
-  __pyx_t_2[3] = 0x100081001000420ULL;
-  __pyx_t_2[4] = 0x200020010080420ULL;
-  __pyx_t_2[5] = 0x3001c0002010008ULL;
-  __pyx_t_2[6] = 0x8480008002000100ULL;
-  __pyx_t_2[7] = 0x2080088004402900ULL;
-  __pyx_t_2[8] = 0x800098204000ULL;
-  __pyx_t_2[9] = 0x2024401000200040ULL;
-  __pyx_t_2[10] = 0x100802000801000ULL;
-  __pyx_t_2[11] = 0x120800800801000ULL;
-  __pyx_t_2[12] = 0x208808088000400ULL;
-  __pyx_t_2[13] = 0x2802200800400ULL;
-  __pyx_t_2[14] = 0x2200800100020080ULL;
-  __pyx_t_2[15] = 0x801000060821100ULL;
-  __pyx_t_2[16] = 0x80044006422000ULL;
-  __pyx_t_2[17] = 0x100808020004000ULL;
-  __pyx_t_2[18] = 0x12108a0010204200ULL;
-  __pyx_t_2[19] = 0x140848010000802ULL;
-  __pyx_t_2[20] = 0x481828014002800ULL;
-  __pyx_t_2[21] = 0x8094004002004100ULL;
-  __pyx_t_2[22] = 0x4010040010010802ULL;
-  __pyx_t_2[23] = 0x20008806104ULL;
-  __pyx_t_2[24] = 0x100400080208000ULL;
-  __pyx_t_2[25] = 0x2040002120081000ULL;
-  __pyx_t_2[26] = 0x21200680100081ULL;
-  __pyx_t_2[27] = 0x20100080080080ULL;
-  __pyx_t_2[28] = 0x2000a00200410ULL;
-  __pyx_t_2[29] = 0x20080800400ULL;
-  __pyx_t_2[30] = 0x80088400100102ULL;
-  __pyx_t_2[31] = 0x80004600042881ULL;
-  __pyx_t_2[32] = 0x4040008040800020ULL;
-  __pyx_t_2[33] = 0x440003000200801ULL;
-  __pyx_t_2[34] = 0x4200011004500ULL;
-  __pyx_t_2[35] = 0x188020010100100ULL;
-  __pyx_t_2[36] = 0x14800401802800ULL;
-  __pyx_t_2[37] = 0x2080040080800200ULL;
-  __pyx_t_2[38] = 0x124080204001001ULL;
-  __pyx_t_2[39] = 0x200046502000484ULL;
-  __pyx_t_2[40] = 0x480400080088020ULL;
-  __pyx_t_2[41] = 0x1000422010034000ULL;
-  __pyx_t_2[42] = 0x30200100110040ULL;
-  __pyx_t_2[43] = 0x100021010009ULL;
-  __pyx_t_2[44] = 0x2002080100110004ULL;
-  __pyx_t_2[45] = 0x202008004008002ULL;
-  __pyx_t_2[46] = 0x20020004010100ULL;
-  __pyx_t_2[47] = 0x2048440040820001ULL;
-  __pyx_t_2[48] = 0x101002200408200ULL;
-  __pyx_t_2[49] = 0x40802000401080ULL;
-  __pyx_t_2[50] = 0x4008142004410100ULL;
-  __pyx_t_2[51] = 0x2060820c0120200ULL;
-  __pyx_t_2[52] = 0x1001004080100ULL;
-  __pyx_t_2[53] = 0x20c020080040080ULL;
-  __pyx_t_2[54] = 0x2935610830022400ULL;
-  __pyx_t_2[55] = 0x44440041009200ULL;
-  __pyx_t_2[56] = 0x280001040802101ULL;
-  __pyx_t_2[57] = 0x2100190040002085ULL;
-  __pyx_t_2[58] = 0x80c0084100102001ULL;
-  __pyx_t_2[59] = 0x4024081001000421ULL;
-  __pyx_t_2[60] = 0x20030a0244872ULL;
-  __pyx_t_2[61] = 0x12001008414402ULL;
-  __pyx_t_2[62] = 0x2006104900a0804ULL;
-  __pyx_t_2[63] = 0x1004081002402ULL;
-  memcpy(&(__pyx_v_5const_rook_magic_numbers[0]), __pyx_t_2, sizeof(__pyx_v_5const_rook_magic_numbers[0]) * (64));
+  __pyx_t_3[0] = 0x8a80104000800020ULL;
+  __pyx_t_3[1] = 0x140002000100040ULL;
+  __pyx_t_3[2] = 0x2801880a0017001ULL;
+  __pyx_t_3[3] = 0x100081001000420ULL;
+  __pyx_t_3[4] = 0x200020010080420ULL;
+  __pyx_t_3[5] = 0x3001c0002010008ULL;
+  __pyx_t_3[6] = 0x8480008002000100ULL;
+  __pyx_t_3[7] = 0x2080088004402900ULL;
+  __pyx_t_3[8] = 0x800098204000ULL;
+  __pyx_t_3[9] = 0x2024401000200040ULL;
+  __pyx_t_3[10] = 0x100802000801000ULL;
+  __pyx_t_3[11] = 0x120800800801000ULL;
+  __pyx_t_3[12] = 0x208808088000400ULL;
+  __pyx_t_3[13] = 0x2802200800400ULL;
+  __pyx_t_3[14] = 0x2200800100020080ULL;
+  __pyx_t_3[15] = 0x801000060821100ULL;
+  __pyx_t_3[16] = 0x80044006422000ULL;
+  __pyx_t_3[17] = 0x100808020004000ULL;
+  __pyx_t_3[18] = 0x12108a0010204200ULL;
+  __pyx_t_3[19] = 0x140848010000802ULL;
+  __pyx_t_3[20] = 0x481828014002800ULL;
+  __pyx_t_3[21] = 0x8094004002004100ULL;
+  __pyx_t_3[22] = 0x4010040010010802ULL;
+  __pyx_t_3[23] = 0x20008806104ULL;
+  __pyx_t_3[24] = 0x100400080208000ULL;
+  __pyx_t_3[25] = 0x2040002120081000ULL;
+  __pyx_t_3[26] = 0x21200680100081ULL;
+  __pyx_t_3[27] = 0x20100080080080ULL;
+  __pyx_t_3[28] = 0x2000a00200410ULL;
+  __pyx_t_3[29] = 0x20080800400ULL;
+  __pyx_t_3[30] = 0x80088400100102ULL;
+  __pyx_t_3[31] = 0x80004600042881ULL;
+  __pyx_t_3[32] = 0x4040008040800020ULL;
+  __pyx_t_3[33] = 0x440003000200801ULL;
+  __pyx_t_3[34] = 0x4200011004500ULL;
+  __pyx_t_3[35] = 0x188020010100100ULL;
+  __pyx_t_3[36] = 0x14800401802800ULL;
+  __pyx_t_3[37] = 0x2080040080800200ULL;
+  __pyx_t_3[38] = 0x124080204001001ULL;
+  __pyx_t_3[39] = 0x200046502000484ULL;
+  __pyx_t_3[40] = 0x480400080088020ULL;
+  __pyx_t_3[41] = 0x1000422010034000ULL;
+  __pyx_t_3[42] = 0x30200100110040ULL;
+  __pyx_t_3[43] = 0x100021010009ULL;
+  __pyx_t_3[44] = 0x2002080100110004ULL;
+  __pyx_t_3[45] = 0x202008004008002ULL;
+  __pyx_t_3[46] = 0x20020004010100ULL;
+  __pyx_t_3[47] = 0x2048440040820001ULL;
+  __pyx_t_3[48] = 0x101002200408200ULL;
+  __pyx_t_3[49] = 0x40802000401080ULL;
+  __pyx_t_3[50] = 0x4008142004410100ULL;
+  __pyx_t_3[51] = 0x2060820c0120200ULL;
+  __pyx_t_3[52] = 0x1001004080100ULL;
+  __pyx_t_3[53] = 0x20c020080040080ULL;
+  __pyx_t_3[54] = 0x2935610830022400ULL;
+  __pyx_t_3[55] = 0x44440041009200ULL;
+  __pyx_t_3[56] = 0x280001040802101ULL;
+  __pyx_t_3[57] = 0x2100190040002085ULL;
+  __pyx_t_3[58] = 0x80c0084100102001ULL;
+  __pyx_t_3[59] = 0x4024081001000421ULL;
+  __pyx_t_3[60] = 0x20030a0244872ULL;
+  __pyx_t_3[61] = 0x12001008414402ULL;
+  __pyx_t_3[62] = 0x2006104900a0804ULL;
+  __pyx_t_3[63] = 0x1004081002402ULL;
+  memcpy(&(__pyx_v_5const_rook_magic_numbers[0]), __pyx_t_3, sizeof(__pyx_v_5const_rook_magic_numbers[0]) * (64));
 
-  /* "const.pyx":79
+  /* "const.pyx":90
  * ]
  * 
  * bishop_magic_numbers[:] = [             # <<<<<<<<<<<<<<
  *     0x40040844404084ULL,
  *     0x2004208a004208ULL,
  */
-  __pyx_t_3[0] = 0x40040844404084ULL;
-  __pyx_t_3[1] = 0x2004208a004208ULL;
-  __pyx_t_3[2] = 0x10190041080202ULL;
-  __pyx_t_3[3] = 0x108060845042010ULL;
-  __pyx_t_3[4] = 0x581104180800210ULL;
-  __pyx_t_3[5] = 0x2112080446200010ULL;
-  __pyx_t_3[6] = 0x1080820820060210ULL;
-  __pyx_t_3[7] = 0x3c0808410220200ULL;
-  __pyx_t_3[8] = 0x4050404440404ULL;
-  __pyx_t_3[9] = 0x21001420088ULL;
-  __pyx_t_3[10] = 0x24d0080801082102ULL;
-  __pyx_t_3[11] = 0x1020a0a020400ULL;
-  __pyx_t_3[12] = 0x40308200402ULL;
-  __pyx_t_3[13] = 0x4011002100800ULL;
-  __pyx_t_3[14] = 0x401484104104005ULL;
-  __pyx_t_3[15] = 0x801010402020200ULL;
-  __pyx_t_3[16] = 0x400210c3880100ULL;
-  __pyx_t_3[17] = 0x404022024108200ULL;
-  __pyx_t_3[18] = 0x810018200204102ULL;
-  __pyx_t_3[19] = 0x4002801a02003ULL;
-  __pyx_t_3[20] = 0x85040820080400ULL;
-  __pyx_t_3[21] = 0x810102c808880400ULL;
-  __pyx_t_3[22] = 0xe900410884800ULL;
-  __pyx_t_3[23] = 0x8002020480840102ULL;
-  __pyx_t_3[24] = 0x220200865090201ULL;
-  __pyx_t_3[25] = 0x2010100a02021202ULL;
-  __pyx_t_3[26] = 0x152048408022401ULL;
-  __pyx_t_3[27] = 0x20080002081110ULL;
-  __pyx_t_3[28] = 0x4001001021004000ULL;
-  __pyx_t_3[29] = 0x800040400a011002ULL;
-  __pyx_t_3[30] = 0xe4004081011002ULL;
-  __pyx_t_3[31] = 0x1c004001012080ULL;
-  __pyx_t_3[32] = 0x8004200962a00220ULL;
-  __pyx_t_3[33] = 0x8422100208500202ULL;
-  __pyx_t_3[34] = 0x2000402200300c08ULL;
-  __pyx_t_3[35] = 0x8646020080080080ULL;
-  __pyx_t_3[36] = 0x80020a0200100808ULL;
-  __pyx_t_3[37] = 0x2010004880111000ULL;
-  __pyx_t_3[38] = 0x623000a080011400ULL;
-  __pyx_t_3[39] = 0x42008c0340209202ULL;
-  __pyx_t_3[40] = 0x209188240001000ULL;
-  __pyx_t_3[41] = 0x400408a884001800ULL;
-  __pyx_t_3[42] = 0x110400a6080400ULL;
-  __pyx_t_3[43] = 0x1840060a44020800ULL;
-  __pyx_t_3[44] = 0x90080104000041ULL;
-  __pyx_t_3[45] = 0x201011000808101ULL;
-  __pyx_t_3[46] = 0x1a2208080504f080ULL;
-  __pyx_t_3[47] = 0x8012020600211212ULL;
-  __pyx_t_3[48] = 0x500861011240000ULL;
-  __pyx_t_3[49] = 0x180806108200800ULL;
-  __pyx_t_3[50] = 0x4000020e01040044ULL;
-  __pyx_t_3[51] = 0x300000261044000aULL;
-  __pyx_t_3[52] = 0x802241102020002ULL;
-  __pyx_t_3[53] = 0x20906061210001ULL;
-  __pyx_t_3[54] = 0x5a84841004010310ULL;
-  __pyx_t_3[55] = 0x4010801011c04ULL;
-  __pyx_t_3[56] = 0xa010109502200ULL;
-  __pyx_t_3[57] = 0x4a02012000ULL;
-  __pyx_t_3[58] = 0x500201010098b028ULL;
-  __pyx_t_3[59] = 0x8040002811040900ULL;
-  __pyx_t_3[60] = 0x28000010020204ULL;
-  __pyx_t_3[61] = 0x6000020202d0240ULL;
-  __pyx_t_3[62] = 0x8918844842082200ULL;
-  __pyx_t_3[63] = 0x4010011029020020ULL;
-  memcpy(&(__pyx_v_5const_bishop_magic_numbers[0]), __pyx_t_3, sizeof(__pyx_v_5const_bishop_magic_numbers[0]) * (64));
+  __pyx_t_4[0] = 0x40040844404084ULL;
+  __pyx_t_4[1] = 0x2004208a004208ULL;
+  __pyx_t_4[2] = 0x10190041080202ULL;
+  __pyx_t_4[3] = 0x108060845042010ULL;
+  __pyx_t_4[4] = 0x581104180800210ULL;
+  __pyx_t_4[5] = 0x2112080446200010ULL;
+  __pyx_t_4[6] = 0x1080820820060210ULL;
+  __pyx_t_4[7] = 0x3c0808410220200ULL;
+  __pyx_t_4[8] = 0x4050404440404ULL;
+  __pyx_t_4[9] = 0x21001420088ULL;
+  __pyx_t_4[10] = 0x24d0080801082102ULL;
+  __pyx_t_4[11] = 0x1020a0a020400ULL;
+  __pyx_t_4[12] = 0x40308200402ULL;
+  __pyx_t_4[13] = 0x4011002100800ULL;
+  __pyx_t_4[14] = 0x401484104104005ULL;
+  __pyx_t_4[15] = 0x801010402020200ULL;
+  __pyx_t_4[16] = 0x400210c3880100ULL;
+  __pyx_t_4[17] = 0x404022024108200ULL;
+  __pyx_t_4[18] = 0x810018200204102ULL;
+  __pyx_t_4[19] = 0x4002801a02003ULL;
+  __pyx_t_4[20] = 0x85040820080400ULL;
+  __pyx_t_4[21] = 0x810102c808880400ULL;
+  __pyx_t_4[22] = 0xe900410884800ULL;
+  __pyx_t_4[23] = 0x8002020480840102ULL;
+  __pyx_t_4[24] = 0x220200865090201ULL;
+  __pyx_t_4[25] = 0x2010100a02021202ULL;
+  __pyx_t_4[26] = 0x152048408022401ULL;
+  __pyx_t_4[27] = 0x20080002081110ULL;
+  __pyx_t_4[28] = 0x4001001021004000ULL;
+  __pyx_t_4[29] = 0x800040400a011002ULL;
+  __pyx_t_4[30] = 0xe4004081011002ULL;
+  __pyx_t_4[31] = 0x1c004001012080ULL;
+  __pyx_t_4[32] = 0x8004200962a00220ULL;
+  __pyx_t_4[33] = 0x8422100208500202ULL;
+  __pyx_t_4[34] = 0x2000402200300c08ULL;
+  __pyx_t_4[35] = 0x8646020080080080ULL;
+  __pyx_t_4[36] = 0x80020a0200100808ULL;
+  __pyx_t_4[37] = 0x2010004880111000ULL;
+  __pyx_t_4[38] = 0x623000a080011400ULL;
+  __pyx_t_4[39] = 0x42008c0340209202ULL;
+  __pyx_t_4[40] = 0x209188240001000ULL;
+  __pyx_t_4[41] = 0x400408a884001800ULL;
+  __pyx_t_4[42] = 0x110400a6080400ULL;
+  __pyx_t_4[43] = 0x1840060a44020800ULL;
+  __pyx_t_4[44] = 0x90080104000041ULL;
+  __pyx_t_4[45] = 0x201011000808101ULL;
+  __pyx_t_4[46] = 0x1a2208080504f080ULL;
+  __pyx_t_4[47] = 0x8012020600211212ULL;
+  __pyx_t_4[48] = 0x500861011240000ULL;
+  __pyx_t_4[49] = 0x180806108200800ULL;
+  __pyx_t_4[50] = 0x4000020e01040044ULL;
+  __pyx_t_4[51] = 0x300000261044000aULL;
+  __pyx_t_4[52] = 0x802241102020002ULL;
+  __pyx_t_4[53] = 0x20906061210001ULL;
+  __pyx_t_4[54] = 0x5a84841004010310ULL;
+  __pyx_t_4[55] = 0x4010801011c04ULL;
+  __pyx_t_4[56] = 0xa010109502200ULL;
+  __pyx_t_4[57] = 0x4a02012000ULL;
+  __pyx_t_4[58] = 0x500201010098b028ULL;
+  __pyx_t_4[59] = 0x8040002811040900ULL;
+  __pyx_t_4[60] = 0x28000010020204ULL;
+  __pyx_t_4[61] = 0x6000020202d0240ULL;
+  __pyx_t_4[62] = 0x8918844842082200ULL;
+  __pyx_t_4[63] = 0x4010011029020020ULL;
+  memcpy(&(__pyx_v_5const_bishop_magic_numbers[0]), __pyx_t_4, sizeof(__pyx_v_5const_bishop_magic_numbers[0]) * (64));
 
-  /* "const.pyx":146
+  /* "const.pyx":157
  * ]
  * 
  * ascii_pieces[:] = [             # <<<<<<<<<<<<<<
  *     "P", "N", "B", "R", "Q", "K",
  *     "p", "n", "b", "r", "q", "k"
  */
-  __pyx_t_4[0] = 'P';
-  __pyx_t_4[1] = 'N';
-  __pyx_t_4[2] = 'B';
-  __pyx_t_4[3] = 'R';
-  __pyx_t_4[4] = 'Q';
-  __pyx_t_4[5] = 'K';
-  __pyx_t_4[6] = 'p';
-  __pyx_t_4[7] = 'n';
-  __pyx_t_4[8] = 'b';
-  __pyx_t_4[9] = 'r';
-  __pyx_t_4[10] = 'q';
-  __pyx_t_4[11] = 'k';
-  memcpy(&(__pyx_v_5const_ascii_pieces[0]), __pyx_t_4, sizeof(__pyx_v_5const_ascii_pieces[0]) * (12));
+  __pyx_t_5[0] = 'P';
+  __pyx_t_5[1] = 'N';
+  __pyx_t_5[2] = 'B';
+  __pyx_t_5[3] = 'R';
+  __pyx_t_5[4] = 'Q';
+  __pyx_t_5[5] = 'K';
+  __pyx_t_5[6] = 'p';
+  __pyx_t_5[7] = 'n';
+  __pyx_t_5[8] = 'b';
+  __pyx_t_5[9] = 'r';
+  __pyx_t_5[10] = 'q';
+  __pyx_t_5[11] = 'k';
+  memcpy(&(__pyx_v_5const_ascii_pieces[0]), __pyx_t_5, sizeof(__pyx_v_5const_ascii_pieces[0]) * (12));
 
-  /* "const.pyx":152
+  /* "const.pyx":163
  * 
  * cdef int char_pieces[114]
  * char_pieces['P'] = 0             # <<<<<<<<<<<<<<
@@ -1833,7 +1912,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['P']) = 0;
 
-  /* "const.pyx":153
+  /* "const.pyx":164
  * cdef int char_pieces[114]
  * char_pieces['P'] = 0
  * char_pieces['N'] = 1             # <<<<<<<<<<<<<<
@@ -1842,7 +1921,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['N']) = 1;
 
-  /* "const.pyx":154
+  /* "const.pyx":165
  * char_pieces['P'] = 0
  * char_pieces['N'] = 1
  * char_pieces['B'] = 2             # <<<<<<<<<<<<<<
@@ -1851,7 +1930,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['B']) = 2;
 
-  /* "const.pyx":155
+  /* "const.pyx":166
  * char_pieces['N'] = 1
  * char_pieces['B'] = 2
  * char_pieces['R'] = 3             # <<<<<<<<<<<<<<
@@ -1860,7 +1939,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['R']) = 3;
 
-  /* "const.pyx":156
+  /* "const.pyx":167
  * char_pieces['B'] = 2
  * char_pieces['R'] = 3
  * char_pieces['Q'] = 4             # <<<<<<<<<<<<<<
@@ -1869,7 +1948,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['Q']) = 4;
 
-  /* "const.pyx":157
+  /* "const.pyx":168
  * char_pieces['R'] = 3
  * char_pieces['Q'] = 4
  * char_pieces['K'] = 5             # <<<<<<<<<<<<<<
@@ -1878,7 +1957,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['K']) = 5;
 
-  /* "const.pyx":158
+  /* "const.pyx":169
  * char_pieces['Q'] = 4
  * char_pieces['K'] = 5
  * char_pieces['p'] = 6             # <<<<<<<<<<<<<<
@@ -1887,7 +1966,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['p']) = 6;
 
-  /* "const.pyx":159
+  /* "const.pyx":170
  * char_pieces['K'] = 5
  * char_pieces['p'] = 6
  * char_pieces['n'] = 7             # <<<<<<<<<<<<<<
@@ -1896,7 +1975,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['n']) = 7;
 
-  /* "const.pyx":160
+  /* "const.pyx":171
  * char_pieces['p'] = 6
  * char_pieces['n'] = 7
  * char_pieces['b'] = 8             # <<<<<<<<<<<<<<
@@ -1905,7 +1984,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['b']) = 8;
 
-  /* "const.pyx":161
+  /* "const.pyx":172
  * char_pieces['n'] = 7
  * char_pieces['b'] = 8
  * char_pieces['r'] = 9             # <<<<<<<<<<<<<<
@@ -1914,7 +1993,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['r']) = 9;
 
-  /* "const.pyx":162
+  /* "const.pyx":173
  * char_pieces['b'] = 8
  * char_pieces['r'] = 9
  * char_pieces['q'] = 10             # <<<<<<<<<<<<<<
@@ -1923,7 +2002,7 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['q']) = 10;
 
-  /* "const.pyx":163
+  /* "const.pyx":174
  * char_pieces['r'] = 9
  * char_pieces['q'] = 10
  * char_pieces['k'] = 11             # <<<<<<<<<<<<<<
@@ -1932,8 +2011,8 @@ if (!__Pyx_RefNanny) {
  */
   (__pyx_v_5const_char_pieces['k']) = 11;
 
-  /* "const.pyx":168
- *     return char_pieces[c]
+  /* "const.pyx":181
+ * # cdef int castling_rights[64]
  * 
  * empty_board = "8/8/8/8/8/8/8/8 w - - "             # <<<<<<<<<<<<<<
  * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
@@ -1941,7 +2020,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_5const_empty_board = ((char *)"8/8/8/8/8/8/8/8 w - - ");
 
-  /* "const.pyx":169
+  /* "const.pyx":182
  * 
  * empty_board = "8/8/8/8/8/8/8/8 w - - "
  * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "             # <<<<<<<<<<<<<<
@@ -1950,7 +2029,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_5const_start_position = ((char *)"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ");
 
-  /* "const.pyx":170
+  /* "const.pyx":183
  * empty_board = "8/8/8/8/8/8/8/8 w - - "
  * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
  * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "             # <<<<<<<<<<<<<<
@@ -1959,7 +2038,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_5const_tricky_position = ((char *)"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ");
 
-  /* "const.pyx":171
+  /* "const.pyx":184
  * start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
  * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
  * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"             # <<<<<<<<<<<<<<
@@ -1967,7 +2046,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_5const_killer_position = ((char *)"rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1");
 
-  /* "const.pyx":172
+  /* "const.pyx":185
  * tricky_position = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
  * killer_position = "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
  * cmk_position = "r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 "             # <<<<<<<<<<<<<<
@@ -1975,20 +2054,20 @@ if (!__Pyx_RefNanny) {
   __pyx_v_5const_cmk_position = ((char *)"r2q1rk1/ppp2ppp/2n1bn2/2b1p3/3pP3/3P1NPP/PPP1NPB1/R1BQ1RK1 b - - 0 9 ");
 
   /* "const.pyx":1
- * square_to_coord[:] = [             # <<<<<<<<<<<<<<
- *     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
- *     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
+ * castling_rights[:] = [             # <<<<<<<<<<<<<<
+ *     7, 15, 15, 15,  3, 15, 15, 11,
+ *     15, 15, 15, 15, 15, 15, 15, 15,
  */
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_5) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_6) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
   /*--- Wrapped vars code ---*/
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init const", __pyx_clineno, __pyx_lineno, __pyx_filename);

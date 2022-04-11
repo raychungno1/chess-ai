@@ -10,6 +10,8 @@ cdef char ascii_pieces[12]
 
 cdef int char_to_piece(char c)
 
+cdef int castling_rights[64]
+
 cdef char *empty_board
 cdef char *start_position
 cdef char *tricky_position

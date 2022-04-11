@@ -1,3 +1,14 @@
+castling_rights[:] = [
+    7, 15, 15, 15,  3, 15, 15, 11,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15,
+    13, 15, 15, 15, 12, 15, 15, 14
+]
+
 square_to_coord[:] = [
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
@@ -164,6 +175,8 @@ char_pieces['k'] = 11
 
 cdef int char_to_piece(char c):
     return char_pieces[c]
+
+# cdef int castling_rights[64]
 
 empty_board = "8/8/8/8/8/8/8/8 w - - "
 start_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "

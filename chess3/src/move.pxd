@@ -11,6 +11,9 @@ cdef int get_move_castling(int move)
 
 cpdef print_move(int move)
 
+cdef enum:
+    all_moves, only_captures
+
 cdef class Moves:
     cdef public int moves[256]
     cdef public int count

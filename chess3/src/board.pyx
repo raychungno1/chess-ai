@@ -1,9 +1,9 @@
-from libc.stdio cimport printf
-from libc.string cimport memset
+from libc.stdio cimport printf, getchar
+from libc.string cimport memset, memcpy
 from helper cimport U64, print_bitboard, get_bit, set_bit, pop_bit, get_ls1b_index
 from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks, get_queen_attacks
-from const cimport square_to_coord, ascii_pieces, char_to_piece, empty_board, start_position, tricky_position, killer_position, cmk_position 
-from move cimport encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant, print_move, Moves
+from const cimport square_to_coord, ascii_pieces, char_to_piece, castling_rights, empty_board, start_position, tricky_position, killer_position, cmk_position 
+from move cimport encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant, print_move, Moves, all_moves, only_captures
 
 cdef class Board:
     def __init__(self):
@@ -397,10 +397,155 @@ cdef class Board:
                         attacks = pop_bit(attacks, target_square)
                     bitboard = pop_bit(bitboard, source_square)
 
+    cdef BoardCopy copy_board(self):
+        cdef BoardCopy copy
+        memcpy(copy.bitboards, self.bitboards, 96)
+        memcpy(copy.occupancies, self.occupancies, 24)
+        copy.side = self.side
+        copy.enpassant = self.enpassant
+        copy.castling = self.castling
+        return copy
+
+    cdef take_back(self, BoardCopy copy):
+        memcpy(self.bitboards, copy.bitboards, 96)
+        memcpy(self.occupancies, copy.occupancies, 24)
+        self.side = copy.side
+        self.enpassant = copy.enpassant
+        self.castling = copy.castling
+
+    cpdef int make_move(self, int move, int move_flag):
+        cdef BoardCopy copy
+        cdef int source_square, target_square, piece, capture, promoted, double_pawn, enpassant, castling, start_piece, end_piece, index
+
+        if move_flag == all_moves:
+            copy = chess.copy_board()
+
+            source_square = get_move_source(move)
+            target_square = get_move_target(move)
+            piece = get_move_piece(move)
+            capture = get_move_capture(move)
+            promoted = get_move_promoted(move)
+            double_pawn = get_move_double(move)
+            enpassant = get_move_enpassant(move)
+            castling = get_move_castling(move)
+
+            self.bitboards[piece] = pop_bit(self.bitboards[piece], source_square)
+            self.bitboards[piece] = set_bit(self.bitboards[piece], target_square)
+
+            # handle capture
+            if capture:
+                if self.side == white:
+                    start_piece = p
+                    end_piece = k
+                else:
+                    start_piece = P
+                    end_piece = K
+
+                for index in range(start_piece, end_piece + 1):
+                    if get_bit(self.bitboards[index], target_square):
+                        self.bitboards[index] = pop_bit(self.bitboards[index], target_square)
+                        break
+
+            # handle promotion
+            if promoted:
+                self.bitboards[piece] = pop_bit(self.bitboards[piece], target_square)
+                self.bitboards[promoted] = set_bit(self.bitboards[promoted], target_square)
+
+            # handle enpassant
+            if enpassant:
+                if self.side == white:
+                    self.bitboards[p] = pop_bit(self.bitboards[p], target_square + 8)
+                else:
+                    self.bitboards[P] = pop_bit(self.bitboards[P], target_square - 8)
+
+            self.enpassant = no_sq
+
+            # handle double pawn push
+            if double_pawn:
+                self.enpassant = target_square + 8 if self.side == white else target_square - 8
+
+            # handle castling
+            if castling:
+                if target_square == g1:
+                    self.bitboards[R] = pop_bit(self.bitboards[R], h1)
+                    self.bitboards[R] = set_bit(self.bitboards[R], f1)
+
+                elif target_square == c1:
+                    self.bitboards[R] = pop_bit(self.bitboards[R], a1)
+                    self.bitboards[R] = set_bit(self.bitboards[R], d1)
+
+                elif target_square == g8:
+                    self.bitboards[r] = pop_bit(self.bitboards[r], h8)
+                    self.bitboards[r] = set_bit(self.bitboards[r], f8)
+
+                elif target_square == c8:
+                    self.bitboards[r] = pop_bit(self.bitboards[r], a8)
+                    self.bitboards[r] = set_bit(self.bitboards[r], d8)
+
+            # update castling rights
+            self.castling &= castling_rights[source_square]
+            self.castling &= castling_rights[target_square]
+
+            # update occupancy
+            memset(self.occupancies, 0ULL, 24)
+            for index in range(P, K + 1):
+                self.occupancies[white] |= self.bitboards[index]
+
+            for index in range(p, k + 1):
+                self.occupancies[black] |= self.bitboards[index]
+
+            self.occupancies[both] = self.occupancies[white] | self.occupancies[black]
+
+            # change side
+            self.side ^= 1
+
+            # make sure king is not in check
+            if self.is_square_attacked(get_ls1b_index(self.bitboards[k]) if self.side == white else get_ls1b_index(self.bitboards[K]), self.side):
+                self.take_back(copy)
+                return 0
+
+            else:
+                return 1
+
+        else:
+            if get_move_capture(move):
+                self.make_move(move, all_moves)
+
+            else:
+                return 0
+
+
+
 cdef Board chess = Board()
-chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq c6 0 1 ")
+chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
 chess.print_board()
 
-# cdef Moves move_list = Moves()
-# chess.generate_moves(move_list)
+cdef Moves move_list = Moves()
+chess.generate_moves(move_list)
+
+cdef int i, move
+cdef BoardCopy copy
+for i in range(move_list.count):
+    move = move_list.moves[i]
+    print_move(move)
+
+    copy = chess.copy_board()
+
+    if not chess.make_move(move, all_moves):
+        continue
+
+    chess.print_board()
+    getchar()
+
+    chess.take_back(copy)
+    chess.print_board()
+    getchar()
+    
 # move_list.print_move_list()
+# cdef BoardCopy copy = chess.copy_board()
+# chess.parse_fen(b"8/8/8/8/8/8/8/8 b - - ")
+# chess.print_board()
+
+# chess.take_back(copy)
+# chess.print_board()
+

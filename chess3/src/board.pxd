@@ -19,6 +19,11 @@ cdef enum:
 
 cdef enum:
     wk = 1, wq = 2, bk = 4, bq = 8
+
+ctypedef struct BoardCopy:
+    U64 bitboards[12]
+    U64 occupancies[3]
+    int side, enpassant, castling
     
 cdef class Board:
     cdef public U64 bitboards[12]
@@ -27,3 +32,7 @@ cdef class Board:
 
     cdef int is_square_attacked(self, int square, int side)
     cpdef generate_moves(self, object move_list)
+    cdef BoardCopy copy_board(self)
+    cdef take_back(self, BoardCopy copy)
+    cpdef int make_move(self, int move, int move_flag)
+    

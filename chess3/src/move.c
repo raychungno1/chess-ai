@@ -924,6 +924,18 @@ struct __pyx_obj_4move_Moves;
 /* "move.pxd":14
  * cpdef print_move(int move)
  * 
+ * cdef enum:             # <<<<<<<<<<<<<<
+ *     all_moves, only_captures
+ * 
+ */
+enum  {
+  __pyx_e_4move_all_moves,
+  __pyx_e_4move_only_captures
+};
+
+/* "move.pxd":17
+ *     all_moves, only_captures
+ * 
  * cdef class Moves:             # <<<<<<<<<<<<<<
  *     cdef public int moves[256]
  *     cdef public int count
@@ -2403,7 +2415,7 @@ static PyObject *__pyx_pf_4move_5Moves_4print_move_list(struct __pyx_obj_4move_M
   return __pyx_r;
 }
 
-/* "move.pxd":15
+/* "move.pxd":18
  * 
  * cdef class Moves:
  *     cdef public int moves[256]             # <<<<<<<<<<<<<<
@@ -2433,7 +2445,7 @@ static PyObject *__pyx_pf_4move_5Moves_5moves___get__(struct __pyx_obj_4move_Mov
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_carray_to_py_int(__pyx_v_self->moves, 0x100); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_carray_to_py_int(__pyx_v_self->moves, 0x100); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2471,10 +2483,10 @@ static int __pyx_pf_4move_5Moves_5moves_2__set__(struct __pyx_obj_4move_Moves *_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (unlikely(__Pyx_carray_from_py_int(__pyx_v_value, __pyx_t_1, 0x100) < 0)) __PYX_ERR(1, 15, __pyx_L1_error)
+  if (unlikely(__Pyx_carray_from_py_int(__pyx_v_value, __pyx_t_1, 0x100) < 0)) __PYX_ERR(1, 18, __pyx_L1_error)
   if (unlikely((0x100) != (0x100))) {
     PyErr_Format(PyExc_ValueError, "Assignment to slice of wrong length, expected %" CYTHON_FORMAT_SSIZE_T "d, got %" CYTHON_FORMAT_SSIZE_T "d", (Py_ssize_t)(0x100), (Py_ssize_t)(0x100));
-    __PYX_ERR(1, 15, __pyx_L1_error)
+    __PYX_ERR(1, 18, __pyx_L1_error)
   }
   memcpy(&(__pyx_v_self->moves[0]), __pyx_t_1, sizeof(__pyx_v_self->moves[0]) * (0x100));
 
@@ -2489,7 +2501,7 @@ static int __pyx_pf_4move_5Moves_5moves_2__set__(struct __pyx_obj_4move_Moves *_
   return __pyx_r;
 }
 
-/* "move.pxd":16
+/* "move.pxd":19
  * cdef class Moves:
  *     cdef public int moves[256]
  *     cdef public int count             # <<<<<<<<<<<<<<
@@ -2519,7 +2531,7 @@ static PyObject *__pyx_pf_4move_5Moves_5count___get__(struct __pyx_obj_4move_Mov
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->count); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->count); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2557,7 +2569,7 @@ static int __pyx_pf_4move_5Moves_5count_2__set__(struct __pyx_obj_4move_Moves *_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 19, __pyx_L1_error)
   __pyx_v_self->count = __pyx_t_1;
 
   /* function exit code */
