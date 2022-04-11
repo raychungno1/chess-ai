@@ -38,7 +38,6 @@ cdef int get_move_enpassant(int move):
 cdef int get_move_castling(int move):
     return move & 0x800000
 
-cdef char promoted_pieces[12]
 promoted_pieces[:] = [
     " ", "n", "b", "r", "q", " ",
     " ", "n", "b", "r", "q", " "

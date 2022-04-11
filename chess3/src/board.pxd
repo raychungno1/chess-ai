@@ -31,8 +31,10 @@ cdef class Board:
     cdef public int side, enpassant, castling
 
     cdef int is_square_attacked(self, int square, int side)
-    cpdef generate_moves(self, object move_list)
-    cdef BoardCopy copy_board(self)
-    cdef take_back(self, BoardCopy copy)
+    cpdef generate_moves(self)
+    cpdef BoardCopy copy_board(self)
+    cpdef take_back(self, BoardCopy copy)
     cpdef int make_move(self, int move, int move_flag)
+    cpdef long perft(self, int depth)
+    cpdef long perft_test(self, int depth)
     

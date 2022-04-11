@@ -8,5 +8,6 @@ setup(
         "src/attack.pyx",
         "src/const.pyx",
         "src/move.pyx"
-    ])
+    ]),
+    extra_compile_args=["-Ofast"]
 )

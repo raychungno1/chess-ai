@@ -9,6 +9,8 @@ cdef int get_move_double(int move)
 cdef int get_move_enpassant(int move)
 cdef int get_move_castling(int move)
 
+cdef char promoted_pieces[12]
+
 cpdef print_move(int move)
 
 cdef enum:

@@ -3,7 +3,7 @@ from libc.string cimport memset, memcpy
 from helper cimport U64, print_bitboard, get_bit, set_bit, pop_bit, get_ls1b_index
 from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks, get_queen_attacks
 from const cimport square_to_coord, ascii_pieces, char_to_piece, castling_rights, empty_board, start_position, tricky_position, killer_position, cmk_position 
-from move cimport encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant, print_move, Moves, all_moves, only_captures
+from move cimport encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant, print_move, Moves, all_moves, only_captures, promoted_pieces
 
 cdef class Board:
     def __init__(self):
@@ -162,7 +162,8 @@ cdef class Board:
             printf("\n")
         printf("\n    a b c d e f g h\n\n") # File label
 
-    cpdef generate_moves(self, object move_list):
+    cpdef object generate_moves(self):
+        cdef Moves move_list = Moves()
         move_list.count = 0
 
         cdef int source_square, target_square, piece
@@ -397,7 +398,9 @@ cdef class Board:
                         attacks = pop_bit(attacks, target_square)
                     bitboard = pop_bit(bitboard, source_square)
 
-    cdef BoardCopy copy_board(self):
+        return move_list
+
+    cpdef BoardCopy copy_board(self):
         cdef BoardCopy copy
         memcpy(copy.bitboards, self.bitboards, 96)
         memcpy(copy.occupancies, self.occupancies, 24)
@@ -406,7 +409,7 @@ cdef class Board:
         copy.castling = self.castling
         return copy
 
-    cdef take_back(self, BoardCopy copy):
+    cpdef take_back(self, BoardCopy copy):
         memcpy(self.bitboards, copy.bitboards, 96)
         memcpy(self.occupancies, copy.occupancies, 24)
         self.side = copy.side
@@ -418,7 +421,7 @@ cdef class Board:
         cdef int source_square, target_square, piece, capture, promoted, double_pawn, enpassant, castling, start_piece, end_piece, index
 
         if move_flag == all_moves:
-            copy = chess.copy_board()
+            copy = self.copy_board()
 
             source_square = get_move_source(move)
             target_square = get_move_target(move)
@@ -514,32 +517,76 @@ cdef class Board:
             else:
                 return 0
 
+    cpdef long perft(self, int depth):
+        if depth == 0:
+            return 1
 
+        cdef Moves move_list = self.generate_moves()
 
-cdef Board chess = Board()
-chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
-chess.print_board()
+        cdef int i, result
+        cdef BoardCopy copy
+        cdef long nodes = 0
 
-cdef Moves move_list = Moves()
-chess.generate_moves(move_list)
+        for i in range(move_list.count):
+            copy = self.copy_board()
 
-cdef int i, move
-cdef BoardCopy copy
-for i in range(move_list.count):
-    move = move_list.moves[i]
-    print_move(move)
+            if not self.make_move(move_list.moves[i], all_moves):
+                continue
 
-    copy = chess.copy_board()
+            nodes += self.perft(depth - 1)
 
-    if not chess.make_move(move, all_moves):
-        continue
+            self.take_back(copy)
+        
+        return nodes
 
-    chess.print_board()
-    getchar()
+    cpdef long perft_test(self, int depth):
+        printf("\n    Performance test\n\n")
+        cdef Moves move_list = self.generate_moves()
 
-    chess.take_back(copy)
-    chess.print_board()
-    getchar()
+        cdef int i, result
+        cdef BoardCopy copy
+        cdef long nodes = 0, temp = 0
+
+        for i in range(move_list.count):
+            copy = self.copy_board()
+
+            if not self.make_move(move_list.moves[i], all_moves):
+                continue
+
+            temp = self.perft(depth - 1)
+            nodes += temp
+
+            self.take_back(copy)
+            printf("    move: %s%s%c  nodes: %ld\n", square_to_coord[get_move_source(move_list.moves[i])], square_to_coord[get_move_target(move_list.moves[i])], promoted_pieces[get_move_promoted(move_list.moves[i])], temp)
+
+        printf("\n    Depth: %d\n", depth)
+        printf("    Nodes: %d\n\n", nodes)
+        
+        return nodes
+
+# cdef Board chess = Board()
+# chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
+# chess.print_board()
+
+# cdef Moves move_list = chess.generate_moves()
+
+# cdef int i, move
+# cdef BoardCopy copy
+# for i in range(move_list.count):
+#     move = move_list.moves[i]
+#     print_move(move)
+
+#     copy = chess.copy_board()
+
+#     if not chess.make_move(move, all_moves):
+#         continue
+
+#     chess.print_board()
+#     getchar()
+
+#     chess.take_back(copy)
+#     chess.print_board()
+#     getchar()
     
 # move_list.print_move_list()
 # cdef BoardCopy copy = chess.copy_board()
