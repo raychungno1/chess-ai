@@ -1160,12 +1160,14 @@ static struct __pyx_vtabstruct_4move_Moves *__pyx_vtabptr_4move_Moves;
 struct __pyx_vtabstruct_5board_Board {
   int (*is_square_attacked)(struct __pyx_obj_5board_Board *, int, int);
   PyObject *(*generate_moves)(struct __pyx_obj_5board_Board *, int __pyx_skip_dispatch);
+  PyObject *(*generate_moves_square)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch);
   __pyx_t_5board_BoardCopy (*copy_board)(struct __pyx_obj_5board_Board *, int __pyx_skip_dispatch);
   PyObject *(*take_back)(struct __pyx_obj_5board_Board *, __pyx_t_5board_BoardCopy, int __pyx_skip_dispatch);
   int (*make_move)(struct __pyx_obj_5board_Board *, int, int, int __pyx_skip_dispatch);
   long (*perft)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch);
   long (*perft_test)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch);
   int (*parse_move)(struct __pyx_obj_5board_Board *, char *, int __pyx_skip_dispatch);
+  int (*get_piece)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5board_Board *__pyx_vtabptr_5board_Board;
 
@@ -1338,6 +1340,12 @@ static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObje
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
+
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
@@ -1379,9 +1387,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
@@ -1389,9 +1394,6 @@ static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_n
 static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
-
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
 /* IncludeStringH.proto */
 #include <string.h>
@@ -1617,12 +1619,14 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static int __pyx_f_5board_5Board_is_square_attacked(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square, int __pyx_v_side); /* proto*/
 static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_5board_5Board_generate_moves_square(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square, int __pyx_skip_dispatch); /* proto*/
 static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy, int __pyx_skip_dispatch); /* proto*/
 static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag, int __pyx_skip_dispatch); /* proto*/
 static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth, int __pyx_skip_dispatch); /* proto*/
 static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth, int __pyx_skip_dispatch); /* proto*/
 static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_5board_5Board_get_piece(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'helper' */
 static __pyx_t_6helper_U64 (*__pyx_f_6helper_get_bit)(__pyx_t_6helper_U64, int); /*proto*/
@@ -1687,15 +1691,15 @@ static __pyx_t_6helper_U64 (*__pyx_f_6attack_get_queen_attacks)(int, __pyx_t_6he
 static PyTypeObject *__pyx_ptype_4move_Moves = 0;
 static char (*__pyx_vp_4move_promoted_pieces)[12] = 0;
 #define __pyx_v_4move_promoted_pieces (*__pyx_vp_4move_promoted_pieces)
-static int (*__pyx_f_4move_encode_move)(int, int, int, int, int, int, int, int); /*proto*/
-static int (*__pyx_f_4move_get_move_source)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_target)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_piece)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_promoted)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_capture)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_double)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_enpassant)(int); /*proto*/
-static int (*__pyx_f_4move_get_move_castling)(int); /*proto*/
+static int (*__pyx_f_4move_encode_move)(int, int, int, int, int, int, int, int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_source)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_target)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_piece)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_promoted)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_capture)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_double)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_enpassant)(int, int __pyx_skip_dispatch); /*proto*/
+static int (*__pyx_f_4move_get_move_castling)(int, int __pyx_skip_dispatch); /*proto*/
 static PyObject *(*__pyx_f_4move_print_move)(int, int __pyx_skip_dispatch); /*proto*/
 
 /* Module declarations from 'board' */
@@ -1741,6 +1745,7 @@ static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_bitboards[] = "bitboards";
 static const char __pyx_k_enpassant[] = "enpassant";
 static const char __pyx_k_enumerate[] = "enumerate";
+static const char __pyx_k_get_piece[] = "get_piece";
 static const char __pyx_k_make_move[] = "make_move";
 static const char __pyx_k_move_flag[] = "move_flag";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
@@ -1764,6 +1769,7 @@ static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_pyx_unpickle_Board[] = "__pyx_unpickle_Board";
+static const char __pyx_k_generate_moves_square[] = "generate_moves_square";
 static const char __pyx_k_Incompatible_checksums_s_vs_0x30[] = "Incompatible checksums (%s vs 0x30bd93e = (bitboards, castling, enpassant, occupancies, side))";
 static const char __pyx_k_No_value_specified_for_struct_at[] = "No value specified for struct attribute 'bitboards'";
 static const char __pyx_k_No_value_specified_for_struct_at_2[] = "No value specified for struct attribute 'occupancies'";
@@ -1792,6 +1798,8 @@ static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_enpassant;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_generate_moves;
+static PyObject *__pyx_n_s_generate_moves_square;
+static PyObject *__pyx_n_s_get_piece;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
@@ -1828,12 +1836,14 @@ static PyObject *__pyx_pf_5board_5Board_2print_board(struct __pyx_obj_5board_Boa
 static PyObject *__pyx_pf_5board_5Board_4parse_fen(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_fen); /* proto */
 static PyObject *__pyx_pf_5board_5Board_6print_attacked_squares(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_side); /* proto */
 static PyObject *__pyx_pf_5board_5Board_8generate_moves(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5board_5Board_10copy_board(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5board_5Board_12take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy); /* proto */
-static PyObject *__pyx_pf_5board_5Board_14make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag); /* proto */
-static PyObject *__pyx_pf_5board_5Board_16perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth); /* proto */
-static PyObject *__pyx_pf_5board_5Board_18perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth); /* proto */
-static PyObject *__pyx_pf_5board_5Board_20parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str); /* proto */
+static PyObject *__pyx_pf_5board_5Board_10generate_moves_square(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square); /* proto */
+static PyObject *__pyx_pf_5board_5Board_12copy_board(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5board_5Board_14take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy); /* proto */
+static PyObject *__pyx_pf_5board_5Board_16make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag); /* proto */
+static PyObject *__pyx_pf_5board_5Board_18perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth); /* proto */
+static PyObject *__pyx_pf_5board_5Board_20perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth); /* proto */
+static PyObject *__pyx_pf_5board_5Board_22parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str); /* proto */
+static PyObject *__pyx_pf_5board_5Board_24get_piece(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square); /* proto */
 static PyObject *__pyx_pf_5board_5Board_9bitboards___get__(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
 static int __pyx_pf_5board_5Board_9bitboards_2__set__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5board_5Board_11occupancies___get__(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
@@ -1844,8 +1854,8 @@ static PyObject *__pyx_pf_5board_5Board_9enpassant___get__(struct __pyx_obj_5boa
 static int __pyx_pf_5board_5Board_9enpassant_2__set__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5board_5Board_8castling___get__(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
 static int __pyx_pf_5board_5Board_8castling_2__set__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_5board_5Board_22__reduce_cython__(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5board_5Board_24__setstate_cython__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5board_5Board_26__reduce_cython__(struct __pyx_obj_5board_Board *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5board_5Board_28__setstate_cython__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_5board___pyx_unpickle_Board(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5board_Board(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_0;
@@ -3849,7 +3859,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, R, 0, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, B, 0, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_Q, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_Q, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3860,7 +3870,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, B, 0, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, N, 0, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_R, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_R, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3871,7 +3881,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, N, 0, 0, 0, 0))
  * 
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_B, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_B, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3882,7 +3892,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                             # Single pawn move
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_N, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_N, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3904,7 +3914,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 # Double pawn move
  */
             /*else*/ {
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3939,7 +3949,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[black]
  */
-                __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, (__pyx_v_target_square - 8), __pyx_v_piece, 0, 0, 1, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+                __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, (__pyx_v_target_square - 8), __pyx_v_piece, 0, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4017,7 +4027,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, R, 1, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, B, 1, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_Q, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_Q, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4028,7 +4038,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, B, 1, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, N, 1, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_R, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_R, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4039,7 +4049,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, N, 1, 0, 0, 0))
  * 
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_B, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_B, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4050,7 +4060,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                             # Normal pawn capture
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_N, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_N, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4072,7 +4082,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                             attacks = pop_bit(attacks, target_square)
  */
             /*else*/ {
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             }
@@ -4134,7 +4144,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         bitboard = pop_bit(bitboard, source_square)
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 1, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4238,7 +4248,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                     # Queenside
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e1, __pyx_e_5board_g1, __pyx_v_piece, 0, 0, 0, 0, 1), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e1, __pyx_e_5board_g1, __pyx_v_piece, 0, 0, 0, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4328,7 +4338,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *             # Generate black pawns & black king castle
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e1, __pyx_e_5board_c1, __pyx_v_piece, 0, 0, 0, 0, 1), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e1, __pyx_e_5board_c1, __pyx_v_piece, 0, 0, 0, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4461,7 +4471,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, r, 0, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, b, 0, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_q, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_q, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4472,7 +4482,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, b, 0, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, n, 0, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_r, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 249, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_r, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 249, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4483,7 +4493,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, n, 0, 0, 0, 0))
  * 
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_b, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 250, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_b, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 250, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4494,7 +4504,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                             # Single pawn move
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_n, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 251, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_n, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 251, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4516,7 +4526,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 # Double pawn move
  */
             /*else*/ {
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4551,7 +4561,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         attacks = pawn_attacks[self.side][source_square] & self.occupancies[white]
  */
-                __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, (__pyx_v_target_square + 8), __pyx_v_piece, 0, 0, 1, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+                __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, (__pyx_v_target_square + 8), __pyx_v_piece, 0, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4629,7 +4639,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, r, 1, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, b, 1, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_q, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_q, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4640,7 +4650,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, b, 1, 0, 0, 0))
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, n, 1, 0, 0, 0))
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_r, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_r, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 268, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4651,7 +4661,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                                 move_list.add_move(encode_move(source_square, target_square, piece, n, 1, 0, 0, 0))
  * 
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_b, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_b, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4662,7 +4672,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                             # Normal pawn capture
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_n, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 270, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, __pyx_e_5board_n, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 270, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4684,7 +4694,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                             attacks = pop_bit(attacks, target_square)
  */
             /*else*/ {
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             }
@@ -4746,7 +4756,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         bitboard = pop_bit(bitboard, source_square)
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 1, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4850,7 +4860,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                     # Queenside
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e8, __pyx_e_5board_g8, __pyx_v_piece, 0, 0, 0, 0, 1), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e8, __pyx_e_5board_g8, __pyx_v_piece, 0, 0, 0, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 293, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4940,7 +4950,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *             # Generate knight moves
  */
-              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e8, __pyx_e_5board_c8, __pyx_v_piece, 0, 0, 0, 0, 1), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
+              __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_e_5board_e8, __pyx_e_5board_c8, __pyx_v_piece, 0, 0, 0, 0, 1, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5088,7 +5098,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         # Capture
  */
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5110,7 +5120,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                         attacks = pop_bit(attacks, target_square)
  */
           /*else*/ {
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -5251,7 +5261,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         # Capture
  */
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5273,7 +5283,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                         attacks = pop_bit(attacks, target_square)
  */
           /*else*/ {
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -5414,7 +5424,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         # Capture
  */
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 352, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5436,7 +5446,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                         attacks = pop_bit(attacks, target_square)
  */
           /*else*/ {
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -5577,7 +5587,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         # Capture
  */
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5599,7 +5609,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                         attacks = pop_bit(attacks, target_square)
  */
           /*else*/ {
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 376, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -5740,7 +5750,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *                         # Capture
  */
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 0, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -5762,7 +5772,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  *                         attacks = pop_bit(attacks, target_square)
  */
           /*else*/ {
-            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
+            __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->add_move(__pyx_v_move_list, __pyx_f_4move_encode_move(__pyx_v_source_square, __pyx_v_target_square, __pyx_v_piece, 0, 1, 0, 0, 0, 0), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           }
@@ -5812,7 +5822,7 @@ static PyObject *__pyx_f_5board_5Board_generate_moves(struct __pyx_obj_5board_Bo
  * 
  *         return move_list             # <<<<<<<<<<<<<<
  * 
- *     cpdef BoardCopy copy_board(self):
+ *     cpdef object generate_moves_square(self, int square):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_move_list));
@@ -5885,12 +5895,313 @@ static PyObject *__pyx_pf_5board_5Board_8generate_moves(struct __pyx_obj_5board_
 /* "board.pyx":403
  *         return move_list
  * 
+ *     cpdef object generate_moves_square(self, int square):             # <<<<<<<<<<<<<<
+ *         cdef Moves move_list = self.generate_moves()
+ *         cdef Moves move_list_square = Moves()
+ */
+
+static PyObject *__pyx_pw_5board_5Board_11generate_moves_square(PyObject *__pyx_v_self, PyObject *__pyx_arg_square); /*proto*/
+static PyObject *__pyx_f_5board_5Board_generate_moves_square(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square, int __pyx_skip_dispatch) {
+  struct __pyx_obj_4move_Moves *__pyx_v_move_list = 0;
+  struct __pyx_obj_4move_Moves *__pyx_v_move_list_square = 0;
+  __pyx_t_5board_BoardCopy __pyx_v_copy;
+  int __pyx_v_move_count;
+  int __pyx_v_move;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("generate_moves_square", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_generate_moves_square); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_11generate_moves_square)) {
+        __Pyx_XDECREF(__pyx_r);
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_square); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 403, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+          if (likely(__pyx_t_5)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+            __Pyx_INCREF(__pyx_t_5);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_4, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 403, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "board.pyx":404
+ * 
+ *     cpdef object generate_moves_square(self, int square):
+ *         cdef Moves move_list = self.generate_moves()             # <<<<<<<<<<<<<<
+ *         cdef Moves move_list_square = Moves()
+ *         move_list_square.count = 0
+ */
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 404, __pyx_L1_error)
+  __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "board.pyx":405
+ *     cpdef object generate_moves_square(self, int square):
+ *         cdef Moves move_list = self.generate_moves()
+ *         cdef Moves move_list_square = Moves()             # <<<<<<<<<<<<<<
+ *         move_list_square.count = 0
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_4move_Moves)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_move_list_square = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "board.pyx":406
+ *         cdef Moves move_list = self.generate_moves()
+ *         cdef Moves move_list_square = Moves()
+ *         move_list_square.count = 0             # <<<<<<<<<<<<<<
+ * 
+ *         cdef BoardCopy copy
+ */
+  __pyx_v_move_list_square->count = 0;
+
+  /* "board.pyx":410
+ *         cdef BoardCopy copy
+ *         cdef int move_count, move
+ *         for move_count in range(move_list.count):             # <<<<<<<<<<<<<<
+ *             copy = self.copy_board()
+ *             move = move_list.moves[move_count]
+ */
+  __pyx_t_6 = __pyx_v_move_list->count;
+  __pyx_t_7 = __pyx_t_6;
+  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+    __pyx_v_move_count = __pyx_t_8;
+
+    /* "board.pyx":411
+ *         cdef int move_count, move
+ *         for move_count in range(move_list.count):
+ *             copy = self.copy_board()             # <<<<<<<<<<<<<<
+ *             move = move_list.moves[move_count]
+ * 
+ */
+    __pyx_v_copy = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->copy_board(__pyx_v_self, 0);
+
+    /* "board.pyx":412
+ *         for move_count in range(move_list.count):
+ *             copy = self.copy_board()
+ *             move = move_list.moves[move_count]             # <<<<<<<<<<<<<<
+ * 
+ *             if get_move_source(move) == square:
+ */
+    __pyx_v_move = (__pyx_v_move_list->moves[__pyx_v_move_count]);
+
+    /* "board.pyx":414
+ *             move = move_list.moves[move_count]
+ * 
+ *             if get_move_source(move) == square:             # <<<<<<<<<<<<<<
+ *                 if self.make_move(move, all_moves):
+ *                     move_list_square.moves[move_list_square.count] = move
+ */
+    __pyx_t_9 = ((__pyx_f_4move_get_move_source(__pyx_v_move, 0) == __pyx_v_square) != 0);
+    if (__pyx_t_9) {
+
+      /* "board.pyx":415
+ * 
+ *             if get_move_source(move) == square:
+ *                 if self.make_move(move, all_moves):             # <<<<<<<<<<<<<<
+ *                     move_list_square.moves[move_list_square.count] = move
+ *                     move_list_square.count += 1
+ */
+      __pyx_t_9 = (((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->make_move(__pyx_v_self, __pyx_v_move, __pyx_e_4move_all_moves, 0) != 0);
+      if (__pyx_t_9) {
+
+        /* "board.pyx":416
+ *             if get_move_source(move) == square:
+ *                 if self.make_move(move, all_moves):
+ *                     move_list_square.moves[move_list_square.count] = move             # <<<<<<<<<<<<<<
+ *                     move_list_square.count += 1
+ *                     self.take_back(copy)
+ */
+        (__pyx_v_move_list_square->moves[__pyx_v_move_list_square->count]) = __pyx_v_move;
+
+        /* "board.pyx":417
+ *                 if self.make_move(move, all_moves):
+ *                     move_list_square.moves[move_list_square.count] = move
+ *                     move_list_square.count += 1             # <<<<<<<<<<<<<<
+ *                     self.take_back(copy)
+ * 
+ */
+        __pyx_v_move_list_square->count = (__pyx_v_move_list_square->count + 1);
+
+        /* "board.pyx":418
+ *                     move_list_square.moves[move_list_square.count] = move
+ *                     move_list_square.count += 1
+ *                     self.take_back(copy)             # <<<<<<<<<<<<<<
+ * 
+ *         return move_list_square
+ */
+        __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+        /* "board.pyx":415
+ * 
+ *             if get_move_source(move) == square:
+ *                 if self.make_move(move, all_moves):             # <<<<<<<<<<<<<<
+ *                     move_list_square.moves[move_list_square.count] = move
+ *                     move_list_square.count += 1
+ */
+      }
+
+      /* "board.pyx":414
+ *             move = move_list.moves[move_count]
+ * 
+ *             if get_move_source(move) == square:             # <<<<<<<<<<<<<<
+ *                 if self.make_move(move, all_moves):
+ *                     move_list_square.moves[move_list_square.count] = move
+ */
+    }
+  }
+
+  /* "board.pyx":420
+ *                     self.take_back(copy)
+ * 
+ *         return move_list_square             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef BoardCopy copy_board(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_move_list_square));
+  __pyx_r = ((PyObject *)__pyx_v_move_list_square);
+  goto __pyx_L0;
+
+  /* "board.pyx":403
+ *         return move_list
+ * 
+ *     cpdef object generate_moves_square(self, int square):             # <<<<<<<<<<<<<<
+ *         cdef Moves move_list = self.generate_moves()
+ *         cdef Moves move_list_square = Moves()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("board.Board.generate_moves_square", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_move_list);
+  __Pyx_XDECREF((PyObject *)__pyx_v_move_list_square);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5board_5Board_11generate_moves_square(PyObject *__pyx_v_self, PyObject *__pyx_arg_square); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_11generate_moves_square(PyObject *__pyx_v_self, PyObject *__pyx_arg_square) {
+  int __pyx_v_square;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("generate_moves_square (wrapper)", 0);
+  assert(__pyx_arg_square); {
+    __pyx_v_square = __Pyx_PyInt_As_int(__pyx_arg_square); if (unlikely((__pyx_v_square == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 403, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("board.Board.generate_moves_square", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5board_5Board_10generate_moves_square(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_square));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5board_5Board_10generate_moves_square(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("generate_moves_square", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_5board_5Board_generate_moves_square(__pyx_v_self, __pyx_v_square, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("board.Board.generate_moves_square", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "board.pyx":422
+ *         return move_list_square
+ * 
  *     cpdef BoardCopy copy_board(self):             # <<<<<<<<<<<<<<
  *         cdef BoardCopy copy
  *         memcpy(copy.bitboards, self.bitboards, 96)
  */
 
-static PyObject *__pyx_pw_5board_5Board_11copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_13copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
 static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_skip_dispatch) {
   __pyx_t_5board_BoardCopy __pyx_v_copy;
   __pyx_t_5board_BoardCopy __pyx_r;
@@ -5914,9 +6225,9 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy_board); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy_board); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_11copy_board)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_13copy_board)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -5930,10 +6241,10 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 403, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 403, __pyx_L1_error)
+        __pyx_t_5 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 422, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5952,7 +6263,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
     #endif
   }
 
-  /* "board.pyx":405
+  /* "board.pyx":424
  *     cpdef BoardCopy copy_board(self):
  *         cdef BoardCopy copy
  *         memcpy(copy.bitboards, self.bitboards, 96)             # <<<<<<<<<<<<<<
@@ -5961,7 +6272,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
  */
   (void)(memcpy(__pyx_v_copy.bitboards, __pyx_v_self->bitboards, 96));
 
-  /* "board.pyx":406
+  /* "board.pyx":425
  *         cdef BoardCopy copy
  *         memcpy(copy.bitboards, self.bitboards, 96)
  *         memcpy(copy.occupancies, self.occupancies, 24)             # <<<<<<<<<<<<<<
@@ -5970,7 +6281,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
  */
   (void)(memcpy(__pyx_v_copy.occupancies, __pyx_v_self->occupancies, 24));
 
-  /* "board.pyx":407
+  /* "board.pyx":426
  *         memcpy(copy.bitboards, self.bitboards, 96)
  *         memcpy(copy.occupancies, self.occupancies, 24)
  *         copy.side = self.side             # <<<<<<<<<<<<<<
@@ -5980,7 +6291,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
   __pyx_t_6 = __pyx_v_self->side;
   __pyx_v_copy.side = __pyx_t_6;
 
-  /* "board.pyx":408
+  /* "board.pyx":427
  *         memcpy(copy.occupancies, self.occupancies, 24)
  *         copy.side = self.side
  *         copy.enpassant = self.enpassant             # <<<<<<<<<<<<<<
@@ -5990,7 +6301,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
   __pyx_t_6 = __pyx_v_self->enpassant;
   __pyx_v_copy.enpassant = __pyx_t_6;
 
-  /* "board.pyx":409
+  /* "board.pyx":428
  *         copy.side = self.side
  *         copy.enpassant = self.enpassant
  *         copy.castling = self.castling             # <<<<<<<<<<<<<<
@@ -6000,7 +6311,7 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
   __pyx_t_6 = __pyx_v_self->castling;
   __pyx_v_copy.castling = __pyx_t_6;
 
-  /* "board.pyx":410
+  /* "board.pyx":429
  *         copy.enpassant = self.enpassant
  *         copy.castling = self.castling
  *         return copy             # <<<<<<<<<<<<<<
@@ -6010,8 +6321,8 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
   __pyx_r = __pyx_v_copy;
   goto __pyx_L0;
 
-  /* "board.pyx":403
- *         return move_list
+  /* "board.pyx":422
+ *         return move_list_square
  * 
  *     cpdef BoardCopy copy_board(self):             # <<<<<<<<<<<<<<
  *         cdef BoardCopy copy
@@ -6032,19 +6343,19 @@ static __pyx_t_5board_BoardCopy __pyx_f_5board_5Board_copy_board(struct __pyx_ob
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_11copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_11copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5board_5Board_13copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_13copy_board(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("copy_board (wrapper)", 0);
-  __pyx_r = __pyx_pf_5board_5Board_10copy_board(((struct __pyx_obj_5board_Board *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5board_5Board_12copy_board(((struct __pyx_obj_5board_Board *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_10copy_board(struct __pyx_obj_5board_Board *__pyx_v_self) {
+static PyObject *__pyx_pf_5board_5Board_12copy_board(struct __pyx_obj_5board_Board *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6053,7 +6364,7 @@ static PyObject *__pyx_pf_5board_5Board_10copy_board(struct __pyx_obj_5board_Boa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("copy_board", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_f_5board_5Board_copy_board(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_f_5board_5Board_copy_board(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6070,7 +6381,7 @@ static PyObject *__pyx_pf_5board_5Board_10copy_board(struct __pyx_obj_5board_Boa
   return __pyx_r;
 }
 
-/* "board.pyx":412
+/* "board.pyx":431
  *         return copy
  * 
  *     cpdef take_back(self, BoardCopy copy):             # <<<<<<<<<<<<<<
@@ -6078,7 +6389,7 @@ static PyObject *__pyx_pf_5board_5Board_10copy_board(struct __pyx_obj_5board_Boa
  *         memcpy(self.occupancies, copy.occupancies, 24)
  */
 
-static PyObject *__pyx_pw_5board_5Board_13take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_15take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy); /*proto*/
 static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy, int __pyx_skip_dispatch) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -6101,11 +6412,11 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_take_back); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_take_back); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 431, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_13take_back)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_15take_back)) {
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_3 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 412, __pyx_L1_error)
+        __pyx_t_3 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 431, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -6121,7 +6432,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 412, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 431, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_r = __pyx_t_2;
@@ -6142,7 +6453,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
     #endif
   }
 
-  /* "board.pyx":413
+  /* "board.pyx":432
  * 
  *     cpdef take_back(self, BoardCopy copy):
  *         memcpy(self.bitboards, copy.bitboards, 96)             # <<<<<<<<<<<<<<
@@ -6151,7 +6462,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
  */
   (void)(memcpy(__pyx_v_self->bitboards, __pyx_v_copy.bitboards, 96));
 
-  /* "board.pyx":414
+  /* "board.pyx":433
  *     cpdef take_back(self, BoardCopy copy):
  *         memcpy(self.bitboards, copy.bitboards, 96)
  *         memcpy(self.occupancies, copy.occupancies, 24)             # <<<<<<<<<<<<<<
@@ -6160,7 +6471,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
  */
   (void)(memcpy(__pyx_v_self->occupancies, __pyx_v_copy.occupancies, 24));
 
-  /* "board.pyx":415
+  /* "board.pyx":434
  *         memcpy(self.bitboards, copy.bitboards, 96)
  *         memcpy(self.occupancies, copy.occupancies, 24)
  *         self.side = copy.side             # <<<<<<<<<<<<<<
@@ -6170,7 +6481,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
   __pyx_t_6 = __pyx_v_copy.side;
   __pyx_v_self->side = __pyx_t_6;
 
-  /* "board.pyx":416
+  /* "board.pyx":435
  *         memcpy(self.occupancies, copy.occupancies, 24)
  *         self.side = copy.side
  *         self.enpassant = copy.enpassant             # <<<<<<<<<<<<<<
@@ -6180,7 +6491,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
   __pyx_t_6 = __pyx_v_copy.enpassant;
   __pyx_v_self->enpassant = __pyx_t_6;
 
-  /* "board.pyx":417
+  /* "board.pyx":436
  *         self.side = copy.side
  *         self.enpassant = copy.enpassant
  *         self.castling = copy.castling             # <<<<<<<<<<<<<<
@@ -6190,7 +6501,7 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
   __pyx_t_6 = __pyx_v_copy.castling;
   __pyx_v_self->castling = __pyx_t_6;
 
-  /* "board.pyx":412
+  /* "board.pyx":431
  *         return copy
  * 
  *     cpdef take_back(self, BoardCopy copy):             # <<<<<<<<<<<<<<
@@ -6216,8 +6527,8 @@ static PyObject *__pyx_f_5board_5Board_take_back(struct __pyx_obj_5board_Board *
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_13take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_13take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy) {
+static PyObject *__pyx_pw_5board_5Board_15take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_15take_back(PyObject *__pyx_v_self, PyObject *__pyx_arg_copy) {
   __pyx_t_5board_BoardCopy __pyx_v_copy;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -6226,7 +6537,7 @@ static PyObject *__pyx_pw_5board_5Board_13take_back(PyObject *__pyx_v_self, PyOb
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("take_back (wrapper)", 0);
   assert(__pyx_arg_copy); {
-    __pyx_v_copy = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_arg_copy); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 412, __pyx_L3_error)
+    __pyx_v_copy = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_arg_copy); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 431, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6234,14 +6545,14 @@ static PyObject *__pyx_pw_5board_5Board_13take_back(PyObject *__pyx_v_self, PyOb
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5board_5Board_12take_back(((struct __pyx_obj_5board_Board *)__pyx_v_self), __pyx_v_copy);
+  __pyx_r = __pyx_pf_5board_5Board_14take_back(((struct __pyx_obj_5board_Board *)__pyx_v_self), __pyx_v_copy);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_12take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy) {
+static PyObject *__pyx_pf_5board_5Board_14take_back(struct __pyx_obj_5board_Board *__pyx_v_self, __pyx_t_5board_BoardCopy __pyx_v_copy) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6250,7 +6561,7 @@ static PyObject *__pyx_pf_5board_5Board_12take_back(struct __pyx_obj_5board_Boar
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("take_back", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5board_5Board_take_back(__pyx_v_self, __pyx_v_copy, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5board_5Board_take_back(__pyx_v_self, __pyx_v_copy, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 431, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6267,7 +6578,7 @@ static PyObject *__pyx_pf_5board_5Board_12take_back(struct __pyx_obj_5board_Boar
   return __pyx_r;
 }
 
-/* "board.pyx":419
+/* "board.pyx":438
  *         self.castling = copy.castling
  * 
  *     cpdef int make_move(self, int move, int move_flag):             # <<<<<<<<<<<<<<
@@ -6275,7 +6586,7 @@ static PyObject *__pyx_pf_5board_5Board_12take_back(struct __pyx_obj_5board_Boar
  *         cdef int source_square, target_square, piece, capture, promoted, double_pawn, enpassant, castling, start_piece, end_piece, index
  */
 
-static PyObject *__pyx_pw_5board_5Board_15make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_17make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag, int __pyx_skip_dispatch) {
   __pyx_t_5board_BoardCopy __pyx_v_copy;
   int __pyx_v_source_square;
@@ -6316,12 +6627,12 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_make_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_make_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_15make_move)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_move); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_17make_move)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_move); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_move_flag); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 419, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_move_flag); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 438, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -6339,7 +6650,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_4};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 438, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6349,7 +6660,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_3, __pyx_t_4};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 438, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6357,7 +6668,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         } else
         #endif
         {
-          __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 419, __pyx_L1_error)
+          __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 438, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
           if (__pyx_t_6) {
             __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -6368,12 +6679,12 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
           PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_4);
           __pyx_t_3 = 0;
           __pyx_t_4 = 0;
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 438, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         }
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 419, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 438, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_7;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -6392,7 +6703,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     #endif
   }
 
-  /* "board.pyx":423
+  /* "board.pyx":442
  *         cdef int source_square, target_square, piece, capture, promoted, double_pawn, enpassant, castling, start_piece, end_piece, index
  * 
  *         if move_flag == all_moves:             # <<<<<<<<<<<<<<
@@ -6402,7 +6713,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
   __pyx_t_9 = ((__pyx_v_move_flag == __pyx_e_4move_all_moves) != 0);
   if (__pyx_t_9) {
 
-    /* "board.pyx":424
+    /* "board.pyx":443
  * 
  *         if move_flag == all_moves:
  *             copy = self.copy_board()             # <<<<<<<<<<<<<<
@@ -6411,79 +6722,79 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     __pyx_v_copy = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->copy_board(__pyx_v_self, 0);
 
-    /* "board.pyx":426
+    /* "board.pyx":445
  *             copy = self.copy_board()
  * 
  *             source_square = get_move_source(move)             # <<<<<<<<<<<<<<
  *             target_square = get_move_target(move)
  *             piece = get_move_piece(move)
  */
-    __pyx_v_source_square = __pyx_f_4move_get_move_source(__pyx_v_move);
+    __pyx_v_source_square = __pyx_f_4move_get_move_source(__pyx_v_move, 0);
 
-    /* "board.pyx":427
+    /* "board.pyx":446
  * 
  *             source_square = get_move_source(move)
  *             target_square = get_move_target(move)             # <<<<<<<<<<<<<<
  *             piece = get_move_piece(move)
  *             capture = get_move_capture(move)
  */
-    __pyx_v_target_square = __pyx_f_4move_get_move_target(__pyx_v_move);
+    __pyx_v_target_square = __pyx_f_4move_get_move_target(__pyx_v_move, 0);
 
-    /* "board.pyx":428
+    /* "board.pyx":447
  *             source_square = get_move_source(move)
  *             target_square = get_move_target(move)
  *             piece = get_move_piece(move)             # <<<<<<<<<<<<<<
  *             capture = get_move_capture(move)
  *             promoted = get_move_promoted(move)
  */
-    __pyx_v_piece = __pyx_f_4move_get_move_piece(__pyx_v_move);
+    __pyx_v_piece = __pyx_f_4move_get_move_piece(__pyx_v_move, 0);
 
-    /* "board.pyx":429
+    /* "board.pyx":448
  *             target_square = get_move_target(move)
  *             piece = get_move_piece(move)
  *             capture = get_move_capture(move)             # <<<<<<<<<<<<<<
  *             promoted = get_move_promoted(move)
  *             double_pawn = get_move_double(move)
  */
-    __pyx_v_capture = __pyx_f_4move_get_move_capture(__pyx_v_move);
+    __pyx_v_capture = __pyx_f_4move_get_move_capture(__pyx_v_move, 0);
 
-    /* "board.pyx":430
+    /* "board.pyx":449
  *             piece = get_move_piece(move)
  *             capture = get_move_capture(move)
  *             promoted = get_move_promoted(move)             # <<<<<<<<<<<<<<
  *             double_pawn = get_move_double(move)
  *             enpassant = get_move_enpassant(move)
  */
-    __pyx_v_promoted = __pyx_f_4move_get_move_promoted(__pyx_v_move);
+    __pyx_v_promoted = __pyx_f_4move_get_move_promoted(__pyx_v_move, 0);
 
-    /* "board.pyx":431
+    /* "board.pyx":450
  *             capture = get_move_capture(move)
  *             promoted = get_move_promoted(move)
  *             double_pawn = get_move_double(move)             # <<<<<<<<<<<<<<
  *             enpassant = get_move_enpassant(move)
  *             castling = get_move_castling(move)
  */
-    __pyx_v_double_pawn = __pyx_f_4move_get_move_double(__pyx_v_move);
+    __pyx_v_double_pawn = __pyx_f_4move_get_move_double(__pyx_v_move, 0);
 
-    /* "board.pyx":432
+    /* "board.pyx":451
  *             promoted = get_move_promoted(move)
  *             double_pawn = get_move_double(move)
  *             enpassant = get_move_enpassant(move)             # <<<<<<<<<<<<<<
  *             castling = get_move_castling(move)
  * 
  */
-    __pyx_v_enpassant = __pyx_f_4move_get_move_enpassant(__pyx_v_move);
+    __pyx_v_enpassant = __pyx_f_4move_get_move_enpassant(__pyx_v_move, 0);
 
-    /* "board.pyx":433
+    /* "board.pyx":452
  *             double_pawn = get_move_double(move)
  *             enpassant = get_move_enpassant(move)
  *             castling = get_move_castling(move)             # <<<<<<<<<<<<<<
  * 
  *             self.bitboards[piece] = pop_bit(self.bitboards[piece], source_square)
  */
-    __pyx_v_castling = __pyx_f_4move_get_move_castling(__pyx_v_move);
+    __pyx_v_castling = __pyx_f_4move_get_move_castling(__pyx_v_move, 0);
 
-    /* "board.pyx":435
+    /* "board.pyx":454
  *             castling = get_move_castling(move)
  * 
  *             self.bitboards[piece] = pop_bit(self.bitboards[piece], source_square)             # <<<<<<<<<<<<<<
@@ -6492,7 +6803,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     (__pyx_v_self->bitboards[__pyx_v_piece]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_v_piece]), __pyx_v_source_square);
 
-    /* "board.pyx":436
+    /* "board.pyx":455
  * 
  *             self.bitboards[piece] = pop_bit(self.bitboards[piece], source_square)
  *             self.bitboards[piece] = set_bit(self.bitboards[piece], target_square)             # <<<<<<<<<<<<<<
@@ -6501,7 +6812,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     (__pyx_v_self->bitboards[__pyx_v_piece]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_v_piece]), __pyx_v_target_square);
 
-    /* "board.pyx":439
+    /* "board.pyx":458
  * 
  *             # handle capture
  *             if capture:             # <<<<<<<<<<<<<<
@@ -6511,7 +6822,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (__pyx_v_capture != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":440
+      /* "board.pyx":459
  *             # handle capture
  *             if capture:
  *                 if self.side == white:             # <<<<<<<<<<<<<<
@@ -6521,7 +6832,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       __pyx_t_9 = ((__pyx_v_self->side == __pyx_e_5board_white) != 0);
       if (__pyx_t_9) {
 
-        /* "board.pyx":441
+        /* "board.pyx":460
  *             if capture:
  *                 if self.side == white:
  *                     start_piece = p             # <<<<<<<<<<<<<<
@@ -6530,7 +6841,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         __pyx_v_start_piece = __pyx_e_5board_p;
 
-        /* "board.pyx":442
+        /* "board.pyx":461
  *                 if self.side == white:
  *                     start_piece = p
  *                     end_piece = k             # <<<<<<<<<<<<<<
@@ -6539,7 +6850,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         __pyx_v_end_piece = __pyx_e_5board_k;
 
-        /* "board.pyx":440
+        /* "board.pyx":459
  *             # handle capture
  *             if capture:
  *                 if self.side == white:             # <<<<<<<<<<<<<<
@@ -6549,7 +6860,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         goto __pyx_L5;
       }
 
-      /* "board.pyx":444
+      /* "board.pyx":463
  *                     end_piece = k
  *                 else:
  *                     start_piece = P             # <<<<<<<<<<<<<<
@@ -6559,7 +6870,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       /*else*/ {
         __pyx_v_start_piece = __pyx_e_5board_P;
 
-        /* "board.pyx":445
+        /* "board.pyx":464
  *                 else:
  *                     start_piece = P
  *                     end_piece = K             # <<<<<<<<<<<<<<
@@ -6570,7 +6881,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       }
       __pyx_L5:;
 
-      /* "board.pyx":447
+      /* "board.pyx":466
  *                     end_piece = K
  * 
  *                 for index in range(start_piece, end_piece + 1):             # <<<<<<<<<<<<<<
@@ -6582,7 +6893,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       for (__pyx_t_7 = __pyx_v_start_piece; __pyx_t_7 < __pyx_t_11; __pyx_t_7+=1) {
         __pyx_v_index = __pyx_t_7;
 
-        /* "board.pyx":448
+        /* "board.pyx":467
  * 
  *                 for index in range(start_piece, end_piece + 1):
  *                     if get_bit(self.bitboards[index], target_square):             # <<<<<<<<<<<<<<
@@ -6592,7 +6903,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         __pyx_t_9 = (__pyx_f_6helper_get_bit((__pyx_v_self->bitboards[__pyx_v_index]), __pyx_v_target_square) != 0);
         if (__pyx_t_9) {
 
-          /* "board.pyx":449
+          /* "board.pyx":468
  *                 for index in range(start_piece, end_piece + 1):
  *                     if get_bit(self.bitboards[index], target_square):
  *                         self.bitboards[index] = pop_bit(self.bitboards[index], target_square)             # <<<<<<<<<<<<<<
@@ -6601,7 +6912,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
           (__pyx_v_self->bitboards[__pyx_v_index]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_v_index]), __pyx_v_target_square);
 
-          /* "board.pyx":450
+          /* "board.pyx":469
  *                     if get_bit(self.bitboards[index], target_square):
  *                         self.bitboards[index] = pop_bit(self.bitboards[index], target_square)
  *                         break             # <<<<<<<<<<<<<<
@@ -6610,7 +6921,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
           goto __pyx_L7_break;
 
-          /* "board.pyx":448
+          /* "board.pyx":467
  * 
  *                 for index in range(start_piece, end_piece + 1):
  *                     if get_bit(self.bitboards[index], target_square):             # <<<<<<<<<<<<<<
@@ -6621,7 +6932,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       }
       __pyx_L7_break:;
 
-      /* "board.pyx":439
+      /* "board.pyx":458
  * 
  *             # handle capture
  *             if capture:             # <<<<<<<<<<<<<<
@@ -6630,7 +6941,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":453
+    /* "board.pyx":472
  * 
  *             # handle promotion
  *             if promoted:             # <<<<<<<<<<<<<<
@@ -6640,7 +6951,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (__pyx_v_promoted != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":454
+      /* "board.pyx":473
  *             # handle promotion
  *             if promoted:
  *                 self.bitboards[piece] = pop_bit(self.bitboards[piece], target_square)             # <<<<<<<<<<<<<<
@@ -6649,7 +6960,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
       (__pyx_v_self->bitboards[__pyx_v_piece]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_v_piece]), __pyx_v_target_square);
 
-      /* "board.pyx":455
+      /* "board.pyx":474
  *             if promoted:
  *                 self.bitboards[piece] = pop_bit(self.bitboards[piece], target_square)
  *                 self.bitboards[promoted] = set_bit(self.bitboards[promoted], target_square)             # <<<<<<<<<<<<<<
@@ -6658,7 +6969,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
       (__pyx_v_self->bitboards[__pyx_v_promoted]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_v_promoted]), __pyx_v_target_square);
 
-      /* "board.pyx":453
+      /* "board.pyx":472
  * 
  *             # handle promotion
  *             if promoted:             # <<<<<<<<<<<<<<
@@ -6667,7 +6978,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":458
+    /* "board.pyx":477
  * 
  *             # handle enpassant
  *             if enpassant:             # <<<<<<<<<<<<<<
@@ -6677,7 +6988,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (__pyx_v_enpassant != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":459
+      /* "board.pyx":478
  *             # handle enpassant
  *             if enpassant:
  *                 if self.side == white:             # <<<<<<<<<<<<<<
@@ -6687,7 +6998,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       __pyx_t_9 = ((__pyx_v_self->side == __pyx_e_5board_white) != 0);
       if (__pyx_t_9) {
 
-        /* "board.pyx":460
+        /* "board.pyx":479
  *             if enpassant:
  *                 if self.side == white:
  *                     self.bitboards[p] = pop_bit(self.bitboards[p], target_square + 8)             # <<<<<<<<<<<<<<
@@ -6696,7 +7007,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_p]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_e_5board_p]), (__pyx_v_target_square + 8));
 
-        /* "board.pyx":459
+        /* "board.pyx":478
  *             # handle enpassant
  *             if enpassant:
  *                 if self.side == white:             # <<<<<<<<<<<<<<
@@ -6706,7 +7017,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         goto __pyx_L11;
       }
 
-      /* "board.pyx":462
+      /* "board.pyx":481
  *                     self.bitboards[p] = pop_bit(self.bitboards[p], target_square + 8)
  *                 else:
  *                     self.bitboards[P] = pop_bit(self.bitboards[P], target_square - 8)             # <<<<<<<<<<<<<<
@@ -6718,7 +7029,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       }
       __pyx_L11:;
 
-      /* "board.pyx":458
+      /* "board.pyx":477
  * 
  *             # handle enpassant
  *             if enpassant:             # <<<<<<<<<<<<<<
@@ -6727,7 +7038,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":464
+    /* "board.pyx":483
  *                     self.bitboards[P] = pop_bit(self.bitboards[P], target_square - 8)
  * 
  *             self.enpassant = no_sq             # <<<<<<<<<<<<<<
@@ -6736,7 +7047,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     __pyx_v_self->enpassant = __pyx_e_5board_no_sq;
 
-    /* "board.pyx":467
+    /* "board.pyx":486
  * 
  *             # handle double pawn push
  *             if double_pawn:             # <<<<<<<<<<<<<<
@@ -6746,7 +7057,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (__pyx_v_double_pawn != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":468
+      /* "board.pyx":487
  *             # handle double pawn push
  *             if double_pawn:
  *                 self.enpassant = target_square + 8 if self.side == white else target_square - 8             # <<<<<<<<<<<<<<
@@ -6760,7 +7071,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       }
       __pyx_v_self->enpassant = __pyx_t_10;
 
-      /* "board.pyx":467
+      /* "board.pyx":486
  * 
  *             # handle double pawn push
  *             if double_pawn:             # <<<<<<<<<<<<<<
@@ -6769,7 +7080,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":471
+    /* "board.pyx":490
  * 
  *             # handle castling
  *             if castling:             # <<<<<<<<<<<<<<
@@ -6779,7 +7090,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (__pyx_v_castling != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":472
+      /* "board.pyx":491
  *             # handle castling
  *             if castling:
  *                 if target_square == g1:             # <<<<<<<<<<<<<<
@@ -6789,7 +7100,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       switch (__pyx_v_target_square) {
         case __pyx_e_5board_g1:
 
-        /* "board.pyx":473
+        /* "board.pyx":492
  *             if castling:
  *                 if target_square == g1:
  *                     self.bitboards[R] = pop_bit(self.bitboards[R], h1)             # <<<<<<<<<<<<<<
@@ -6798,7 +7109,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_R]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_e_5board_R]), __pyx_e_5board_h1);
 
-        /* "board.pyx":474
+        /* "board.pyx":493
  *                 if target_square == g1:
  *                     self.bitboards[R] = pop_bit(self.bitboards[R], h1)
  *                     self.bitboards[R] = set_bit(self.bitboards[R], f1)             # <<<<<<<<<<<<<<
@@ -6807,7 +7118,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_R]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_e_5board_R]), __pyx_e_5board_f1);
 
-        /* "board.pyx":472
+        /* "board.pyx":491
  *             # handle castling
  *             if castling:
  *                 if target_square == g1:             # <<<<<<<<<<<<<<
@@ -6817,7 +7128,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         break;
         case __pyx_e_5board_c1:
 
-        /* "board.pyx":477
+        /* "board.pyx":496
  * 
  *                 elif target_square == c1:
  *                     self.bitboards[R] = pop_bit(self.bitboards[R], a1)             # <<<<<<<<<<<<<<
@@ -6826,7 +7137,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_R]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_e_5board_R]), __pyx_e_5board_a1);
 
-        /* "board.pyx":478
+        /* "board.pyx":497
  *                 elif target_square == c1:
  *                     self.bitboards[R] = pop_bit(self.bitboards[R], a1)
  *                     self.bitboards[R] = set_bit(self.bitboards[R], d1)             # <<<<<<<<<<<<<<
@@ -6835,7 +7146,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_R]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_e_5board_R]), __pyx_e_5board_d1);
 
-        /* "board.pyx":476
+        /* "board.pyx":495
  *                     self.bitboards[R] = set_bit(self.bitboards[R], f1)
  * 
  *                 elif target_square == c1:             # <<<<<<<<<<<<<<
@@ -6845,7 +7156,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         break;
         case __pyx_e_5board_g8:
 
-        /* "board.pyx":481
+        /* "board.pyx":500
  * 
  *                 elif target_square == g8:
  *                     self.bitboards[r] = pop_bit(self.bitboards[r], h8)             # <<<<<<<<<<<<<<
@@ -6854,7 +7165,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_r]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_e_5board_r]), __pyx_e_5board_h8);
 
-        /* "board.pyx":482
+        /* "board.pyx":501
  *                 elif target_square == g8:
  *                     self.bitboards[r] = pop_bit(self.bitboards[r], h8)
  *                     self.bitboards[r] = set_bit(self.bitboards[r], f8)             # <<<<<<<<<<<<<<
@@ -6863,7 +7174,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_r]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_e_5board_r]), __pyx_e_5board_f8);
 
-        /* "board.pyx":480
+        /* "board.pyx":499
  *                     self.bitboards[R] = set_bit(self.bitboards[R], d1)
  * 
  *                 elif target_square == g8:             # <<<<<<<<<<<<<<
@@ -6873,7 +7184,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         break;
         case __pyx_e_5board_c8:
 
-        /* "board.pyx":485
+        /* "board.pyx":504
  * 
  *                 elif target_square == c8:
  *                     self.bitboards[r] = pop_bit(self.bitboards[r], a8)             # <<<<<<<<<<<<<<
@@ -6882,7 +7193,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_r]) = __pyx_f_6helper_pop_bit((__pyx_v_self->bitboards[__pyx_e_5board_r]), __pyx_e_5board_a8);
 
-        /* "board.pyx":486
+        /* "board.pyx":505
  *                 elif target_square == c8:
  *                     self.bitboards[r] = pop_bit(self.bitboards[r], a8)
  *                     self.bitboards[r] = set_bit(self.bitboards[r], d8)             # <<<<<<<<<<<<<<
@@ -6891,7 +7202,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
         (__pyx_v_self->bitboards[__pyx_e_5board_r]) = __pyx_f_6helper_set_bit((__pyx_v_self->bitboards[__pyx_e_5board_r]), __pyx_e_5board_d8);
 
-        /* "board.pyx":484
+        /* "board.pyx":503
  *                     self.bitboards[r] = set_bit(self.bitboards[r], f8)
  * 
  *                 elif target_square == c8:             # <<<<<<<<<<<<<<
@@ -6902,7 +7213,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
         default: break;
       }
 
-      /* "board.pyx":471
+      /* "board.pyx":490
  * 
  *             # handle castling
  *             if castling:             # <<<<<<<<<<<<<<
@@ -6911,7 +7222,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":489
+    /* "board.pyx":508
  * 
  *             # update castling rights
  *             self.castling &= castling_rights[source_square]             # <<<<<<<<<<<<<<
@@ -6920,7 +7231,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     __pyx_v_self->castling = (__pyx_v_self->castling & (__pyx_v_5const_castling_rights[__pyx_v_source_square]));
 
-    /* "board.pyx":490
+    /* "board.pyx":509
  *             # update castling rights
  *             self.castling &= castling_rights[source_square]
  *             self.castling &= castling_rights[target_square]             # <<<<<<<<<<<<<<
@@ -6929,7 +7240,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     __pyx_v_self->castling = (__pyx_v_self->castling & (__pyx_v_5const_castling_rights[__pyx_v_target_square]));
 
-    /* "board.pyx":493
+    /* "board.pyx":512
  * 
  *             # update occupancy
  *             memset(self.occupancies, 0ULL, 24)             # <<<<<<<<<<<<<<
@@ -6938,7 +7249,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     (void)(memset(__pyx_v_self->occupancies, 0ULL, 24));
 
-    /* "board.pyx":494
+    /* "board.pyx":513
  *             # update occupancy
  *             memset(self.occupancies, 0ULL, 24)
  *             for index in range(P, K + 1):             # <<<<<<<<<<<<<<
@@ -6950,7 +7261,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     for (__pyx_t_7 = __pyx_e_5board_P; __pyx_t_7 < __pyx_t_11; __pyx_t_7+=1) {
       __pyx_v_index = __pyx_t_7;
 
-      /* "board.pyx":495
+      /* "board.pyx":514
  *             memset(self.occupancies, 0ULL, 24)
  *             for index in range(P, K + 1):
  *                 self.occupancies[white] |= self.bitboards[index]             # <<<<<<<<<<<<<<
@@ -6961,7 +7272,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       (__pyx_v_self->occupancies[__pyx_t_12]) = ((__pyx_v_self->occupancies[__pyx_t_12]) | (__pyx_v_self->bitboards[__pyx_v_index]));
     }
 
-    /* "board.pyx":497
+    /* "board.pyx":516
  *                 self.occupancies[white] |= self.bitboards[index]
  * 
  *             for index in range(p, k + 1):             # <<<<<<<<<<<<<<
@@ -6973,7 +7284,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     for (__pyx_t_7 = __pyx_e_5board_p; __pyx_t_7 < __pyx_t_11; __pyx_t_7+=1) {
       __pyx_v_index = __pyx_t_7;
 
-      /* "board.pyx":498
+      /* "board.pyx":517
  * 
  *             for index in range(p, k + 1):
  *                 self.occupancies[black] |= self.bitboards[index]             # <<<<<<<<<<<<<<
@@ -6984,7 +7295,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       (__pyx_v_self->occupancies[__pyx_t_12]) = ((__pyx_v_self->occupancies[__pyx_t_12]) | (__pyx_v_self->bitboards[__pyx_v_index]));
     }
 
-    /* "board.pyx":500
+    /* "board.pyx":519
  *                 self.occupancies[black] |= self.bitboards[index]
  * 
  *             self.occupancies[both] = self.occupancies[white] | self.occupancies[black]             # <<<<<<<<<<<<<<
@@ -6993,7 +7304,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     (__pyx_v_self->occupancies[__pyx_e_5board_both]) = ((__pyx_v_self->occupancies[__pyx_e_5board_white]) | (__pyx_v_self->occupancies[__pyx_e_5board_black]));
 
-    /* "board.pyx":503
+    /* "board.pyx":522
  * 
  *             # change side
  *             self.side ^= 1             # <<<<<<<<<<<<<<
@@ -7002,7 +7313,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     __pyx_v_self->side = (__pyx_v_self->side ^ 1);
 
-    /* "board.pyx":506
+    /* "board.pyx":525
  * 
  *             # make sure king is not in check
  *             if self.is_square_attacked(get_ls1b_index(self.bitboards[k]) if self.side == white else get_ls1b_index(self.bitboards[K]), self.side):             # <<<<<<<<<<<<<<
@@ -7017,18 +7328,18 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_t_9 = (((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->is_square_attacked(__pyx_v_self, __pyx_t_7, __pyx_v_self->side) != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":507
+      /* "board.pyx":526
  *             # make sure king is not in check
  *             if self.is_square_attacked(get_ls1b_index(self.bitboards[k]) if self.side == white else get_ls1b_index(self.bitboards[K]), self.side):
  *                 self.take_back(copy)             # <<<<<<<<<<<<<<
  *                 return 0
  * 
  */
-      __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 507, __pyx_L1_error)
+      __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 526, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "board.pyx":508
+      /* "board.pyx":527
  *             if self.is_square_attacked(get_ls1b_index(self.bitboards[k]) if self.side == white else get_ls1b_index(self.bitboards[K]), self.side):
  *                 self.take_back(copy)
  *                 return 0             # <<<<<<<<<<<<<<
@@ -7038,7 +7349,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       __pyx_r = 0;
       goto __pyx_L0;
 
-      /* "board.pyx":506
+      /* "board.pyx":525
  * 
  *             # make sure king is not in check
  *             if self.is_square_attacked(get_ls1b_index(self.bitboards[k]) if self.side == white else get_ls1b_index(self.bitboards[K]), self.side):             # <<<<<<<<<<<<<<
@@ -7047,7 +7358,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
     }
 
-    /* "board.pyx":511
+    /* "board.pyx":530
  * 
  *             else:
  *                 return 1             # <<<<<<<<<<<<<<
@@ -7059,7 +7370,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       goto __pyx_L0;
     }
 
-    /* "board.pyx":423
+    /* "board.pyx":442
  *         cdef int source_square, target_square, piece, capture, promoted, double_pawn, enpassant, castling, start_piece, end_piece, index
  * 
  *         if move_flag == all_moves:             # <<<<<<<<<<<<<<
@@ -7068,7 +7379,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
   }
 
-  /* "board.pyx":514
+  /* "board.pyx":533
  * 
  *         else:
  *             if get_move_capture(move):             # <<<<<<<<<<<<<<
@@ -7076,10 +7387,10 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  * 
  */
   /*else*/ {
-    __pyx_t_9 = (__pyx_f_4move_get_move_capture(__pyx_v_move) != 0);
+    __pyx_t_9 = (__pyx_f_4move_get_move_capture(__pyx_v_move, 0) != 0);
     if (__pyx_t_9) {
 
-      /* "board.pyx":515
+      /* "board.pyx":534
  *         else:
  *             if get_move_capture(move):
  *                 self.make_move(move, all_moves)             # <<<<<<<<<<<<<<
@@ -7088,7 +7399,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
  */
       (void)(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->make_move(__pyx_v_self, __pyx_v_move, __pyx_e_4move_all_moves, 0));
 
-      /* "board.pyx":514
+      /* "board.pyx":533
  * 
  *         else:
  *             if get_move_capture(move):             # <<<<<<<<<<<<<<
@@ -7098,7 +7409,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
       goto __pyx_L19;
     }
 
-    /* "board.pyx":518
+    /* "board.pyx":537
  * 
  *             else:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -7112,7 +7423,7 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
     __pyx_L19:;
   }
 
-  /* "board.pyx":419
+  /* "board.pyx":438
  *         self.castling = copy.castling
  * 
  *     cpdef int make_move(self, int move, int move_flag):             # <<<<<<<<<<<<<<
@@ -7139,8 +7450,8 @@ static int __pyx_f_5board_5Board_make_move(struct __pyx_obj_5board_Board *__pyx_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_15make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_15make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5board_5Board_17make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_17make_move(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_move;
   int __pyx_v_move_flag;
   int __pyx_lineno = 0;
@@ -7172,11 +7483,11 @@ static PyObject *__pyx_pw_5board_5Board_15make_move(PyObject *__pyx_v_self, PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_move_flag)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("make_move", 1, 2, 2, 1); __PYX_ERR(0, 419, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("make_move", 1, 2, 2, 1); __PYX_ERR(0, 438, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "make_move") < 0)) __PYX_ERR(0, 419, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "make_move") < 0)) __PYX_ERR(0, 438, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7184,25 +7495,25 @@ static PyObject *__pyx_pw_5board_5Board_15make_move(PyObject *__pyx_v_self, PyOb
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_move = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 419, __pyx_L3_error)
-    __pyx_v_move_flag = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_move_flag == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 419, __pyx_L3_error)
+    __pyx_v_move = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 438, __pyx_L3_error)
+    __pyx_v_move_flag = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_move_flag == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 438, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("make_move", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 419, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("make_move", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 438, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("board.Board.make_move", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5board_5Board_14make_move(((struct __pyx_obj_5board_Board *)__pyx_v_self), __pyx_v_move, __pyx_v_move_flag);
+  __pyx_r = __pyx_pf_5board_5Board_16make_move(((struct __pyx_obj_5board_Board *)__pyx_v_self), __pyx_v_move, __pyx_v_move_flag);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_14make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag) {
+static PyObject *__pyx_pf_5board_5Board_16make_move(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_move, int __pyx_v_move_flag) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7211,7 +7522,7 @@ static PyObject *__pyx_pf_5board_5Board_14make_move(struct __pyx_obj_5board_Boar
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("make_move", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5board_5Board_make_move(__pyx_v_self, __pyx_v_move, __pyx_v_move_flag, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5board_5Board_make_move(__pyx_v_self, __pyx_v_move, __pyx_v_move_flag, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7228,7 +7539,7 @@ static PyObject *__pyx_pf_5board_5Board_14make_move(struct __pyx_obj_5board_Boar
   return __pyx_r;
 }
 
-/* "board.pyx":520
+/* "board.pyx":539
  *                 return 0
  * 
  *     cpdef long perft(self, int depth):             # <<<<<<<<<<<<<<
@@ -7236,7 +7547,7 @@ static PyObject *__pyx_pf_5board_5Board_14make_move(struct __pyx_obj_5board_Boar
  *             return 1
  */
 
-static PyObject *__pyx_pw_5board_5Board_17perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_19perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
 static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth, int __pyx_skip_dispatch) {
   struct __pyx_obj_4move_Moves *__pyx_v_move_list = 0;
   int __pyx_v_i;
@@ -7267,10 +7578,10 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_perft); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 520, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_perft); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_17perft)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 520, __pyx_L1_error)
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_19perft)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 539, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -7286,10 +7597,10 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 520, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 539, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 520, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 539, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7308,7 +7619,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
     #endif
   }
 
-  /* "board.pyx":521
+  /* "board.pyx":540
  * 
  *     cpdef long perft(self, int depth):
  *         if depth == 0:             # <<<<<<<<<<<<<<
@@ -7318,7 +7629,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
   __pyx_t_7 = ((__pyx_v_depth == 0) != 0);
   if (__pyx_t_7) {
 
-    /* "board.pyx":522
+    /* "board.pyx":541
  *     cpdef long perft(self, int depth):
  *         if depth == 0:
  *             return 1             # <<<<<<<<<<<<<<
@@ -7328,7 +7639,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "board.pyx":521
+    /* "board.pyx":540
  * 
  *     cpdef long perft(self, int depth):
  *         if depth == 0:             # <<<<<<<<<<<<<<
@@ -7337,20 +7648,20 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
   }
 
-  /* "board.pyx":524
+  /* "board.pyx":543
  *             return 1
  * 
  *         cdef Moves move_list = self.generate_moves()             # <<<<<<<<<<<<<<
  * 
  *         cdef int i, result
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 524, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 524, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 543, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "board.pyx":528
+  /* "board.pyx":547
  *         cdef int i, result
  *         cdef BoardCopy copy
  *         cdef long nodes = 0             # <<<<<<<<<<<<<<
@@ -7359,7 +7670,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
   __pyx_v_nodes = 0;
 
-  /* "board.pyx":530
+  /* "board.pyx":549
  *         cdef long nodes = 0
  * 
  *         for i in range(move_list.count):             # <<<<<<<<<<<<<<
@@ -7371,7 +7682,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_i = __pyx_t_10;
 
-    /* "board.pyx":531
+    /* "board.pyx":550
  * 
  *         for i in range(move_list.count):
  *             copy = self.copy_board()             # <<<<<<<<<<<<<<
@@ -7380,7 +7691,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
     __pyx_v_copy = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->copy_board(__pyx_v_self, 0);
 
-    /* "board.pyx":533
+    /* "board.pyx":552
  *             copy = self.copy_board()
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):             # <<<<<<<<<<<<<<
@@ -7390,7 +7701,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
     __pyx_t_7 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->make_move(__pyx_v_self, (__pyx_v_move_list->moves[__pyx_v_i]), __pyx_e_4move_all_moves, 0) != 0)) != 0);
     if (__pyx_t_7) {
 
-      /* "board.pyx":534
+      /* "board.pyx":553
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):
  *                 continue             # <<<<<<<<<<<<<<
@@ -7399,7 +7710,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
       goto __pyx_L4_continue;
 
-      /* "board.pyx":533
+      /* "board.pyx":552
  *             copy = self.copy_board()
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):             # <<<<<<<<<<<<<<
@@ -7408,7 +7719,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
     }
 
-    /* "board.pyx":536
+    /* "board.pyx":555
  *                 continue
  * 
  *             nodes += self.perft(depth - 1)             # <<<<<<<<<<<<<<
@@ -7417,20 +7728,20 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
  */
     __pyx_v_nodes = (__pyx_v_nodes + ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->perft(__pyx_v_self, (__pyx_v_depth - 1), 0));
 
-    /* "board.pyx":538
+    /* "board.pyx":557
  *             nodes += self.perft(depth - 1)
  * 
  *             self.take_back(copy)             # <<<<<<<<<<<<<<
  * 
  *         return nodes
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 557, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_L4_continue:;
   }
 
-  /* "board.pyx":540
+  /* "board.pyx":559
  *             self.take_back(copy)
  * 
  *         return nodes             # <<<<<<<<<<<<<<
@@ -7440,7 +7751,7 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
   __pyx_r = __pyx_v_nodes;
   goto __pyx_L0;
 
-  /* "board.pyx":520
+  /* "board.pyx":539
  *                 return 0
  * 
  *     cpdef long perft(self, int depth):             # <<<<<<<<<<<<<<
@@ -7464,8 +7775,8 @@ static long __pyx_f_5board_5Board_perft(struct __pyx_obj_5board_Board *__pyx_v_s
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_17perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_17perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth) {
+static PyObject *__pyx_pw_5board_5Board_19perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_19perft(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth) {
   int __pyx_v_depth;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -7474,7 +7785,7 @@ static PyObject *__pyx_pw_5board_5Board_17perft(PyObject *__pyx_v_self, PyObject
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("perft (wrapper)", 0);
   assert(__pyx_arg_depth); {
-    __pyx_v_depth = __Pyx_PyInt_As_int(__pyx_arg_depth); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 520, __pyx_L3_error)
+    __pyx_v_depth = __Pyx_PyInt_As_int(__pyx_arg_depth); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 539, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7482,14 +7793,14 @@ static PyObject *__pyx_pw_5board_5Board_17perft(PyObject *__pyx_v_self, PyObject
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5board_5Board_16perft(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_depth));
+  __pyx_r = __pyx_pf_5board_5Board_18perft(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_depth));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_16perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth) {
+static PyObject *__pyx_pf_5board_5Board_18perft(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7498,7 +7809,7 @@ static PyObject *__pyx_pf_5board_5Board_16perft(struct __pyx_obj_5board_Board *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("perft", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_5board_5Board_perft(__pyx_v_self, __pyx_v_depth, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 520, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_5board_5Board_perft(__pyx_v_self, __pyx_v_depth, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7515,7 +7826,7 @@ static PyObject *__pyx_pf_5board_5Board_16perft(struct __pyx_obj_5board_Board *_
   return __pyx_r;
 }
 
-/* "board.pyx":542
+/* "board.pyx":561
  *         return nodes
  * 
  *     cpdef long perft_test(self, int depth):             # <<<<<<<<<<<<<<
@@ -7523,7 +7834,7 @@ static PyObject *__pyx_pf_5board_5Board_16perft(struct __pyx_obj_5board_Board *_
  *         cdef Moves move_list = self.generate_moves()
  */
 
-static PyObject *__pyx_pw_5board_5Board_19perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_21perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
 static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth, int __pyx_skip_dispatch) {
   struct __pyx_obj_4move_Moves *__pyx_v_move_list = 0;
   int __pyx_v_i;
@@ -7555,10 +7866,10 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_perft_test); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_perft_test); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 561, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_19perft_test)) {
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 542, __pyx_L1_error)
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_21perft_test)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 561, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -7574,10 +7885,10 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 542, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 561, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 542, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_As_long(__pyx_t_2); if (unlikely((__pyx_t_6 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 561, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7596,7 +7907,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
     #endif
   }
 
-  /* "board.pyx":543
+  /* "board.pyx":562
  * 
  *     cpdef long perft_test(self, int depth):
  *         printf("\n    Performance test\n\n")             # <<<<<<<<<<<<<<
@@ -7605,20 +7916,20 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
   (void)(printf(((char const *)"\n    Performance test\n\n")));
 
-  /* "board.pyx":544
+  /* "board.pyx":563
  *     cpdef long perft_test(self, int depth):
  *         printf("\n    Performance test\n\n")
  *         cdef Moves move_list = self.generate_moves()             # <<<<<<<<<<<<<<
  * 
  *         cdef int i, result
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 544, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 563, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 544, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 563, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "board.pyx":548
+  /* "board.pyx":567
  *         cdef int i, result
  *         cdef BoardCopy copy
  *         cdef long nodes = 0, temp = 0             # <<<<<<<<<<<<<<
@@ -7628,7 +7939,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
   __pyx_v_nodes = 0;
   __pyx_v_temp = 0;
 
-  /* "board.pyx":550
+  /* "board.pyx":569
  *         cdef long nodes = 0, temp = 0
  * 
  *         for i in range(move_list.count):             # <<<<<<<<<<<<<<
@@ -7640,7 +7951,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "board.pyx":551
+    /* "board.pyx":570
  * 
  *         for i in range(move_list.count):
  *             copy = self.copy_board()             # <<<<<<<<<<<<<<
@@ -7649,7 +7960,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
     __pyx_v_copy = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->copy_board(__pyx_v_self, 0);
 
-    /* "board.pyx":553
+    /* "board.pyx":572
  *             copy = self.copy_board()
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):             # <<<<<<<<<<<<<<
@@ -7659,7 +7970,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
     __pyx_t_10 = ((!(((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->make_move(__pyx_v_self, (__pyx_v_move_list->moves[__pyx_v_i]), __pyx_e_4move_all_moves, 0) != 0)) != 0);
     if (__pyx_t_10) {
 
-      /* "board.pyx":554
+      /* "board.pyx":573
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):
  *                 continue             # <<<<<<<<<<<<<<
@@ -7668,7 +7979,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
       goto __pyx_L3_continue;
 
-      /* "board.pyx":553
+      /* "board.pyx":572
  *             copy = self.copy_board()
  * 
  *             if not self.make_move(move_list.moves[i], all_moves):             # <<<<<<<<<<<<<<
@@ -7677,7 +7988,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
     }
 
-    /* "board.pyx":556
+    /* "board.pyx":575
  *                 continue
  * 
  *             temp = self.perft(depth - 1)             # <<<<<<<<<<<<<<
@@ -7686,7 +7997,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
     __pyx_v_temp = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->perft(__pyx_v_self, (__pyx_v_depth - 1), 0);
 
-    /* "board.pyx":557
+    /* "board.pyx":576
  * 
  *             temp = self.perft(depth - 1)
  *             nodes += temp             # <<<<<<<<<<<<<<
@@ -7695,29 +8006,29 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
     __pyx_v_nodes = (__pyx_v_nodes + __pyx_v_temp);
 
-    /* "board.pyx":559
+    /* "board.pyx":578
  *             nodes += temp
  * 
  *             self.take_back(copy)             # <<<<<<<<<<<<<<
  *             printf("    move: %s%s%c  nodes: %ld\n", square_to_coord[get_move_source(move_list.moves[i])], square_to_coord[get_move_target(move_list.moves[i])], promoted_pieces[get_move_promoted(move_list.moves[i])], temp)
  * 
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 559, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->take_back(__pyx_v_self, __pyx_v_copy, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "board.pyx":560
+    /* "board.pyx":579
  * 
  *             self.take_back(copy)
  *             printf("    move: %s%s%c  nodes: %ld\n", square_to_coord[get_move_source(move_list.moves[i])], square_to_coord[get_move_target(move_list.moves[i])], promoted_pieces[get_move_promoted(move_list.moves[i])], temp)             # <<<<<<<<<<<<<<
  * 
  *         printf("\n    Depth: %d\n", depth)
  */
-    (void)(printf(((char const *)"    move: %s%s%c  nodes: %ld\n"), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_source((__pyx_v_move_list->moves[__pyx_v_i]))]), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_target((__pyx_v_move_list->moves[__pyx_v_i]))]), (__pyx_v_4move_promoted_pieces[__pyx_f_4move_get_move_promoted((__pyx_v_move_list->moves[__pyx_v_i]))]), __pyx_v_temp));
+    (void)(printf(((char const *)"    move: %s%s%c  nodes: %ld\n"), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_source((__pyx_v_move_list->moves[__pyx_v_i]), 0)]), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_target((__pyx_v_move_list->moves[__pyx_v_i]), 0)]), (__pyx_v_4move_promoted_pieces[__pyx_f_4move_get_move_promoted((__pyx_v_move_list->moves[__pyx_v_i]), 0)]), __pyx_v_temp));
     __pyx_L3_continue:;
   }
 
-  /* "board.pyx":562
+  /* "board.pyx":581
  *             printf("    move: %s%s%c  nodes: %ld\n", square_to_coord[get_move_source(move_list.moves[i])], square_to_coord[get_move_target(move_list.moves[i])], promoted_pieces[get_move_promoted(move_list.moves[i])], temp)
  * 
  *         printf("\n    Depth: %d\n", depth)             # <<<<<<<<<<<<<<
@@ -7726,7 +8037,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
   (void)(printf(((char const *)"\n    Depth: %d\n"), __pyx_v_depth));
 
-  /* "board.pyx":563
+  /* "board.pyx":582
  * 
  *         printf("\n    Depth: %d\n", depth)
  *         printf("    Nodes: %d\n\n", nodes)             # <<<<<<<<<<<<<<
@@ -7735,7 +8046,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
  */
   (void)(printf(((char const *)"    Nodes: %d\n\n"), __pyx_v_nodes));
 
-  /* "board.pyx":565
+  /* "board.pyx":584
  *         printf("    Nodes: %d\n\n", nodes)
  * 
  *         return nodes             # <<<<<<<<<<<<<<
@@ -7745,7 +8056,7 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
   __pyx_r = __pyx_v_nodes;
   goto __pyx_L0;
 
-  /* "board.pyx":542
+  /* "board.pyx":561
  *         return nodes
  * 
  *     cpdef long perft_test(self, int depth):             # <<<<<<<<<<<<<<
@@ -7769,8 +8080,8 @@ static long __pyx_f_5board_5Board_perft_test(struct __pyx_obj_5board_Board *__py
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_19perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_19perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth) {
+static PyObject *__pyx_pw_5board_5Board_21perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_21perft_test(PyObject *__pyx_v_self, PyObject *__pyx_arg_depth) {
   int __pyx_v_depth;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -7779,7 +8090,7 @@ static PyObject *__pyx_pw_5board_5Board_19perft_test(PyObject *__pyx_v_self, PyO
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("perft_test (wrapper)", 0);
   assert(__pyx_arg_depth); {
-    __pyx_v_depth = __Pyx_PyInt_As_int(__pyx_arg_depth); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 542, __pyx_L3_error)
+    __pyx_v_depth = __Pyx_PyInt_As_int(__pyx_arg_depth); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 561, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7787,14 +8098,14 @@ static PyObject *__pyx_pw_5board_5Board_19perft_test(PyObject *__pyx_v_self, PyO
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5board_5Board_18perft_test(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_depth));
+  __pyx_r = __pyx_pf_5board_5Board_20perft_test(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_depth));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_18perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth) {
+static PyObject *__pyx_pf_5board_5Board_20perft_test(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_depth) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7803,7 +8114,7 @@ static PyObject *__pyx_pf_5board_5Board_18perft_test(struct __pyx_obj_5board_Boa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("perft_test", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_5board_5Board_perft_test(__pyx_v_self, __pyx_v_depth, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_f_5board_5Board_perft_test(__pyx_v_self, __pyx_v_depth, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 561, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7820,7 +8131,7 @@ static PyObject *__pyx_pf_5board_5Board_18perft_test(struct __pyx_obj_5board_Boa
   return __pyx_r;
 }
 
-/* "board.pyx":567
+/* "board.pyx":586
  *         return nodes
  * 
  *     cpdef int parse_move(self, char *move_str):             # <<<<<<<<<<<<<<
@@ -7828,7 +8139,7 @@ static PyObject *__pyx_pf_5board_5Board_18perft_test(struct __pyx_obj_5board_Boa
  * 
  */
 
-static PyObject *__pyx_pw_5board_5Board_21parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_23parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str); /*proto*/
 static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str, int __pyx_skip_dispatch) {
   struct __pyx_obj_4move_Moves *__pyx_v_move_list = 0;
   int __pyx_v_source_square;
@@ -7861,10 +8172,10 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_parse_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 567, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_parse_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 586, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_21parse_move)) {
-        __pyx_t_3 = __Pyx_PyBytes_FromString(__pyx_v_move_str); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 567, __pyx_L1_error)
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_23parse_move)) {
+        __pyx_t_3 = __Pyx_PyBytes_FromString(__pyx_v_move_str); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 586, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -7880,10 +8191,10 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 567, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 586, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 567, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 586, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_6;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7902,20 +8213,20 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
     #endif
   }
 
-  /* "board.pyx":568
+  /* "board.pyx":587
  * 
  *     cpdef int parse_move(self, char *move_str):
  *         cdef Moves move_list = self.generate_moves()             # <<<<<<<<<<<<<<
  * 
  *         cdef int source_square = (move_str[0] - <int>'a') + (8 - (move_str[1] - <int>'0')) * 8
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 568, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_5board_Board *)__pyx_v_self->__pyx_vtab)->generate_moves(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 587, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 568, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 587, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "board.pyx":570
+  /* "board.pyx":589
  *         cdef Moves move_list = self.generate_moves()
  * 
  *         cdef int source_square = (move_str[0] - <int>'a') + (8 - (move_str[1] - <int>'0')) * 8             # <<<<<<<<<<<<<<
@@ -7924,7 +8235,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
   __pyx_v_source_square = (((__pyx_v_move_str[0]) - ((int)'a')) + ((8 - ((__pyx_v_move_str[1]) - ((int)'0'))) * 8));
 
-  /* "board.pyx":571
+  /* "board.pyx":590
  * 
  *         cdef int source_square = (move_str[0] - <int>'a') + (8 - (move_str[1] - <int>'0')) * 8
  *         cdef int target_square = (move_str[2] - <int>'a') + (8 - (move_str[3] - <int>'0')) * 8             # <<<<<<<<<<<<<<
@@ -7933,7 +8244,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
   __pyx_v_target_square = (((__pyx_v_move_str[2]) - ((int)'a')) + ((8 - ((__pyx_v_move_str[3]) - ((int)'0'))) * 8));
 
-  /* "board.pyx":572
+  /* "board.pyx":591
  *         cdef int source_square = (move_str[0] - <int>'a') + (8 - (move_str[1] - <int>'0')) * 8
  *         cdef int target_square = (move_str[2] - <int>'a') + (8 - (move_str[3] - <int>'0')) * 8
  *         cdef int promoted_piece = 0             # <<<<<<<<<<<<<<
@@ -7942,7 +8253,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
   __pyx_v_promoted_piece = 0;
 
-  /* "board.pyx":575
+  /* "board.pyx":594
  * 
  *         cdef int move_count, move
  *         for move_count in range(move_list.count):             # <<<<<<<<<<<<<<
@@ -7954,7 +8265,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_move_count = __pyx_t_8;
 
-    /* "board.pyx":576
+    /* "board.pyx":595
  *         cdef int move_count, move
  *         for move_count in range(move_list.count):
  *             move = move_list.moves[move_count]             # <<<<<<<<<<<<<<
@@ -7963,34 +8274,34 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
     __pyx_v_move = (__pyx_v_move_list->moves[__pyx_v_move_count]);
 
-    /* "board.pyx":578
+    /* "board.pyx":597
  *             move = move_list.moves[move_count]
  * 
  *             if source_square == get_move_source(move) and target_square == get_move_target(move):             # <<<<<<<<<<<<<<
  * 
  *                 promoted_piece = get_move_promoted(move)
  */
-    __pyx_t_10 = ((__pyx_v_source_square == __pyx_f_4move_get_move_source(__pyx_v_move)) != 0);
+    __pyx_t_10 = ((__pyx_v_source_square == __pyx_f_4move_get_move_source(__pyx_v_move, 0)) != 0);
     if (__pyx_t_10) {
     } else {
       __pyx_t_9 = __pyx_t_10;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_10 = ((__pyx_v_target_square == __pyx_f_4move_get_move_target(__pyx_v_move)) != 0);
+    __pyx_t_10 = ((__pyx_v_target_square == __pyx_f_4move_get_move_target(__pyx_v_move, 0)) != 0);
     __pyx_t_9 = __pyx_t_10;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_9) {
 
-      /* "board.pyx":580
+      /* "board.pyx":599
  *             if source_square == get_move_source(move) and target_square == get_move_target(move):
  * 
  *                 promoted_piece = get_move_promoted(move)             # <<<<<<<<<<<<<<
  * 
  *                 if promoted_piece:
  */
-      __pyx_v_promoted_piece = __pyx_f_4move_get_move_promoted(__pyx_v_move);
+      __pyx_v_promoted_piece = __pyx_f_4move_get_move_promoted(__pyx_v_move, 0);
 
-      /* "board.pyx":582
+      /* "board.pyx":601
  *                 promoted_piece = get_move_promoted(move)
  * 
  *                 if promoted_piece:             # <<<<<<<<<<<<<<
@@ -8000,7 +8311,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
       __pyx_t_9 = (__pyx_v_promoted_piece != 0);
       if (__pyx_t_9) {
 
-        /* "board.pyx":583
+        /* "board.pyx":602
  * 
  *                 if promoted_piece:
  *                     if (promoted_piece == "Q" or promoted_piece == "q") and move_str[4] == 'q':             # <<<<<<<<<<<<<<
@@ -8026,7 +8337,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
         __pyx_L10_bool_binop_done:;
         if (__pyx_t_9) {
 
-          /* "board.pyx":584
+          /* "board.pyx":603
  *                 if promoted_piece:
  *                     if (promoted_piece == "Q" or promoted_piece == "q") and move_str[4] == 'q':
  *                         return move             # <<<<<<<<<<<<<<
@@ -8036,7 +8347,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
           __pyx_r = __pyx_v_move;
           goto __pyx_L0;
 
-          /* "board.pyx":583
+          /* "board.pyx":602
  * 
  *                 if promoted_piece:
  *                     if (promoted_piece == "Q" or promoted_piece == "q") and move_str[4] == 'q':             # <<<<<<<<<<<<<<
@@ -8045,7 +8356,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
         }
 
-        /* "board.pyx":586
+        /* "board.pyx":605
  *                         return move
  * 
  *                     elif (promoted_piece == "R" or promoted_piece == "r") and move_str[4] == 'r':             # <<<<<<<<<<<<<<
@@ -8071,7 +8382,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
         __pyx_L12_bool_binop_done:;
         if (__pyx_t_9) {
 
-          /* "board.pyx":587
+          /* "board.pyx":606
  * 
  *                     elif (promoted_piece == "R" or promoted_piece == "r") and move_str[4] == 'r':
  *                         return move             # <<<<<<<<<<<<<<
@@ -8081,7 +8392,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
           __pyx_r = __pyx_v_move;
           goto __pyx_L0;
 
-          /* "board.pyx":586
+          /* "board.pyx":605
  *                         return move
  * 
  *                     elif (promoted_piece == "R" or promoted_piece == "r") and move_str[4] == 'r':             # <<<<<<<<<<<<<<
@@ -8090,7 +8401,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
         }
 
-        /* "board.pyx":589
+        /* "board.pyx":608
  *                         return move
  * 
  *                     elif (promoted_piece == "B" or promoted_piece == "b") and move_str[4] == 'b':             # <<<<<<<<<<<<<<
@@ -8116,7 +8427,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
         __pyx_L14_bool_binop_done:;
         if (__pyx_t_9) {
 
-          /* "board.pyx":590
+          /* "board.pyx":609
  * 
  *                     elif (promoted_piece == "B" or promoted_piece == "b") and move_str[4] == 'b':
  *                         return move             # <<<<<<<<<<<<<<
@@ -8126,7 +8437,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
           __pyx_r = __pyx_v_move;
           goto __pyx_L0;
 
-          /* "board.pyx":589
+          /* "board.pyx":608
  *                         return move
  * 
  *                     elif (promoted_piece == "B" or promoted_piece == "b") and move_str[4] == 'b':             # <<<<<<<<<<<<<<
@@ -8135,7 +8446,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
         }
 
-        /* "board.pyx":592
+        /* "board.pyx":611
  *                         return move
  * 
  *                     elif (promoted_piece == "N" or promoted_piece == "n") and move_str[4] == 'n':             # <<<<<<<<<<<<<<
@@ -8161,7 +8472,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
         __pyx_L16_bool_binop_done:;
         if (__pyx_t_9) {
 
-          /* "board.pyx":593
+          /* "board.pyx":612
  * 
  *                     elif (promoted_piece == "N" or promoted_piece == "n") and move_str[4] == 'n':
  *                         return move             # <<<<<<<<<<<<<<
@@ -8171,7 +8482,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
           __pyx_r = __pyx_v_move;
           goto __pyx_L0;
 
-          /* "board.pyx":592
+          /* "board.pyx":611
  *                         return move
  * 
  *                     elif (promoted_piece == "N" or promoted_piece == "n") and move_str[4] == 'n':             # <<<<<<<<<<<<<<
@@ -8180,7 +8491,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
         }
 
-        /* "board.pyx":595
+        /* "board.pyx":614
  *                         return move
  * 
  *                     continue             # <<<<<<<<<<<<<<
@@ -8189,7 +8500,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
         goto __pyx_L3_continue;
 
-        /* "board.pyx":582
+        /* "board.pyx":601
  *                 promoted_piece = get_move_promoted(move)
  * 
  *                 if promoted_piece:             # <<<<<<<<<<<<<<
@@ -8198,7 +8509,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
  */
       }
 
-      /* "board.pyx":597
+      /* "board.pyx":616
  *                     continue
  * 
  *                 return move             # <<<<<<<<<<<<<<
@@ -8208,7 +8519,7 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
       __pyx_r = __pyx_v_move;
       goto __pyx_L0;
 
-      /* "board.pyx":578
+      /* "board.pyx":597
  *             move = move_list.moves[move_count]
  * 
  *             if source_square == get_move_source(move) and target_square == get_move_target(move):             # <<<<<<<<<<<<<<
@@ -8219,17 +8530,17 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
     __pyx_L3_continue:;
   }
 
-  /* "board.pyx":599
+  /* "board.pyx":618
  *                 return move
  * 
  *         return 0             # <<<<<<<<<<<<<<
  * 
- * # cdef Board chess = Board()
+ *     cpdef int get_piece(self, int square):
  */
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "board.pyx":567
+  /* "board.pyx":586
  *         return nodes
  * 
  *     cpdef int parse_move(self, char *move_str):             # <<<<<<<<<<<<<<
@@ -8253,8 +8564,8 @@ static int __pyx_f_5board_5Board_parse_move(struct __pyx_obj_5board_Board *__pyx
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_21parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_21parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str) {
+static PyObject *__pyx_pw_5board_5Board_23parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_23parse_move(PyObject *__pyx_v_self, PyObject *__pyx_arg_move_str) {
   char *__pyx_v_move_str;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -8263,7 +8574,7 @@ static PyObject *__pyx_pw_5board_5Board_21parse_move(PyObject *__pyx_v_self, PyO
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("parse_move (wrapper)", 0);
   assert(__pyx_arg_move_str); {
-    __pyx_v_move_str = __Pyx_PyObject_AsWritableString(__pyx_arg_move_str); if (unlikely((!__pyx_v_move_str) && PyErr_Occurred())) __PYX_ERR(0, 567, __pyx_L3_error)
+    __pyx_v_move_str = __Pyx_PyObject_AsWritableString(__pyx_arg_move_str); if (unlikely((!__pyx_v_move_str) && PyErr_Occurred())) __PYX_ERR(0, 586, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8271,14 +8582,14 @@ static PyObject *__pyx_pw_5board_5Board_21parse_move(PyObject *__pyx_v_self, PyO
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5board_5Board_20parse_move(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((char *)__pyx_v_move_str));
+  __pyx_r = __pyx_pf_5board_5Board_22parse_move(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((char *)__pyx_v_move_str));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_20parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str) {
+static PyObject *__pyx_pf_5board_5Board_22parse_move(struct __pyx_obj_5board_Board *__pyx_v_self, char *__pyx_v_move_str) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -8287,7 +8598,7 @@ static PyObject *__pyx_pf_5board_5Board_20parse_move(struct __pyx_obj_5board_Boa
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("parse_move", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5board_5Board_parse_move(__pyx_v_self, __pyx_v_move_str, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 567, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5board_5Board_parse_move(__pyx_v_self, __pyx_v_move_str, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 586, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8297,6 +8608,218 @@ static PyObject *__pyx_pf_5board_5Board_20parse_move(struct __pyx_obj_5board_Boa
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("board.Board.parse_move", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "board.pyx":620
+ *         return 0
+ * 
+ *     cpdef int get_piece(self, int square):             # <<<<<<<<<<<<<<
+ *         cdef int i
+ *         for i in range(k + 1):
+ */
+
+static PyObject *__pyx_pw_5board_5Board_25get_piece(PyObject *__pyx_v_self, PyObject *__pyx_arg_square); /*proto*/
+static int __pyx_f_5board_5Board_get_piece(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square, int __pyx_skip_dispatch) {
+  int __pyx_v_i;
+  __pyx_t_6helper_U64 __pyx_v_bitboard;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  long __pyx_t_7;
+  long __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_piece", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_piece); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 620, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5board_5Board_25get_piece)) {
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_square); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+          if (likely(__pyx_t_5)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+            __Pyx_INCREF(__pyx_t_5);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_4, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 620, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_r = __pyx_t_6;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
+
+  /* "board.pyx":622
+ *     cpdef int get_piece(self, int square):
+ *         cdef int i
+ *         for i in range(k + 1):             # <<<<<<<<<<<<<<
+ *             bitboard = self.bitboards[i]
+ *             if get_bit(bitboard, square):
+ */
+  __pyx_t_7 = (__pyx_e_5board_k + 1);
+  __pyx_t_8 = __pyx_t_7;
+  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_8; __pyx_t_6+=1) {
+    __pyx_v_i = __pyx_t_6;
+
+    /* "board.pyx":623
+ *         cdef int i
+ *         for i in range(k + 1):
+ *             bitboard = self.bitboards[i]             # <<<<<<<<<<<<<<
+ *             if get_bit(bitboard, square):
+ *                 return i
+ */
+    __pyx_v_bitboard = (__pyx_v_self->bitboards[__pyx_v_i]);
+
+    /* "board.pyx":624
+ *         for i in range(k + 1):
+ *             bitboard = self.bitboards[i]
+ *             if get_bit(bitboard, square):             # <<<<<<<<<<<<<<
+ *                 return i
+ *         return k + 1
+ */
+    __pyx_t_9 = (__pyx_f_6helper_get_bit(__pyx_v_bitboard, __pyx_v_square) != 0);
+    if (__pyx_t_9) {
+
+      /* "board.pyx":625
+ *             bitboard = self.bitboards[i]
+ *             if get_bit(bitboard, square):
+ *                 return i             # <<<<<<<<<<<<<<
+ *         return k + 1
+ * 
+ */
+      __pyx_r = __pyx_v_i;
+      goto __pyx_L0;
+
+      /* "board.pyx":624
+ *         for i in range(k + 1):
+ *             bitboard = self.bitboards[i]
+ *             if get_bit(bitboard, square):             # <<<<<<<<<<<<<<
+ *                 return i
+ *         return k + 1
+ */
+    }
+  }
+
+  /* "board.pyx":626
+ *             if get_bit(bitboard, square):
+ *                 return i
+ *         return k + 1             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = (__pyx_e_5board_k + 1);
+  goto __pyx_L0;
+
+  /* "board.pyx":620
+ *         return 0
+ * 
+ *     cpdef int get_piece(self, int square):             # <<<<<<<<<<<<<<
+ *         cdef int i
+ *         for i in range(k + 1):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_WriteUnraisable("board.Board.get_piece", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5board_5Board_25get_piece(PyObject *__pyx_v_self, PyObject *__pyx_arg_square); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_25get_piece(PyObject *__pyx_v_self, PyObject *__pyx_arg_square) {
+  int __pyx_v_square;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_piece (wrapper)", 0);
+  assert(__pyx_arg_square); {
+    __pyx_v_square = __Pyx_PyInt_As_int(__pyx_arg_square); if (unlikely((__pyx_v_square == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 620, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("board.Board.get_piece", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5board_5Board_24get_piece(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((int)__pyx_v_square));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5board_5Board_24get_piece(struct __pyx_obj_5board_Board *__pyx_v_self, int __pyx_v_square) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_piece", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_5board_5Board_get_piece(__pyx_v_self, __pyx_v_square, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("board.Board.get_piece", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8705,19 +9228,19 @@ static int __pyx_pf_5board_5Board_8castling_2__set__(struct __pyx_obj_5board_Boa
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_23__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_23__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5board_5Board_27__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_27__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5board_5Board_22__reduce_cython__(((struct __pyx_obj_5board_Board *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5board_5Board_26__reduce_cython__(((struct __pyx_obj_5board_Board *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_22__reduce_cython__(struct __pyx_obj_5board_Board *__pyx_v_self) {
+static PyObject *__pyx_pf_5board_5Board_26__reduce_cython__(struct __pyx_obj_5board_Board *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -8967,19 +9490,19 @@ static PyObject *__pyx_pf_5board_5Board_22__reduce_cython__(struct __pyx_obj_5bo
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5board_5Board_25__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5board_5Board_25__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5board_5Board_29__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5board_5Board_29__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5board_5Board_24__setstate_cython__(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_5board_5Board_28__setstate_cython__(((struct __pyx_obj_5board_Board *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5board_5Board_24__setstate_cython__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5board_5Board_28__setstate_cython__(struct __pyx_obj_5board_Board *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -10697,14 +11220,16 @@ static PyMethodDef __pyx_methods_5board_Board[] = {
   {"parse_fen", (PyCFunction)__pyx_pw_5board_5Board_5parse_fen, METH_O, 0},
   {"print_attacked_squares", (PyCFunction)__pyx_pw_5board_5Board_7print_attacked_squares, METH_O, 0},
   {"generate_moves", (PyCFunction)__pyx_pw_5board_5Board_9generate_moves, METH_NOARGS, 0},
-  {"copy_board", (PyCFunction)__pyx_pw_5board_5Board_11copy_board, METH_NOARGS, 0},
-  {"take_back", (PyCFunction)__pyx_pw_5board_5Board_13take_back, METH_O, 0},
-  {"make_move", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5board_5Board_15make_move, METH_VARARGS|METH_KEYWORDS, 0},
-  {"perft", (PyCFunction)__pyx_pw_5board_5Board_17perft, METH_O, 0},
-  {"perft_test", (PyCFunction)__pyx_pw_5board_5Board_19perft_test, METH_O, 0},
-  {"parse_move", (PyCFunction)__pyx_pw_5board_5Board_21parse_move, METH_O, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5board_5Board_23__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5board_5Board_25__setstate_cython__, METH_O, 0},
+  {"generate_moves_square", (PyCFunction)__pyx_pw_5board_5Board_11generate_moves_square, METH_O, 0},
+  {"copy_board", (PyCFunction)__pyx_pw_5board_5Board_13copy_board, METH_NOARGS, 0},
+  {"take_back", (PyCFunction)__pyx_pw_5board_5Board_15take_back, METH_O, 0},
+  {"make_move", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5board_5Board_17make_move, METH_VARARGS|METH_KEYWORDS, 0},
+  {"perft", (PyCFunction)__pyx_pw_5board_5Board_19perft, METH_O, 0},
+  {"perft_test", (PyCFunction)__pyx_pw_5board_5Board_21perft_test, METH_O, 0},
+  {"parse_move", (PyCFunction)__pyx_pw_5board_5Board_23parse_move, METH_O, 0},
+  {"get_piece", (PyCFunction)__pyx_pw_5board_5Board_25get_piece, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5board_5Board_27__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5board_5Board_29__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -10857,6 +11382,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_enpassant, __pyx_k_enpassant, sizeof(__pyx_k_enpassant), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_generate_moves, __pyx_k_generate_moves, sizeof(__pyx_k_generate_moves), 0, 0, 1, 1},
+  {&__pyx_n_s_generate_moves_square, __pyx_k_generate_moves_square, sizeof(__pyx_k_generate_moves_square), 0, 0, 1, 1},
+  {&__pyx_n_s_get_piece, __pyx_k_get_piece, sizeof(__pyx_k_get_piece), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
@@ -11030,12 +11557,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtabptr_5board_Board = &__pyx_vtable_5board_Board;
   __pyx_vtable_5board_Board.is_square_attacked = (int (*)(struct __pyx_obj_5board_Board *, int, int))__pyx_f_5board_5Board_is_square_attacked;
   __pyx_vtable_5board_Board.generate_moves = (PyObject *(*)(struct __pyx_obj_5board_Board *, int __pyx_skip_dispatch))__pyx_f_5board_5Board_generate_moves;
+  __pyx_vtable_5board_Board.generate_moves_square = (PyObject *(*)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch))__pyx_f_5board_5Board_generate_moves_square;
   __pyx_vtable_5board_Board.copy_board = (__pyx_t_5board_BoardCopy (*)(struct __pyx_obj_5board_Board *, int __pyx_skip_dispatch))__pyx_f_5board_5Board_copy_board;
   __pyx_vtable_5board_Board.take_back = (PyObject *(*)(struct __pyx_obj_5board_Board *, __pyx_t_5board_BoardCopy, int __pyx_skip_dispatch))__pyx_f_5board_5Board_take_back;
   __pyx_vtable_5board_Board.make_move = (int (*)(struct __pyx_obj_5board_Board *, int, int, int __pyx_skip_dispatch))__pyx_f_5board_5Board_make_move;
   __pyx_vtable_5board_Board.perft = (long (*)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch))__pyx_f_5board_5Board_perft;
   __pyx_vtable_5board_Board.perft_test = (long (*)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch))__pyx_f_5board_5Board_perft_test;
   __pyx_vtable_5board_Board.parse_move = (int (*)(struct __pyx_obj_5board_Board *, char *, int __pyx_skip_dispatch))__pyx_f_5board_5Board_parse_move;
+  __pyx_vtable_5board_Board.get_piece = (int (*)(struct __pyx_obj_5board_Board *, int, int __pyx_skip_dispatch))__pyx_f_5board_5Board_get_piece;
   if (PyType_Ready(&__pyx_type_5board_Board) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5board_Board.tp_print = 0;
@@ -11150,15 +11679,15 @@ static int __Pyx_modinit_function_import_code(void) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("move"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "encode_move", (void (**)(void))&__pyx_f_4move_encode_move, "int (int, int, int, int, int, int, int, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_source", (void (**)(void))&__pyx_f_4move_get_move_source, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_target", (void (**)(void))&__pyx_f_4move_get_move_target, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_piece", (void (**)(void))&__pyx_f_4move_get_move_piece, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_promoted", (void (**)(void))&__pyx_f_4move_get_move_promoted, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_capture", (void (**)(void))&__pyx_f_4move_get_move_capture, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_double", (void (**)(void))&__pyx_f_4move_get_move_double, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_enpassant", (void (**)(void))&__pyx_f_4move_get_move_enpassant, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_castling", (void (**)(void))&__pyx_f_4move_get_move_castling, "int (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "encode_move", (void (**)(void))&__pyx_f_4move_encode_move, "int (int, int, int, int, int, int, int, int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_source", (void (**)(void))&__pyx_f_4move_get_move_source, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_target", (void (**)(void))&__pyx_f_4move_get_move_target, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_piece", (void (**)(void))&__pyx_f_4move_get_move_piece, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_promoted", (void (**)(void))&__pyx_f_4move_get_move_promoted, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_capture", (void (**)(void))&__pyx_f_4move_get_move_capture, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_double", (void (**)(void))&__pyx_f_4move_get_move_double, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_enpassant", (void (**)(void))&__pyx_f_4move_get_move_enpassant, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "get_move_castling", (void (**)(void))&__pyx_f_4move_get_move_castling, "int (int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ImportFunction(__pyx_t_1, "print_move", (void (**)(void))&__pyx_f_4move_print_move, "PyObject *(int, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
@@ -11927,6 +12456,48 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
+}
+
+/* ExtTypeTest */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(__Pyx_TypeCheck(obj, type)))
+        return 1;
+    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
+                 Py_TYPE(obj)->tp_name, type->tp_name);
+    return 0;
+}
+
 /* PyErrFetchRestore */
 #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
@@ -11991,35 +12562,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
     if (nogil)
         PyGILState_Release(state);
 #endif
-}
-
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
 }
 
 /* RaiseDoubleKeywords */
@@ -12136,19 +12678,6 @@ invalid_keyword:
     #endif
 bad:
     return -1;
-}
-
-/* ExtTypeTest */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (likely(__Pyx_TypeCheck(obj, type)))
-        return 1;
-    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
-                 Py_TYPE(obj)->tp_name, type->tp_name);
-    return 0;
 }
 
 /* PyErrExceptionMatches */

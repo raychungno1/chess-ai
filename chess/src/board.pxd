@@ -32,10 +32,12 @@ cdef class Board:
 
     cdef int is_square_attacked(self, int square, int side)
     cpdef generate_moves(self)
+    cpdef generate_moves_square(self, int square)
     cpdef BoardCopy copy_board(self)
     cpdef take_back(self, BoardCopy copy)
     cpdef int make_move(self, int move, int move_flag)
     cpdef long perft(self, int depth)
     cpdef long perft_test(self, int depth)
     cpdef int parse_move(self, char *move_str)
+    cpdef int get_piece(self, int square)
     

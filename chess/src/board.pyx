@@ -400,6 +400,25 @@ cdef class Board:
 
         return move_list
 
+    cpdef object generate_moves_square(self, int square):
+        cdef Moves move_list = self.generate_moves()
+        cdef Moves move_list_square = Moves()
+        move_list_square.count = 0
+
+        cdef BoardCopy copy
+        cdef int move_count, move
+        for move_count in range(move_list.count):
+            copy = self.copy_board()
+            move = move_list.moves[move_count]
+
+            if get_move_source(move) == square:
+                if self.make_move(move, all_moves):
+                    move_list_square.moves[move_list_square.count] = move
+                    move_list_square.count += 1
+                    self.take_back(copy)
+                
+        return move_list_square
+
     cpdef BoardCopy copy_board(self):
         cdef BoardCopy copy
         memcpy(copy.bitboards, self.bitboards, 96)
@@ -595,8 +614,17 @@ cdef class Board:
                     continue
 
                 return move
-                
+
         return 0
+
+    cpdef int get_piece(self, int square):
+        cdef int i
+        for i in range(k + 1):
+            bitboard = self.bitboards[i]
+            if get_bit(bitboard, square):
+                return i
+        return k + 1
+
 
 # cdef Board chess = Board()
 # chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")

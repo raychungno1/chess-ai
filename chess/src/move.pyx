@@ -2,7 +2,7 @@ from libc.stdio cimport printf
 from const cimport square_to_coord, ascii_pieces
 
 
-cdef int encode_move(int source, int target, int piece, int promoted, int capture, int double_pawn, int enpassant, int castling):
+cpdef int encode_move(int source, int target, int piece, int promoted, int capture, int double_pawn, int enpassant, int castling):
     return (
         source |
         (target << 6) |
@@ -14,28 +14,28 @@ cdef int encode_move(int source, int target, int piece, int promoted, int captur
         (castling << 23)
     )
 
-cdef int get_move_source(int move):
+cpdef int get_move_source(int move):
     return move & 0x3f
 
-cdef int get_move_target(int move):
+cpdef int get_move_target(int move):
     return (move & 0xfc0) >> 6
 
-cdef int get_move_piece(int move):
+cpdef int get_move_piece(int move):
     return (move & 0xf000) >> 12
 
-cdef int get_move_promoted(int move):
+cpdef int get_move_promoted(int move):
     return (move & 0xf0000) >> 16
 
-cdef int get_move_capture(int move):
+cpdef int get_move_capture(int move):
     return move & 0x100000
 
-cdef int get_move_double(int move):
+cpdef int get_move_double(int move):
     return move & 0x200000
 
-cdef int get_move_enpassant(int move):
+cpdef int get_move_enpassant(int move):
     return move & 0x400000
 
-cdef int get_move_castling(int move):
+cpdef int get_move_castling(int move):
     return move & 0x800000
 
 promoted_pieces[:] = [
