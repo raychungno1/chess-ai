@@ -1,5 +1,5 @@
 from helper cimport U64
-from move import Moves
+from move cimport Moves
 
 cdef enum:
     a8, b8, c8, d8, e8, f8, g8, h8,

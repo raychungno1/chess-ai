@@ -2,10 +2,9 @@ import time
 from board import Board
 from move import Moves, print_move
 
-chess = Board()
-chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
-chess.print_board()
-print(chess.get_piece(26))
+# chess = Board()
+# chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
+# chess.print_board()
 
 # m = chess.generate_moves_square(62)
 # m.print_move_list()

@@ -4,6 +4,7 @@ from helper cimport U64, print_bitboard, get_bit, set_bit, pop_bit, get_ls1b_ind
 from attack cimport pawn_attacks, knight_attacks, king_attacks, get_bishop_attacks, get_rook_attacks, get_queen_attacks
 from const cimport square_to_coord, ascii_pieces, char_to_piece, castling_rights, empty_board, start_position, tricky_position, killer_position, cmk_position 
 from move cimport encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant, print_move, Moves, all_moves, only_captures, promoted_pieces
+from eval cimport evaluate
 
 cdef class Board:
     def __init__(self):
@@ -625,10 +626,10 @@ cdef class Board:
                 return i
         return k + 1
 
-
-# cdef Board chess = Board()
-# chess.parse_fen(b"r3k2r/p1ppRpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1 ")
-# chess.print_board()
+chess = Board()
+chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
+chess.print_board()
+printf("Score: %i\n", evaluate(chess))
 
 # cdef Moves move_list = chess.generate_moves()
 

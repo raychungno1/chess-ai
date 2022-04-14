@@ -7,7 +7,8 @@ setup(
         "src/helper.pyx",
         "src/attack.pyx",
         "src/const.pyx",
-        "src/move.pyx"
+        "src/move.pyx",
+        "src/eval.pyx"
     ]),
     extra_compile_args=["-Ofast"]
 )
