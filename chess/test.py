@@ -1,10 +1,12 @@
 import time
 from board import Board
 from move import Moves, print_move
+from search import search_position
 
-# chess = Board()
-# chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
-# chess.print_board()
+chess = Board()
+chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
+chess.print_board()
+print_move(search_position(chess, 5))
 
 # m = chess.generate_moves_square(62)
 # m.print_move_list()

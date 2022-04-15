@@ -125,7 +125,7 @@ cdef class Board:
         # General occupancies
         self.occupancies[2] = self.occupancies[0] | self.occupancies[1]
 
-    cdef int is_square_attacked(self, int square, int side):
+    cpdef int is_square_attacked(self, int square, int side):
         if side == white and pawn_attacks[black][square] & self.bitboards[P]:
             return 1
 
@@ -532,7 +532,7 @@ cdef class Board:
 
         else:
             if get_move_capture(move):
-                self.make_move(move, all_moves)
+                return self.make_move(move, all_moves)
 
             else:
                 return 0
@@ -626,10 +626,12 @@ cdef class Board:
                 return i
         return k + 1
 
-chess = Board()
-chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
-chess.print_board()
-printf("Score: %i\n", evaluate(chess))
+# from search cimport search_position
+# chess = Board()
+# chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
+# chess.print_board()
+# search_position(chess, 1)
+# printf("Score: %i\n", evaluate(chess))
 
 # cdef Moves move_list = chess.generate_moves()
 

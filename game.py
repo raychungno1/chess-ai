@@ -1,11 +1,11 @@
 import os
-from numpy import source, square
 import pygame
 from game import Const, draw_board, get_board_square, square_to_coord
 import sys
 sys.path.append('./chess')
 from board import Board
 from move import Moves, print_move
+from search import search_position
 
 # from ai import AI
 import time
@@ -27,6 +27,7 @@ def main():
     target_square = None
     moves = Moves()
     moves.count = 0
+    prev_move = 0
 
     while True:
         clock.tick(Const.FPS)
@@ -50,21 +51,29 @@ def main():
                         move = square_to_coord[square_clicked] + square_to_coord[target_square] + "q"
                         move = board.parse_move(move.encode("ascii"))
                         if move:
+
                             print_move(move)
-                            board.make_move(move, 0)
-                            board.print_board()
-                    target_square = None
-                    square_clicked = None
+                            if board.make_move(move, 0):
+                                prev_move = move
+                                board.print_board()
+                                move = search_position(board, 1)
+                                if move:
+                                    print_move(move)
+                                    board.make_move(move, 0)
+                                    prev_move = move
+
                     moves = Moves()
                     moves.count = 0
+                    target_square = None
+                    square_clicked = None
 
         mx, my = pygame.mouse.get_pos()
 
-        draw_window(board, square_clicked, mx, my, moves)
+        draw_window(board, square_clicked, mx, my, moves, prev_move)
 
 
-def draw_window(board, square_clicked, mx, my, moves):
-    draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves)
+def draw_window(board, square_clicked, mx, my, moves, prev_move):
+    draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move)
     pygame.display.update()
 
 

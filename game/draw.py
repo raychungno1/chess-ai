@@ -9,7 +9,7 @@ pygame.font.init()
 FONT = pygame.font.SysFont('ariel', 40)
 
 
-def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves):
+def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move):
     WIN.fill(Const.BG)
 
     for row in range(8):
@@ -28,6 +28,11 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves):
         target = get_move_target(move)
         draw_square(WIN, source // 8, source % 8, Const.HIGHLIGHT_ORIGIN)
         draw_square(WIN, target // 8, target % 8, Const.HIGHLIGHT_MOVE)
+
+    source = get_move_source(prev_move)
+    target = get_move_target(prev_move)
+    draw_square(WIN, source // 8, source % 8, Const.HIGHLIGHT_ORIGIN)
+    draw_square(WIN, target // 8, target % 8, Const.HIGHLIGHT_MOVE)
 
     for row in range(8):
         for col in range(8):

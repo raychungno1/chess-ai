@@ -30,7 +30,7 @@ cdef class Board:
     cdef public U64 occupancies[3]
     cdef public int side, enpassant, castling
 
-    cdef int is_square_attacked(self, int square, int side)
+    cpdef int is_square_attacked(self, int square, int side)
     cpdef generate_moves(self)
     cpdef generate_moves_square(self, int square)
     cpdef BoardCopy copy_board(self)
