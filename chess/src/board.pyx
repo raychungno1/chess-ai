@@ -626,14 +626,26 @@ cdef class Board:
                 return i
         return k + 1
 
-# from search cimport search_position
+# from search cimport search_position, score_move, print_move_scores, sort_moves, killer_moves, history_moves
 # chess = Board()
-# chess.parse_fen(b"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ")
+# chess.parse_fen(b"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ")
+# cdef Moves move_list_original = chess.generate_moves()
+# killer_moves[0][0] = move_list_original.moves[3]
+# killer_moves[1][0] = move_list_original.moves[2]
+# history_moves[get_move_piece(move_list_original.moves[0])][get_move_target(move_list_original.moves[0])] = 35
+# cdef Moves move_list = sort_moves(chess, 0)
+# print_move_scores(move_list, chess)
 # chess.print_board()
+# cdef int i, move
+# for i in range(move_list.count):
+#     move = move_list.moves[i]
+#     printf("     move: ")
+#     print_move(move)
+#     printf("score: %d\n", score_move(move, chess))
+
 # search_position(chess, 1)
 # printf("Score: %i\n", evaluate(chess))
 
-# cdef Moves move_list = chess.generate_moves()
 
 # cdef int i, move
 # cdef BoardCopy copy

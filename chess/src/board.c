@@ -1144,6 +1144,7 @@ struct __pyx_obj_5board_Board {
 
 struct __pyx_vtabstruct_4move_Moves {
   PyObject *(*add_move)(struct __pyx_obj_4move_Moves *, int, int __pyx_skip_dispatch);
+  PyObject *(*swap_move)(struct __pyx_obj_4move_Moves *, int, int);
   PyObject *(*print_move_list)(struct __pyx_obj_4move_Moves *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_4move_Moves *__pyx_vtabptr_4move_Moves;
@@ -8949,7 +8950,7 @@ static int __pyx_f_5board_5Board_get_piece(struct __pyx_obj_5board_Board *__pyx_
  *                 return i
  *         return k + 1             # <<<<<<<<<<<<<<
  * 
- * # from search cimport search_position
+ * # from search cimport search_position, score_move, print_move_scores, sort_moves, killer_moves, history_moves
  */
   __pyx_r = (__pyx_e_5board_k + 1);
   goto __pyx_L0;

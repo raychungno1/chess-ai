@@ -949,8 +949,8 @@ struct __pyx_obj_4move_Moves {
 
 
 
-/* "move.pyx":50
- *     printf("%s%s%c\n", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
+/* "move.pyx":49
+ *     printf("%s%s%c", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
  * 
  * cdef class Moves:             # <<<<<<<<<<<<<<
  *     def __init__(self):
@@ -959,6 +959,7 @@ struct __pyx_obj_4move_Moves {
 
 struct __pyx_vtabstruct_4move_Moves {
   PyObject *(*add_move)(struct __pyx_obj_4move_Moves *, int, int __pyx_skip_dispatch);
+  PyObject *(*swap_move)(struct __pyx_obj_4move_Moves *, int, int);
   PyObject *(*print_move_list)(struct __pyx_obj_4move_Moves *, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_4move_Moves *__pyx_vtabptr_4move_Moves;
@@ -1366,6 +1367,7 @@ static int __Pyx_ImportVoidPtr(PyObject *module, const char *name, void **p, con
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 static PyObject *__pyx_f_4move_5Moves_add_move(struct __pyx_obj_4move_Moves *__pyx_v_self, int __pyx_v_move, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_4move_5Moves_swap_move(struct __pyx_obj_4move_Moves *__pyx_v_self, int __pyx_v_i, int __pyx_v_j); /* proto*/
 static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Moves *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'libc.string' */
@@ -2453,11 +2455,11 @@ static PyObject *__pyx_pf_4move_16get_move_castling(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "move.pyx":47
+/* "move.pyx":46
+ * ]
  * 
- * # for UCI purposes
  * cpdef print_move(int move):             # <<<<<<<<<<<<<<
- *     printf("%s%s%c\n", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
+ *     printf("%s%s%c", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
  * 
  */
 
@@ -2467,20 +2469,20 @@ static PyObject *__pyx_f_4move_print_move(int __pyx_v_move, CYTHON_UNUSED int __
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_move", 0);
 
-  /* "move.pyx":48
- * # for UCI purposes
+  /* "move.pyx":47
+ * 
  * cpdef print_move(int move):
- *     printf("%s%s%c\n", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])             # <<<<<<<<<<<<<<
+ *     printf("%s%s%c", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])             # <<<<<<<<<<<<<<
  * 
  * cdef class Moves:
  */
-  (void)(printf(((char const *)"%s%s%c\n"), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_source(__pyx_v_move, 0)]), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_target(__pyx_v_move, 0)]), (__pyx_v_4move_promoted_pieces[__pyx_f_4move_get_move_promoted(__pyx_v_move, 0)])));
+  (void)(printf(((char const *)"%s%s%c"), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_source(__pyx_v_move, 0)]), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_target(__pyx_v_move, 0)]), (__pyx_v_4move_promoted_pieces[__pyx_f_4move_get_move_promoted(__pyx_v_move, 0)])));
 
-  /* "move.pyx":47
+  /* "move.pyx":46
+ * ]
  * 
- * # for UCI purposes
  * cpdef print_move(int move):             # <<<<<<<<<<<<<<
- *     printf("%s%s%c\n", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
+ *     printf("%s%s%c", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
  * 
  */
 
@@ -2502,7 +2504,7 @@ static PyObject *__pyx_pw_4move_19print_move(PyObject *__pyx_self, PyObject *__p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_move (wrapper)", 0);
   assert(__pyx_arg_move); {
-    __pyx_v_move = __Pyx_PyInt_As_int(__pyx_arg_move); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L3_error)
+    __pyx_v_move = __Pyx_PyInt_As_int(__pyx_arg_move); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -2526,7 +2528,7 @@ static PyObject *__pyx_pf_4move_18print_move(CYTHON_UNUSED PyObject *__pyx_self,
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("print_move", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4move_print_move(__pyx_v_move, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4move_print_move(__pyx_v_move, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2543,7 +2545,7 @@ static PyObject *__pyx_pf_4move_18print_move(CYTHON_UNUSED PyObject *__pyx_self,
   return __pyx_r;
 }
 
-/* "move.pyx":51
+/* "move.pyx":50
  * 
  * cdef class Moves:
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -2572,7 +2574,7 @@ static int __pyx_pf_4move_5Moves___init__(struct __pyx_obj_4move_Moves *__pyx_v_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "move.pyx":52
+  /* "move.pyx":51
  * cdef class Moves:
  *     def __init__(self):
  *         self.count = 0             # <<<<<<<<<<<<<<
@@ -2581,7 +2583,7 @@ static int __pyx_pf_4move_5Moves___init__(struct __pyx_obj_4move_Moves *__pyx_v_
  */
   __pyx_v_self->count = 0;
 
-  /* "move.pyx":51
+  /* "move.pyx":50
  * 
  * cdef class Moves:
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -2595,7 +2597,7 @@ static int __pyx_pf_4move_5Moves___init__(struct __pyx_obj_4move_Moves *__pyx_v_
   return __pyx_r;
 }
 
-/* "move.pyx":54
+/* "move.pyx":53
  *         self.count = 0
  * 
  *     cpdef add_move(self, int move):             # <<<<<<<<<<<<<<
@@ -2625,11 +2627,11 @@ static PyObject *__pyx_f_4move_5Moves_add_move(struct __pyx_obj_4move_Moves *__p
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_4move_5Moves_3add_move)) {
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_move); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_move); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -2645,7 +2647,7 @@ static PyObject *__pyx_f_4move_5Moves_add_move(struct __pyx_obj_4move_Moves *__p
         __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_r = __pyx_t_2;
@@ -2666,7 +2668,7 @@ static PyObject *__pyx_f_4move_5Moves_add_move(struct __pyx_obj_4move_Moves *__p
     #endif
   }
 
-  /* "move.pyx":55
+  /* "move.pyx":54
  * 
  *     cpdef add_move(self, int move):
  *         self.moves[self.count] = move             # <<<<<<<<<<<<<<
@@ -2675,16 +2677,16 @@ static PyObject *__pyx_f_4move_5Moves_add_move(struct __pyx_obj_4move_Moves *__p
  */
   (__pyx_v_self->moves[__pyx_v_self->count]) = __pyx_v_move;
 
-  /* "move.pyx":56
+  /* "move.pyx":55
  *     cpdef add_move(self, int move):
  *         self.moves[self.count] = move
  *         self.count += 1             # <<<<<<<<<<<<<<
  * 
- *     # for debug purposes
+ *     cdef swap_move(self, int i, int j):
  */
   __pyx_v_self->count = (__pyx_v_self->count + 1);
 
-  /* "move.pyx":54
+  /* "move.pyx":53
  *         self.count = 0
  * 
  *     cpdef add_move(self, int move):             # <<<<<<<<<<<<<<
@@ -2720,7 +2722,7 @@ static PyObject *__pyx_pw_4move_5Moves_3add_move(PyObject *__pyx_v_self, PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("add_move (wrapper)", 0);
   assert(__pyx_arg_move); {
-    __pyx_v_move = __Pyx_PyInt_As_int(__pyx_arg_move); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L3_error)
+    __pyx_v_move = __Pyx_PyInt_As_int(__pyx_arg_move); if (unlikely((__pyx_v_move == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -2744,7 +2746,7 @@ static PyObject *__pyx_pf_4move_5Moves_2add_move(struct __pyx_obj_4move_Moves *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_move", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4move_5Moves_add_move(__pyx_v_self, __pyx_v_move, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4move_5Moves_add_move(__pyx_v_self, __pyx_v_move, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2761,7 +2763,63 @@ static PyObject *__pyx_pf_4move_5Moves_2add_move(struct __pyx_obj_4move_Moves *_
   return __pyx_r;
 }
 
-/* "move.pyx":59
+/* "move.pyx":57
+ *         self.count += 1
+ * 
+ *     cdef swap_move(self, int i, int j):             # <<<<<<<<<<<<<<
+ *         cdef int temp = self.moves[i]
+ *         self.moves[i] = self.moves[j]
+ */
+
+static PyObject *__pyx_f_4move_5Moves_swap_move(struct __pyx_obj_4move_Moves *__pyx_v_self, int __pyx_v_i, int __pyx_v_j) {
+  int __pyx_v_temp;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("swap_move", 0);
+
+  /* "move.pyx":58
+ * 
+ *     cdef swap_move(self, int i, int j):
+ *         cdef int temp = self.moves[i]             # <<<<<<<<<<<<<<
+ *         self.moves[i] = self.moves[j]
+ *         self.moves[j] = temp
+ */
+  __pyx_v_temp = (__pyx_v_self->moves[__pyx_v_i]);
+
+  /* "move.pyx":59
+ *     cdef swap_move(self, int i, int j):
+ *         cdef int temp = self.moves[i]
+ *         self.moves[i] = self.moves[j]             # <<<<<<<<<<<<<<
+ *         self.moves[j] = temp
+ * 
+ */
+  (__pyx_v_self->moves[__pyx_v_i]) = (__pyx_v_self->moves[__pyx_v_j]);
+
+  /* "move.pyx":60
+ *         cdef int temp = self.moves[i]
+ *         self.moves[i] = self.moves[j]
+ *         self.moves[j] = temp             # <<<<<<<<<<<<<<
+ * 
+ *     # for debug purposes
+ */
+  (__pyx_v_self->moves[__pyx_v_j]) = __pyx_v_temp;
+
+  /* "move.pyx":57
+ *         self.count += 1
+ * 
+ *     cdef swap_move(self, int i, int j):             # <<<<<<<<<<<<<<
+ *         cdef int temp = self.moves[i]
+ *         self.moves[i] = self.moves[j]
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "move.pyx":63
  * 
  *     # for debug purposes
  *     cpdef print_move_list(self):             # <<<<<<<<<<<<<<
@@ -2800,7 +2858,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_print_move_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_print_move_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_4move_5Moves_5print_move_list)) {
         __Pyx_XDECREF(__pyx_r);
@@ -2817,7 +2875,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_r = __pyx_t_2;
@@ -2838,7 +2896,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
     #endif
   }
 
-  /* "move.pyx":60
+  /* "move.pyx":64
  *     # for debug purposes
  *     cpdef print_move_list(self):
  *         if not self.count:             # <<<<<<<<<<<<<<
@@ -2848,7 +2906,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
   __pyx_t_5 = ((!(__pyx_v_self->count != 0)) != 0);
   if (__pyx_t_5) {
 
-    /* "move.pyx":61
+    /* "move.pyx":65
  *     cpdef print_move_list(self):
  *         if not self.count:
  *             printf("\n    Empty move list!\n\n")             # <<<<<<<<<<<<<<
@@ -2857,7 +2915,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
  */
     (void)(printf(((char const *)"\n    Empty move list!\n\n")));
 
-    /* "move.pyx":62
+    /* "move.pyx":66
  *         if not self.count:
  *             printf("\n    Empty move list!\n\n")
  *             return             # <<<<<<<<<<<<<<
@@ -2868,7 +2926,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "move.pyx":60
+    /* "move.pyx":64
  *     # for debug purposes
  *     cpdef print_move_list(self):
  *         if not self.count:             # <<<<<<<<<<<<<<
@@ -2877,7 +2935,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
  */
   }
 
-  /* "move.pyx":64
+  /* "move.pyx":68
  *             return
  * 
  *         printf("\n    move    piece   capture   double   enpass   castling\n\n")             # <<<<<<<<<<<<<<
@@ -2886,7 +2944,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
  */
   (void)(printf(((char const *)"\n    move    piece   capture   double   enpass   castling\n\n")));
 
-  /* "move.pyx":67
+  /* "move.pyx":71
  * 
  *         cdef int i, move
  *         for i in range(self.count):             # <<<<<<<<<<<<<<
@@ -2898,7 +2956,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "move.pyx":68
+    /* "move.pyx":72
  *         cdef int i, move
  *         for i in range(self.count):
  *             move = self.moves[i]             # <<<<<<<<<<<<<<
@@ -2907,7 +2965,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
  */
     __pyx_v_move = (__pyx_v_self->moves[__pyx_v_i]);
 
-    /* "move.pyx":74
+    /* "move.pyx":78
  *                                                                                 promoted_pieces[get_move_promoted(move)],
  *                                                                                 ascii_pieces[get_move_piece(move)],
  *                                                                                 1 if get_move_capture(move) else 0,             # <<<<<<<<<<<<<<
@@ -2920,7 +2978,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
       __pyx_t_9 = 0;
     }
 
-    /* "move.pyx":75
+    /* "move.pyx":79
  *                                                                                 ascii_pieces[get_move_piece(move)],
  *                                                                                 1 if get_move_capture(move) else 0,
  *                                                                                 1 if get_move_double(move) else 0,             # <<<<<<<<<<<<<<
@@ -2933,7 +2991,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
       __pyx_t_10 = 0;
     }
 
-    /* "move.pyx":76
+    /* "move.pyx":80
  *                                                                                 1 if get_move_capture(move) else 0,
  *                                                                                 1 if get_move_double(move) else 0,
  *                                                                                 1 if get_move_enpassant(move) else 0,             # <<<<<<<<<<<<<<
@@ -2946,7 +3004,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
       __pyx_t_11 = 0;
     }
 
-    /* "move.pyx":77
+    /* "move.pyx":81
  *                                                                                 1 if get_move_double(move) else 0,
  *                                                                                 1 if get_move_enpassant(move) else 0,
  *                                                                                 1 if get_move_castling(move) else 0)             # <<<<<<<<<<<<<<
@@ -2959,7 +3017,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
       __pyx_t_12 = 0;
     }
 
-    /* "move.pyx":70
+    /* "move.pyx":74
  *             move = self.moves[i]
  * 
  *             printf("    %s%s%c   %c       %d         %d        %d        %d\n", square_to_coord[get_move_source(move)],             # <<<<<<<<<<<<<<
@@ -2969,7 +3027,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
     (void)(printf(((char const *)"    %s%s%c   %c       %d         %d        %d        %d\n"), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_source(__pyx_v_move, 0)]), (__pyx_v_5const_square_to_coord[__pyx_f_4move_get_move_target(__pyx_v_move, 0)]), (__pyx_v_4move_promoted_pieces[__pyx_f_4move_get_move_promoted(__pyx_v_move, 0)]), (__pyx_v_5const_ascii_pieces[__pyx_f_4move_get_move_piece(__pyx_v_move, 0)]), __pyx_t_9, __pyx_t_10, __pyx_t_11, __pyx_t_12));
   }
 
-  /* "move.pyx":78
+  /* "move.pyx":82
  *                                                                                 1 if get_move_enpassant(move) else 0,
  *                                                                                 1 if get_move_castling(move) else 0)
  *         printf("\n\n    Total # of moves: %d\n\n", self.count)             # <<<<<<<<<<<<<<
@@ -2977,7 +3035,7 @@ static PyObject *__pyx_f_4move_5Moves_print_move_list(struct __pyx_obj_4move_Mov
  */
   (void)(printf(((char const *)"\n\n    Total # of moves: %d\n\n"), __pyx_v_self->count));
 
-  /* "move.pyx":59
+  /* "move.pyx":63
  * 
  *     # for debug purposes
  *     cpdef print_move_list(self):             # <<<<<<<<<<<<<<
@@ -3023,7 +3081,7 @@ static PyObject *__pyx_pf_4move_5Moves_4print_move_list(struct __pyx_obj_4move_M
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("print_move_list", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4move_5Moves_print_move_list(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4move_5Moves_print_move_list(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4705,7 +4763,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 71, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(2, 81, __pyx_L1_error)
   __pyx_builtin_OverflowError = __Pyx_GetBuiltinName(__pyx_n_s_OverflowError); if (!__pyx_builtin_OverflowError) __PYX_ERR(2, 81, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(2, 84, __pyx_L1_error)
@@ -4807,17 +4865,18 @@ static int __Pyx_modinit_type_init_code(void) {
   /*--- Type init code ---*/
   __pyx_vtabptr_4move_Moves = &__pyx_vtable_4move_Moves;
   __pyx_vtable_4move_Moves.add_move = (PyObject *(*)(struct __pyx_obj_4move_Moves *, int, int __pyx_skip_dispatch))__pyx_f_4move_5Moves_add_move;
+  __pyx_vtable_4move_Moves.swap_move = (PyObject *(*)(struct __pyx_obj_4move_Moves *, int, int))__pyx_f_4move_5Moves_swap_move;
   __pyx_vtable_4move_Moves.print_move_list = (PyObject *(*)(struct __pyx_obj_4move_Moves *, int __pyx_skip_dispatch))__pyx_f_4move_5Moves_print_move_list;
-  if (PyType_Ready(&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_4move_Moves.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_4move_Moves.tp_dictoffset && __pyx_type_4move_Moves.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_4move_Moves.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_4move_Moves.tp_dict, __pyx_vtabptr_4move_Moves) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Moves, (PyObject *)&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_4move_Moves.tp_dict, __pyx_vtabptr_4move_Moves) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Moves, (PyObject *)&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4move_Moves) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
   __pyx_ptype_4move_Moves = &__pyx_type_4move_Moves;
   __Pyx_RefNannyFinishContext();
   return 0;

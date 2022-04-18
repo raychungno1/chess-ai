@@ -43,9 +43,8 @@ promoted_pieces[:] = [
     " ", "n", "b", "r", "q", " "
 ]
 
-# for UCI purposes
 cpdef print_move(int move):
-    printf("%s%s%c\n", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
+    printf("%s%s%c", square_to_coord[get_move_source(move)], square_to_coord[get_move_target(move)], promoted_pieces[get_move_promoted(move)])
 
 cdef class Moves:
     def __init__(self):
@@ -54,6 +53,11 @@ cdef class Moves:
     cpdef add_move(self, int move):
         self.moves[self.count] = move
         self.count += 1
+
+    cdef swap_move(self, int i, int j):
+        cdef int temp = self.moves[i]
+        self.moves[i] = self.moves[j]
+        self.moves[j] = temp
 
     # for debug purposes
     cpdef print_move_list(self):

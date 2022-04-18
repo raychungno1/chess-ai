@@ -21,4 +21,5 @@ cdef class Moves:
     cdef public int count
 
     cpdef add_move(self, int move)
+    cdef swap_move(self, int i, int j)
     cpdef print_move_list(self)

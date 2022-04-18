@@ -1140,7 +1140,7 @@ static char *__pyx_v_5const_tricky_position;
 static char *__pyx_v_5const_killer_position;
 static char *__pyx_v_5const_cmk_position;
 static char *__pyx_v_5const_last;
-static int __pyx_v_5const_char_pieces[0x72];
+static int __pyx_v_5const_char_pieces[0x73];
 #define __Pyx_MODULE_NAME "const"
 extern int __pyx_module_is_main_const;
 int __pyx_module_is_main_const = 0;
@@ -1905,7 +1905,7 @@ if (!__Pyx_RefNanny) {
 
   /* "const.pyx":163
  * 
- * cdef int char_pieces[114]
+ * cdef int char_pieces[115]
  * char_pieces['P'] = 0             # <<<<<<<<<<<<<<
  * char_pieces['N'] = 1
  * char_pieces['B'] = 2
@@ -1913,7 +1913,7 @@ if (!__Pyx_RefNanny) {
   (__pyx_v_5const_char_pieces['P']) = 0;
 
   /* "const.pyx":164
- * cdef int char_pieces[114]
+ * cdef int char_pieces[115]
  * char_pieces['P'] = 0
  * char_pieces['N'] = 1             # <<<<<<<<<<<<<<
  * char_pieces['B'] = 2

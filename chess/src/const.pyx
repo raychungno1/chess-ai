@@ -159,7 +159,7 @@ ascii_pieces[:] = [
     "p", "n", "b", "r", "q", "k"
 ]
 
-cdef int char_pieces[114]
+cdef int char_pieces[115]
 char_pieces['P'] = 0
 char_pieces['N'] = 1
 char_pieces['B'] = 2
