@@ -1,4 +1,5 @@
 from libc.stdio cimport printf
+from libc.string cimport memset
 from eval cimport evaluate
 from helper cimport get_ls1b_index, get_bit
 from board cimport Board, BoardCopy, P, N, B, R, Q, K, p, n, b, r, q, k, white, black
@@ -7,17 +8,31 @@ from const cimport ascii_pieces
 
 
 cpdef int search_position(object board, int depth):
-    cdef int count
-    cdef int nodes = 0, ply = 0, best_move = 0, score = 0
-    score = negamax(board, -50000, 50000, depth, &nodes, &ply)
+    # clear helper data structures for search
+    memset(killer_moves, 0, sizeof(killer_moves))
+    memset(history_moves, 0, sizeof(history_moves))
+    memset(pv_table, 0, sizeof(pv_table))
+    memset(pv_length, 0, sizeof(pv_length))
 
-    printf("into score cp %d depth %d nodes %ld pv ", score, depth, nodes)
+    # reset PV flags
+    follow_pv[0] = 0
+    score_pv[0] = 0
+    
+    # iterative deepening
+    cdef int current_depth
+    cdef int nodes = 0, ply = 0, score = 0, count
+    for current_depth in range(1, depth + 1):
+        follow_pv[0] = 1
 
-    # loop over moves within a PV line
-    for count in range(pv_length[0]):
-        print_move(pv_table[0][count])
-        printf(" ")
-    printf("\n")
+        score = negamax(board, -50000, 50000, current_depth, &nodes, &ply)
+
+        printf("info score cp %d depth %d nodes %ld pv ", score, current_depth, nodes)
+
+        # loop over moves within a PV line
+        for count in range(pv_length[0]):
+            print_move(pv_table[0][count])
+            printf(" ")
+        printf("\n")
 
     printf("Best Move: ")
     print_move(pv_table[0][0])
@@ -65,12 +80,17 @@ cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):
     return alpha
 
 cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):
+    cdef int found_pv = 0
     pv_length[ply[0]] = ply[0]
 
     if depth == 0:
         # return evaluate(board)
         return quiescence(board, alpha, beta, nodes, ply)
     
+    # We reach max depth
+    if ply[0] > 64 - 1:
+        return evaluate(board)
+
     nodes[0] += 1
 
     cdef int in_check = board.is_square_attacked(get_ls1b_index(board.bitboards[K]) if board.side == white else get_ls1b_index(board.bitboards[k]), board.side ^ 1)
@@ -93,7 +113,17 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
             continue
 
         legal_moves += 1
-        score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+
+        if found_pv:
+            # claim that our PV move will be the best move
+            score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
+
+            if score > alpha and score < beta: # otherwise perform a normal alpha beta search
+                score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+
+        else:
+            score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+
         ply[0] -= 1
         board.take_back(copy)
 
@@ -112,6 +142,7 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
                 history_moves[get_move_piece(move_list.moves[i])][get_move_target(move_list.moves[i])] += depth
 
             alpha = score
+            found_pv = 1
 
             # store PV move
             pv_table[ply[0]][ply[0]] = move_list.moves[i]
@@ -162,27 +193,26 @@ mvv_lva[:] = [
 	[100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600]
 ]
 
-cdef int i, j
-# killer moves[id][ply]
-for i in range(2):
-    for j in range(64):
-        killer_moves[i][j] = 0
+cdef int killer_moves[2][64]
+cdef int history_moves[12][64]
+cdef int pv_length[64]
+cdef int pv_table[64][64]
 
-# history moves[piece][ply]
-for i in range(12):
-    for j in range(64):
-        history_moves[i][j] = 0
+memset(killer_moves, 0, sizeof(killer_moves))
+memset(history_moves, 0, sizeof(history_moves))
+memset(pv_table, 0, sizeof(pv_table))
+memset(pv_length, 0, sizeof(pv_length))
 
-# PV length
-for i in range(64):
-    pv_length[i] = 0
-
-# PV table
-for i in range(64):
-    for j in range(64):
-        pv_table[i][j] = 0
+cdef int follow_pv[1], score_pv[1]
+follow_pv[0] = 0
+score_pv[0] = 0
 
 cdef int score_move(int move, object board, int ply):
+    if score_pv[0]:
+        if pv_table[0][ply] == move:
+            score_pv[0] = 0
+            return 20000 # Give pv move the highest score
+
     cdef int target_piece = P
     cdef int start_piece, end_piece
     if get_move_capture(move):
@@ -215,6 +245,10 @@ cdef int score_move(int move, object board, int ply):
 
 cdef object sort_moves(object chess, int ply):
     cdef Moves move_list = chess.generate_moves()
+
+    if follow_pv[0]:
+        enable_pv_scoring(move_list, ply)
+
     cdef int move_scores[64]
     cdef int i
     for i in range(move_list.count):
@@ -232,6 +266,15 @@ cdef object sort_moves(object chess, int ply):
                 move_list.swap_move(current_move, next_move)
         
     return move_list
+
+cdef enable_pv_scoring(object move_list, int ply):
+    follow_pv[0] = 0
+
+    cdef int i
+    for i in range(move_list.count):
+        if pv_table[0][ply] == move_list.moves[i]:
+            score_pv[0] = 1
+            follow_pv[0] = 1
 
 cdef print_move_scores (object move_list, object chess):
     cdef int i, move

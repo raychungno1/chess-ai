@@ -1493,6 +1493,9 @@ static PyObject* __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_t_5board_Bo
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
+/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 /* CIntFromPy.proto */
@@ -1500,9 +1503,6 @@ static CYTHON_INLINE unsigned PY_LONG_LONG __Pyx_PyInt_As_unsigned_PY_LONG_LONG(
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_PY_LONG_LONG(unsigned PY_LONG_LONG value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -1606,13 +1606,14 @@ static int __pyx_v_6search_killer_moves[2][64];
 static int __pyx_v_6search_history_moves[12][64];
 static int __pyx_v_6search_pv_length[64];
 static int __pyx_v_6search_pv_table[64][64];
-static int __pyx_v_6search_i;
-static int __pyx_v_6search_j;
+static int __pyx_v_6search_follow_pv[1];
+static int __pyx_v_6search_score_pv[1];
 static int __pyx_f_6search_search_position(PyObject *, int, int __pyx_skip_dispatch); /*proto*/
 static int __pyx_f_6search_score_move(int, PyObject *, int); /*proto*/
 static PyObject *__pyx_f_6search_sort_moves(PyObject *, int); /*proto*/
 static int __pyx_f_6search_quiescence(PyObject *, int, int, int *, int *); /*proto*/
 static int __pyx_f_6search_negamax(PyObject *, int, int, int, int *, int *); /*proto*/
+static PyObject *__pyx_f_6search_enable_pv_scoring(PyObject *, int); /*proto*/
 static int __Pyx_carray_from_py___pyx_t_6helper_U64(PyObject *, __pyx_t_6helper_U64 *, Py_ssize_t); /*proto*/
 static __pyx_t_5board_BoardCopy __pyx_convert__from_py___pyx_t_5board_BoardCopy(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py___pyx_t_6helper_U64(__pyx_t_6helper_U64 *, Py_ssize_t); /*proto*/
@@ -1642,23 +1643,19 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_mvv_lva[] = "mvv_lva";
 static const char __pyx_k_KeyError[] = "KeyError";
 static const char __pyx_k_castling[] = "castling";
-static const char __pyx_k_pv_table[] = "pv_table";
 static const char __pyx_k_pyx_capi[] = "__pyx_capi__";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_bitboards[] = "bitboards";
 static const char __pyx_k_enpassant[] = "enpassant";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_make_move[] = "make_move";
-static const char __pyx_k_pv_length[] = "pv_length";
 static const char __pyx_k_take_back[] = "take_back";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_copy_board[] = "copy_board";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_occupancies[] = "occupancies";
-static const char __pyx_k_killer_moves[] = "killer_moves";
 static const char __pyx_k_OverflowError[] = "OverflowError";
-static const char __pyx_k_history_moves[] = "history_moves";
 static const char __pyx_k_generate_moves[] = "generate_moves";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_is_square_attacked[] = "is_square_attacked";
@@ -1687,9 +1684,7 @@ static PyObject *__pyx_n_s_depth;
 static PyObject *__pyx_n_s_enpassant;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_generate_moves;
-static PyObject *__pyx_n_s_history_moves;
 static PyObject *__pyx_n_s_is_square_attacked;
-static PyObject *__pyx_n_s_killer_moves;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_make_move;
 static PyObject *__pyx_n_s_moves;
@@ -1697,8 +1692,6 @@ static PyObject *__pyx_n_s_mvv_lva;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_occupancies;
 static PyObject *__pyx_n_s_ply;
-static PyObject *__pyx_n_s_pv_length;
-static PyObject *__pyx_n_s_pv_table;
 static PyObject *__pyx_n_s_pyx_capi;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
@@ -1715,106 +1708,184 @@ static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 /* Late includes */
 
-/* "search.pyx":9
+/* "search.pyx":10
  * 
  * 
  * cpdef int search_position(object board, int depth):             # <<<<<<<<<<<<<<
- *     cdef int count
- *     cdef int nodes = 0, ply = 0, best_move = 0, score = 0
+ *     # clear helper data structures for search
+ *     memset(killer_moves, 0, sizeof(killer_moves))
  */
 
 static PyObject *__pyx_pw_6search_1search_position(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_f_6search_search_position(PyObject *__pyx_v_board, int __pyx_v_depth, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  int __pyx_v_count;
+  int __pyx_v_current_depth;
   int __pyx_v_nodes;
   int __pyx_v_ply;
-  CYTHON_UNUSED int __pyx_v_best_move;
   int __pyx_v_score;
+  int __pyx_v_count;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
+  long __pyx_t_1;
+  long __pyx_t_2;
   int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("search_position", 0);
 
-  /* "search.pyx":11
+  /* "search.pyx":12
  * cpdef int search_position(object board, int depth):
- *     cdef int count
- *     cdef int nodes = 0, ply = 0, best_move = 0, score = 0             # <<<<<<<<<<<<<<
- *     score = negamax(board, -50000, 50000, depth, &nodes, &ply)
+ *     # clear helper data structures for search
+ *     memset(killer_moves, 0, sizeof(killer_moves))             # <<<<<<<<<<<<<<
+ *     memset(history_moves, 0, sizeof(history_moves))
+ *     memset(pv_table, 0, sizeof(pv_table))
+ */
+  (void)(memset(__pyx_v_6search_killer_moves, 0, (sizeof(__pyx_v_6search_killer_moves))));
+
+  /* "search.pyx":13
+ *     # clear helper data structures for search
+ *     memset(killer_moves, 0, sizeof(killer_moves))
+ *     memset(history_moves, 0, sizeof(history_moves))             # <<<<<<<<<<<<<<
+ *     memset(pv_table, 0, sizeof(pv_table))
+ *     memset(pv_length, 0, sizeof(pv_length))
+ */
+  (void)(memset(__pyx_v_6search_history_moves, 0, (sizeof(__pyx_v_6search_history_moves))));
+
+  /* "search.pyx":14
+ *     memset(killer_moves, 0, sizeof(killer_moves))
+ *     memset(history_moves, 0, sizeof(history_moves))
+ *     memset(pv_table, 0, sizeof(pv_table))             # <<<<<<<<<<<<<<
+ *     memset(pv_length, 0, sizeof(pv_length))
  * 
+ */
+  (void)(memset(__pyx_v_6search_pv_table, 0, (sizeof(__pyx_v_6search_pv_table))));
+
+  /* "search.pyx":15
+ *     memset(history_moves, 0, sizeof(history_moves))
+ *     memset(pv_table, 0, sizeof(pv_table))
+ *     memset(pv_length, 0, sizeof(pv_length))             # <<<<<<<<<<<<<<
+ * 
+ *     # reset PV flags
+ */
+  (void)(memset(__pyx_v_6search_pv_length, 0, (sizeof(__pyx_v_6search_pv_length))));
+
+  /* "search.pyx":18
+ * 
+ *     # reset PV flags
+ *     follow_pv[0] = 0             # <<<<<<<<<<<<<<
+ *     score_pv[0] = 0
+ * 
+ */
+  (__pyx_v_6search_follow_pv[0]) = 0;
+
+  /* "search.pyx":19
+ *     # reset PV flags
+ *     follow_pv[0] = 0
+ *     score_pv[0] = 0             # <<<<<<<<<<<<<<
+ * 
+ *     # iterative deepening
+ */
+  (__pyx_v_6search_score_pv[0]) = 0;
+
+  /* "search.pyx":23
+ *     # iterative deepening
+ *     cdef int current_depth
+ *     cdef int nodes = 0, ply = 0, score = 0, count             # <<<<<<<<<<<<<<
+ *     for current_depth in range(1, depth + 1):
+ *         follow_pv[0] = 1
  */
   __pyx_v_nodes = 0;
   __pyx_v_ply = 0;
-  __pyx_v_best_move = 0;
   __pyx_v_score = 0;
 
-  /* "search.pyx":12
- *     cdef int count
- *     cdef int nodes = 0, ply = 0, best_move = 0, score = 0
- *     score = negamax(board, -50000, 50000, depth, &nodes, &ply)             # <<<<<<<<<<<<<<
+  /* "search.pyx":24
+ *     cdef int current_depth
+ *     cdef int nodes = 0, ply = 0, score = 0, count
+ *     for current_depth in range(1, depth + 1):             # <<<<<<<<<<<<<<
+ *         follow_pv[0] = 1
  * 
- *     printf("into score cp %d depth %d nodes %ld pv ", score, depth, nodes)
  */
-  __pyx_v_score = __pyx_f_6search_negamax(__pyx_v_board, -50000, 0xC350, __pyx_v_depth, (&__pyx_v_nodes), (&__pyx_v_ply));
-
-  /* "search.pyx":14
- *     score = negamax(board, -50000, 50000, depth, &nodes, &ply)
- * 
- *     printf("into score cp %d depth %d nodes %ld pv ", score, depth, nodes)             # <<<<<<<<<<<<<<
- * 
- *     # loop over moves within a PV line
- */
-  (void)(printf(((char const *)"into score cp %d depth %d nodes %ld pv "), __pyx_v_score, __pyx_v_depth, __pyx_v_nodes));
-
-  /* "search.pyx":17
- * 
- *     # loop over moves within a PV line
- *     for count in range(pv_length[0]):             # <<<<<<<<<<<<<<
- *         print_move(pv_table[0][count])
- *         printf(" ")
- */
-  __pyx_t_1 = (__pyx_v_6search_pv_length[0]);
+  __pyx_t_1 = (__pyx_v_depth + 1);
   __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_count = __pyx_t_3;
+  for (__pyx_t_3 = 1; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_current_depth = __pyx_t_3;
 
-    /* "search.pyx":18
- *     # loop over moves within a PV line
- *     for count in range(pv_length[0]):
- *         print_move(pv_table[0][count])             # <<<<<<<<<<<<<<
- *         printf(" ")
- *     printf("\n")
+    /* "search.pyx":25
+ *     cdef int nodes = 0, ply = 0, score = 0, count
+ *     for current_depth in range(1, depth + 1):
+ *         follow_pv[0] = 1             # <<<<<<<<<<<<<<
+ * 
+ *         score = negamax(board, -50000, 50000, current_depth, &nodes, &ply)
  */
-    __pyx_t_4 = __pyx_f_4move_print_move(((__pyx_v_6search_pv_table[0])[__pyx_v_count]), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    (__pyx_v_6search_follow_pv[0]) = 1;
 
-    /* "search.pyx":19
- *     for count in range(pv_length[0]):
- *         print_move(pv_table[0][count])
- *         printf(" ")             # <<<<<<<<<<<<<<
- *     printf("\n")
+    /* "search.pyx":27
+ *         follow_pv[0] = 1
+ * 
+ *         score = negamax(board, -50000, 50000, current_depth, &nodes, &ply)             # <<<<<<<<<<<<<<
+ * 
+ *         printf("info score cp %d depth %d nodes %ld pv ", score, current_depth, nodes)
+ */
+    __pyx_v_score = __pyx_f_6search_negamax(__pyx_v_board, -50000, 0xC350, __pyx_v_current_depth, (&__pyx_v_nodes), (&__pyx_v_ply));
+
+    /* "search.pyx":29
+ *         score = negamax(board, -50000, 50000, current_depth, &nodes, &ply)
+ * 
+ *         printf("info score cp %d depth %d nodes %ld pv ", score, current_depth, nodes)             # <<<<<<<<<<<<<<
+ * 
+ *         # loop over moves within a PV line
+ */
+    (void)(printf(((char const *)"info score cp %d depth %d nodes %ld pv "), __pyx_v_score, __pyx_v_current_depth, __pyx_v_nodes));
+
+    /* "search.pyx":32
+ * 
+ *         # loop over moves within a PV line
+ *         for count in range(pv_length[0]):             # <<<<<<<<<<<<<<
+ *             print_move(pv_table[0][count])
+ *             printf(" ")
+ */
+    __pyx_t_4 = (__pyx_v_6search_pv_length[0]);
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_count = __pyx_t_6;
+
+      /* "search.pyx":33
+ *         # loop over moves within a PV line
+ *         for count in range(pv_length[0]):
+ *             print_move(pv_table[0][count])             # <<<<<<<<<<<<<<
+ *             printf(" ")
+ *         printf("\n")
+ */
+      __pyx_t_7 = __pyx_f_4move_print_move(((__pyx_v_6search_pv_table[0])[__pyx_v_count]), 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+      /* "search.pyx":34
+ *         for count in range(pv_length[0]):
+ *             print_move(pv_table[0][count])
+ *             printf(" ")             # <<<<<<<<<<<<<<
+ *         printf("\n")
  * 
  */
-    (void)(printf(((char const *)" ")));
-  }
+      (void)(printf(((char const *)" ")));
+    }
 
-  /* "search.pyx":20
- *         print_move(pv_table[0][count])
- *         printf(" ")
- *     printf("\n")             # <<<<<<<<<<<<<<
+    /* "search.pyx":35
+ *             print_move(pv_table[0][count])
+ *             printf(" ")
+ *         printf("\n")             # <<<<<<<<<<<<<<
  * 
  *     printf("Best Move: ")
  */
-  (void)(printf(((char const *)"\n")));
+    (void)(printf(((char const *)"\n")));
+  }
 
-  /* "search.pyx":22
- *     printf("\n")
+  /* "search.pyx":37
+ *         printf("\n")
  * 
  *     printf("Best Move: ")             # <<<<<<<<<<<<<<
  *     print_move(pv_table[0][0])
@@ -1822,18 +1893,18 @@ static int __pyx_f_6search_search_position(PyObject *__pyx_v_board, int __pyx_v_
  */
   (void)(printf(((char const *)"Best Move: ")));
 
-  /* "search.pyx":23
+  /* "search.pyx":38
  * 
  *     printf("Best Move: ")
  *     print_move(pv_table[0][0])             # <<<<<<<<<<<<<<
  * 
  *     return pv_table[0][0]
  */
-  __pyx_t_4 = __pyx_f_4move_print_move(((__pyx_v_6search_pv_table[0])[0]), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_7 = __pyx_f_4move_print_move(((__pyx_v_6search_pv_table[0])[0]), 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "search.pyx":25
+  /* "search.pyx":40
  *     print_move(pv_table[0][0])
  * 
  *     return pv_table[0][0]             # <<<<<<<<<<<<<<
@@ -1843,17 +1914,17 @@ static int __pyx_f_6search_search_position(PyObject *__pyx_v_board, int __pyx_v_
   __pyx_r = ((__pyx_v_6search_pv_table[0])[0]);
   goto __pyx_L0;
 
-  /* "search.pyx":9
+  /* "search.pyx":10
  * 
  * 
  * cpdef int search_position(object board, int depth):             # <<<<<<<<<<<<<<
- *     cdef int count
- *     cdef int nodes = 0, ply = 0, best_move = 0, score = 0
+ *     # clear helper data structures for search
+ *     memset(killer_moves, 0, sizeof(killer_moves))
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_WriteUnraisable("search.search_position", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
@@ -1895,11 +1966,11 @@ static PyObject *__pyx_pw_6search_1search_position(PyObject *__pyx_self, PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_depth)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("search_position", 1, 2, 2, 1); __PYX_ERR(0, 9, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("search_position", 1, 2, 2, 1); __PYX_ERR(0, 10, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "search_position") < 0)) __PYX_ERR(0, 9, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "search_position") < 0)) __PYX_ERR(0, 10, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1908,11 +1979,11 @@ static PyObject *__pyx_pw_6search_1search_position(PyObject *__pyx_self, PyObjec
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_board = values[0];
-    __pyx_v_depth = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 9, __pyx_L3_error)
+    __pyx_v_depth = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_depth == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 10, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("search_position", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 9, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("search_position", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 10, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("search.search_position", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1934,7 +2005,7 @@ static PyObject *__pyx_pf_6search_search_position(CYTHON_UNUSED PyObject *__pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("search_position", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_6search_search_position(__pyx_v_board, __pyx_v_depth, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_6search_search_position(__pyx_v_board, __pyx_v_depth, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1951,7 +2022,7 @@ static PyObject *__pyx_pf_6search_search_position(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "search.pyx":27
+/* "search.pyx":42
  *     return pv_table[0][0]
  * 
  * cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):             # <<<<<<<<<<<<<<
@@ -1984,7 +2055,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("quiescence", 0);
 
-  /* "search.pyx":28
+  /* "search.pyx":43
  * 
  * cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):
  *     nodes[0] += 1             # <<<<<<<<<<<<<<
@@ -1994,7 +2065,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   __pyx_t_1 = 0;
   (__pyx_v_nodes[__pyx_t_1]) = ((__pyx_v_nodes[__pyx_t_1]) + 1);
 
-  /* "search.pyx":29
+  /* "search.pyx":44
  * cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):
  *     nodes[0] += 1
  *     cdef int evaluation = evaluate(board)             # <<<<<<<<<<<<<<
@@ -2003,7 +2074,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
   __pyx_v_evaluation = __pyx_f_4eval_evaluate(__pyx_v_board);
 
-  /* "search.pyx":32
+  /* "search.pyx":47
  * 
  *     # Fail hard beta cutoff
  *     if evaluation >= beta:             # <<<<<<<<<<<<<<
@@ -2013,7 +2084,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   __pyx_t_2 = ((__pyx_v_evaluation >= __pyx_v_beta) != 0);
   if (__pyx_t_2) {
 
-    /* "search.pyx":33
+    /* "search.pyx":48
  *     # Fail hard beta cutoff
  *     if evaluation >= beta:
  *         return beta # node fails high             # <<<<<<<<<<<<<<
@@ -2023,7 +2094,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_r = __pyx_v_beta;
     goto __pyx_L0;
 
-    /* "search.pyx":32
+    /* "search.pyx":47
  * 
  *     # Fail hard beta cutoff
  *     if evaluation >= beta:             # <<<<<<<<<<<<<<
@@ -2032,7 +2103,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
   }
 
-  /* "search.pyx":36
+  /* "search.pyx":51
  * 
  *     # Found better move
  *     if evaluation > alpha:             # <<<<<<<<<<<<<<
@@ -2042,7 +2113,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   __pyx_t_2 = ((__pyx_v_evaluation > __pyx_v_alpha) != 0);
   if (__pyx_t_2) {
 
-    /* "search.pyx":37
+    /* "search.pyx":52
  *     # Found better move
  *     if evaluation > alpha:
  *         alpha = evaluation             # <<<<<<<<<<<<<<
@@ -2051,7 +2122,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
     __pyx_v_alpha = __pyx_v_evaluation;
 
-    /* "search.pyx":36
+    /* "search.pyx":51
  * 
  *     # Found better move
  *     if evaluation > alpha:             # <<<<<<<<<<<<<<
@@ -2060,20 +2131,20 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
   }
 
-  /* "search.pyx":40
+  /* "search.pyx":55
  * 
  *     # cdef Moves move_list = board.generate_moves()
  *     cdef Moves move_list = sort_moves(board, ply[0])             # <<<<<<<<<<<<<<
  * 
  *     cdef int i, score
  */
-  __pyx_t_3 = __pyx_f_6search_sort_moves(__pyx_v_board, (__pyx_v_ply[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6search_sort_moves(__pyx_v_board, (__pyx_v_ply[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 55, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "search.pyx":44
+  /* "search.pyx":59
  *     cdef int i, score
  *     cdef BoardCopy copy
  *     for i in range(move_list.count):             # <<<<<<<<<<<<<<
@@ -2085,14 +2156,14 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "search.pyx":45
+    /* "search.pyx":60
  *     cdef BoardCopy copy
  *     for i in range(move_list.count):
  *         copy = board.copy_board()             # <<<<<<<<<<<<<<
  *         ply[0] += 1
  * 
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_copy_board); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_copy_board); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
@@ -2106,14 +2177,14 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     }
     __pyx_t_3 = (__pyx_t_8) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_9 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_9 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_copy = __pyx_t_9;
 
-    /* "search.pyx":46
+    /* "search.pyx":61
  *     for i in range(move_list.count):
  *         copy = board.copy_board()
  *         ply[0] += 1             # <<<<<<<<<<<<<<
@@ -2123,16 +2194,16 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_t_1 = 0;
     (__pyx_v_ply[__pyx_t_1]) = ((__pyx_v_ply[__pyx_t_1]) + 1);
 
-    /* "search.pyx":48
+    /* "search.pyx":63
  *         ply[0] += 1
  * 
  *         if board.make_move(move_list.moves[i], 1) == 0:             # <<<<<<<<<<<<<<
  *             ply[0] -= 1
  *             continue
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_make_move); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_make_move); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_move_list->moves[__pyx_v_i])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_move_list->moves[__pyx_v_i])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_10 = NULL;
     __pyx_t_11 = 0;
@@ -2149,7 +2220,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_8, __pyx_int_1};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -2158,14 +2229,14 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[3] = {__pyx_t_10, __pyx_t_8, __pyx_int_1};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     } else
     #endif
     {
-      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_12 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       if (__pyx_t_10) {
         __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10); __pyx_t_10 = NULL;
@@ -2176,19 +2247,19 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
       __Pyx_GIVEREF(__pyx_int_1);
       PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_int_1);
       __pyx_t_8 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_2) {
 
-      /* "search.pyx":49
+      /* "search.pyx":64
  * 
  *         if board.make_move(move_list.moves[i], 1) == 0:
  *             ply[0] -= 1             # <<<<<<<<<<<<<<
@@ -2198,7 +2269,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
       __pyx_t_1 = 0;
       (__pyx_v_ply[__pyx_t_1]) = ((__pyx_v_ply[__pyx_t_1]) - 1);
 
-      /* "search.pyx":50
+      /* "search.pyx":65
  *         if board.make_move(move_list.moves[i], 1) == 0:
  *             ply[0] -= 1
  *             continue             # <<<<<<<<<<<<<<
@@ -2207,7 +2278,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
       goto __pyx_L5_continue;
 
-      /* "search.pyx":48
+      /* "search.pyx":63
  *         ply[0] += 1
  * 
  *         if board.make_move(move_list.moves[i], 1) == 0:             # <<<<<<<<<<<<<<
@@ -2216,7 +2287,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
     }
 
-    /* "search.pyx":52
+    /* "search.pyx":67
  *             continue
  * 
  *         score = -quiescence(board, -beta, -alpha, nodes, ply)             # <<<<<<<<<<<<<<
@@ -2225,7 +2296,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
     __pyx_v_score = (-__pyx_f_6search_quiescence(__pyx_v_board, (-__pyx_v_beta), (-__pyx_v_alpha), __pyx_v_nodes, __pyx_v_ply));
 
-    /* "search.pyx":53
+    /* "search.pyx":68
  * 
  *         score = -quiescence(board, -beta, -alpha, nodes, ply)
  *         ply[0] -= 1             # <<<<<<<<<<<<<<
@@ -2235,16 +2306,16 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_t_1 = 0;
     (__pyx_v_ply[__pyx_t_1]) = ((__pyx_v_ply[__pyx_t_1]) - 1);
 
-    /* "search.pyx":54
+    /* "search.pyx":69
  *         score = -quiescence(board, -beta, -alpha, nodes, ply)
  *         ply[0] -= 1
  *         board.take_back(copy)             # <<<<<<<<<<<<<<
  * 
  *         # Fail hard beta cutoff
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_take_back); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_take_back); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_12 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_12 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __pyx_t_8 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2259,12 +2330,12 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_t_7 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_8, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_12);
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "search.pyx":57
+    /* "search.pyx":72
  * 
  *         # Fail hard beta cutoff
  *         if score >= beta:             # <<<<<<<<<<<<<<
@@ -2274,7 +2345,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_t_2 = ((__pyx_v_score >= __pyx_v_beta) != 0);
     if (__pyx_t_2) {
 
-      /* "search.pyx":58
+      /* "search.pyx":73
  *         # Fail hard beta cutoff
  *         if score >= beta:
  *             return beta # node fails high             # <<<<<<<<<<<<<<
@@ -2284,7 +2355,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
       __pyx_r = __pyx_v_beta;
       goto __pyx_L0;
 
-      /* "search.pyx":57
+      /* "search.pyx":72
  * 
  *         # Fail hard beta cutoff
  *         if score >= beta:             # <<<<<<<<<<<<<<
@@ -2293,7 +2364,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
     }
 
-    /* "search.pyx":61
+    /* "search.pyx":76
  * 
  *         # Found better move
  *         if score > alpha:             # <<<<<<<<<<<<<<
@@ -2303,7 +2374,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_t_2 = ((__pyx_v_score > __pyx_v_alpha) != 0);
     if (__pyx_t_2) {
 
-      /* "search.pyx":62
+      /* "search.pyx":77
  *         # Found better move
  *         if score > alpha:
  *             alpha = score             # <<<<<<<<<<<<<<
@@ -2312,7 +2383,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
  */
       __pyx_v_alpha = __pyx_v_score;
 
-      /* "search.pyx":61
+      /* "search.pyx":76
  * 
  *         # Found better move
  *         if score > alpha:             # <<<<<<<<<<<<<<
@@ -2323,7 +2394,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
     __pyx_L5_continue:;
   }
 
-  /* "search.pyx":65
+  /* "search.pyx":80
  * 
  *     # Node fails low
  *     return alpha             # <<<<<<<<<<<<<<
@@ -2333,7 +2404,7 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   __pyx_r = __pyx_v_alpha;
   goto __pyx_L0;
 
-  /* "search.pyx":27
+  /* "search.pyx":42
  *     return pv_table[0][0]
  * 
  * cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):             # <<<<<<<<<<<<<<
@@ -2356,15 +2427,16 @@ static int __pyx_f_6search_quiescence(PyObject *__pyx_v_board, int __pyx_v_alpha
   return __pyx_r;
 }
 
-/* "search.pyx":67
+/* "search.pyx":82
  *     return alpha
  * 
  * cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):             # <<<<<<<<<<<<<<
+ *     cdef int found_pv = 0
  *     pv_length[ply[0]] = ply[0]
- * 
  */
 
 static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, int __pyx_v_beta, int __pyx_v_depth, int *__pyx_v_nodes, int *__pyx_v_ply) {
+  int __pyx_v_found_pv;
   int __pyx_v_in_check;
   int __pyx_v_legal_moves;
   struct __pyx_obj_4move_Moves *__pyx_v_move_list = 0;
@@ -2391,21 +2463,31 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   int __pyx_t_14;
   int __pyx_t_15;
   int __pyx_t_16;
+  int __pyx_t_17;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("negamax", 0);
 
-  /* "search.pyx":68
+  /* "search.pyx":83
  * 
  * cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):
+ *     cdef int found_pv = 0             # <<<<<<<<<<<<<<
+ *     pv_length[ply[0]] = ply[0]
+ * 
+ */
+  __pyx_v_found_pv = 0;
+
+  /* "search.pyx":84
+ * cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):
+ *     cdef int found_pv = 0
  *     pv_length[ply[0]] = ply[0]             # <<<<<<<<<<<<<<
  * 
  *     if depth == 0:
  */
   (__pyx_v_6search_pv_length[(__pyx_v_ply[0])]) = (__pyx_v_ply[0]);
 
-  /* "search.pyx":70
+  /* "search.pyx":86
  *     pv_length[ply[0]] = ply[0]
  * 
  *     if depth == 0:             # <<<<<<<<<<<<<<
@@ -2415,17 +2497,17 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   __pyx_t_1 = ((__pyx_v_depth == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "search.pyx":72
+    /* "search.pyx":88
  *     if depth == 0:
  *         # return evaluate(board)
  *         return quiescence(board, alpha, beta, nodes, ply)             # <<<<<<<<<<<<<<
  * 
- *     nodes[0] += 1
+ *     # We reach max depth
  */
     __pyx_r = __pyx_f_6search_quiescence(__pyx_v_board, __pyx_v_alpha, __pyx_v_beta, __pyx_v_nodes, __pyx_v_ply);
     goto __pyx_L0;
 
-    /* "search.pyx":70
+    /* "search.pyx":86
  *     pv_length[ply[0]] = ply[0]
  * 
  *     if depth == 0:             # <<<<<<<<<<<<<<
@@ -2434,8 +2516,37 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
   }
 
-  /* "search.pyx":74
- *         return quiescence(board, alpha, beta, nodes, ply)
+  /* "search.pyx":91
+ * 
+ *     # We reach max depth
+ *     if ply[0] > 64 - 1:             # <<<<<<<<<<<<<<
+ *         return evaluate(board)
+ * 
+ */
+  __pyx_t_1 = (((__pyx_v_ply[0]) > 63) != 0);
+  if (__pyx_t_1) {
+
+    /* "search.pyx":92
+ *     # We reach max depth
+ *     if ply[0] > 64 - 1:
+ *         return evaluate(board)             # <<<<<<<<<<<<<<
+ * 
+ *     nodes[0] += 1
+ */
+    __pyx_r = __pyx_f_4eval_evaluate(__pyx_v_board);
+    goto __pyx_L0;
+
+    /* "search.pyx":91
+ * 
+ *     # We reach max depth
+ *     if ply[0] > 64 - 1:             # <<<<<<<<<<<<<<
+ *         return evaluate(board)
+ * 
+ */
+  }
+
+  /* "search.pyx":94
+ *         return evaluate(board)
  * 
  *     nodes[0] += 1             # <<<<<<<<<<<<<<
  * 
@@ -2444,52 +2555,52 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   __pyx_t_2 = 0;
   (__pyx_v_nodes[__pyx_t_2]) = ((__pyx_v_nodes[__pyx_t_2]) + 1);
 
-  /* "search.pyx":76
+  /* "search.pyx":96
  *     nodes[0] += 1
  * 
  *     cdef int in_check = board.is_square_attacked(get_ls1b_index(board.bitboards[K]) if board.side == white else get_ls1b_index(board.bitboards[k]), board.side ^ 1)             # <<<<<<<<<<<<<<
  *     if in_check:
  *         depth += 1
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_is_square_attacked); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_is_square_attacked); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_e_5board_white); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_e_5board_white); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = PyObject_RichCompare(__pyx_t_6, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_8 = PyObject_RichCompare(__pyx_t_6, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (__pyx_t_1) {
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_8, __pyx_e_5board_K, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_8, __pyx_e_5board_K, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_9 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_7); if (unlikely((__pyx_t_9 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_7); if (unlikely((__pyx_t_9 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_f_6helper_get_ls1b_index(__pyx_t_9)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_f_6helper_get_ls1b_index(__pyx_t_9)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_5 = __pyx_t_7;
     __pyx_t_7 = 0;
   } else {
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_7, __pyx_e_5board_k, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_7, __pyx_e_5board_k, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_9 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_8); if (unlikely((__pyx_t_9 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_8); if (unlikely((__pyx_t_9 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_f_6helper_get_ls1b_index(__pyx_t_9)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_f_6helper_get_ls1b_index(__pyx_t_9)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_5 = __pyx_t_8;
     __pyx_t_8 = 0;
   }
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_7 = __Pyx_PyInt_XorObjC(__pyx_t_8, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_XorObjC(__pyx_t_8, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
@@ -2507,7 +2618,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -2517,7 +2628,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -2525,7 +2636,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_8) {
       __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -2536,16 +2647,16 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_10, __pyx_t_7);
     __pyx_t_5 = 0;
     __pyx_t_7 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_in_check = __pyx_t_10;
 
-  /* "search.pyx":77
+  /* "search.pyx":97
  * 
  *     cdef int in_check = board.is_square_attacked(get_ls1b_index(board.bitboards[K]) if board.side == white else get_ls1b_index(board.bitboards[k]), board.side ^ 1)
  *     if in_check:             # <<<<<<<<<<<<<<
@@ -2555,7 +2666,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   __pyx_t_1 = (__pyx_v_in_check != 0);
   if (__pyx_t_1) {
 
-    /* "search.pyx":78
+    /* "search.pyx":98
  *     cdef int in_check = board.is_square_attacked(get_ls1b_index(board.bitboards[K]) if board.side == white else get_ls1b_index(board.bitboards[k]), board.side ^ 1)
  *     if in_check:
  *         depth += 1             # <<<<<<<<<<<<<<
@@ -2564,7 +2675,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
     __pyx_v_depth = (__pyx_v_depth + 1);
 
-    /* "search.pyx":77
+    /* "search.pyx":97
  * 
  *     cdef int in_check = board.is_square_attacked(get_ls1b_index(board.bitboards[K]) if board.side == white else get_ls1b_index(board.bitboards[k]), board.side ^ 1)
  *     if in_check:             # <<<<<<<<<<<<<<
@@ -2573,7 +2684,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
   }
 
-  /* "search.pyx":80
+  /* "search.pyx":100
  *         depth += 1
  * 
  *     cdef int legal_moves = 0             # <<<<<<<<<<<<<<
@@ -2582,20 +2693,20 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
   __pyx_v_legal_moves = 0;
 
-  /* "search.pyx":83
+  /* "search.pyx":103
  * 
  *     # cdef Moves move_list = board.generate_moves()
  *     cdef Moves move_list = sort_moves(board, ply[0])             # <<<<<<<<<<<<<<
  * 
  *     cdef int i, score, next_ply
  */
-  __pyx_t_3 = __pyx_f_6search_sort_moves(__pyx_v_board, (__pyx_v_ply[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_6search_sort_moves(__pyx_v_board, (__pyx_v_ply[0])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 103, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "search.pyx":87
+  /* "search.pyx":107
  *     cdef int i, score, next_ply
  *     cdef BoardCopy copy
  *     for i in range(move_list.count):             # <<<<<<<<<<<<<<
@@ -2607,14 +2718,14 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "search.pyx":88
+    /* "search.pyx":108
  *     cdef BoardCopy copy
  *     for i in range(move_list.count):
  *         copy = board.copy_board()             # <<<<<<<<<<<<<<
  *         ply[0] += 1
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_copy_board); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_copy_board); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -2628,14 +2739,14 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     }
     __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_13 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_13 = __pyx_convert__from_py___pyx_t_5board_BoardCopy(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_copy = __pyx_t_13;
 
-    /* "search.pyx":89
+    /* "search.pyx":109
  *     for i in range(move_list.count):
  *         copy = board.copy_board()
  *         ply[0] += 1             # <<<<<<<<<<<<<<
@@ -2645,16 +2756,16 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_2 = 0;
     (__pyx_v_ply[__pyx_t_2]) = ((__pyx_v_ply[__pyx_t_2]) + 1);
 
-    /* "search.pyx":91
+    /* "search.pyx":111
  *         ply[0] += 1
  * 
  *         if board.make_move(move_list.moves[i], 0) == 0:             # <<<<<<<<<<<<<<
  *             ply[0] -= 1
  *             continue
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_make_move); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_make_move); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyInt_From_int((__pyx_v_move_list->moves[__pyx_v_i])); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int((__pyx_v_move_list->moves[__pyx_v_i])); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     __pyx_t_14 = 0;
@@ -2671,7 +2782,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_int_0};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -2680,14 +2791,14 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_int_0};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_14, 2+__pyx_t_14); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(2+__pyx_t_14); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       if (__pyx_t_7) {
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -2698,19 +2809,19 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __Pyx_GIVEREF(__pyx_int_0);
       PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_14, __pyx_int_0);
       __pyx_t_6 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_1) {
 
-      /* "search.pyx":92
+      /* "search.pyx":112
  * 
  *         if board.make_move(move_list.moves[i], 0) == 0:
  *             ply[0] -= 1             # <<<<<<<<<<<<<<
@@ -2720,16 +2831,16 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_t_2 = 0;
       (__pyx_v_ply[__pyx_t_2]) = ((__pyx_v_ply[__pyx_t_2]) - 1);
 
-      /* "search.pyx":93
+      /* "search.pyx":113
  *         if board.make_move(move_list.moves[i], 0) == 0:
  *             ply[0] -= 1
  *             continue             # <<<<<<<<<<<<<<
  * 
  *         legal_moves += 1
  */
-      goto __pyx_L5_continue;
+      goto __pyx_L6_continue;
 
-      /* "search.pyx":91
+      /* "search.pyx":111
  *         ply[0] += 1
  * 
  *         if board.make_move(move_list.moves[i], 0) == 0:             # <<<<<<<<<<<<<<
@@ -2738,27 +2849,95 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
     }
 
-    /* "search.pyx":95
+    /* "search.pyx":115
  *             continue
  * 
  *         legal_moves += 1             # <<<<<<<<<<<<<<
- *         score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
- *         ply[0] -= 1
+ * 
+ *         if found_pv:
  */
     __pyx_v_legal_moves = (__pyx_v_legal_moves + 1);
 
-    /* "search.pyx":96
+    /* "search.pyx":117
+ *         legal_moves += 1
  * 
- *         legal_moves += 1
- *         score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)             # <<<<<<<<<<<<<<
- *         ply[0] -= 1
- *         board.take_back(copy)
+ *         if found_pv:             # <<<<<<<<<<<<<<
+ *             # claim that our PV move will be the best move
+ *             score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
  */
-    __pyx_v_score = (-__pyx_f_6search_negamax(__pyx_v_board, (-__pyx_v_beta), (-__pyx_v_alpha), (__pyx_v_depth - 1), __pyx_v_nodes, __pyx_v_ply));
+    __pyx_t_1 = (__pyx_v_found_pv != 0);
+    if (__pyx_t_1) {
 
-    /* "search.pyx":97
+      /* "search.pyx":119
+ *         if found_pv:
+ *             # claim that our PV move will be the best move
+ *             score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)             # <<<<<<<<<<<<<<
+ * 
+ *             if score > alpha and score < beta: # otherwise perform a normal alpha beta search
+ */
+      __pyx_v_score = (-__pyx_f_6search_negamax(__pyx_v_board, ((-__pyx_v_alpha) - 1), (-__pyx_v_alpha), (__pyx_v_depth - 1), __pyx_v_nodes, __pyx_v_ply));
+
+      /* "search.pyx":121
+ *             score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
+ * 
+ *             if score > alpha and score < beta: # otherwise perform a normal alpha beta search             # <<<<<<<<<<<<<<
+ *                 score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+ * 
+ */
+      __pyx_t_15 = ((__pyx_v_score > __pyx_v_alpha) != 0);
+      if (__pyx_t_15) {
+      } else {
+        __pyx_t_1 = __pyx_t_15;
+        goto __pyx_L11_bool_binop_done;
+      }
+      __pyx_t_15 = ((__pyx_v_score < __pyx_v_beta) != 0);
+      __pyx_t_1 = __pyx_t_15;
+      __pyx_L11_bool_binop_done:;
+      if (__pyx_t_1) {
+
+        /* "search.pyx":122
+ * 
+ *             if score > alpha and score < beta: # otherwise perform a normal alpha beta search
+ *                 score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)             # <<<<<<<<<<<<<<
+ * 
+ *         else:
+ */
+        __pyx_v_score = (-__pyx_f_6search_negamax(__pyx_v_board, (-__pyx_v_beta), (-__pyx_v_alpha), (__pyx_v_depth - 1), __pyx_v_nodes, __pyx_v_ply));
+
+        /* "search.pyx":121
+ *             score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
+ * 
+ *             if score > alpha and score < beta: # otherwise perform a normal alpha beta search             # <<<<<<<<<<<<<<
+ *                 score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+ * 
+ */
+      }
+
+      /* "search.pyx":117
  *         legal_moves += 1
- *         score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+ * 
+ *         if found_pv:             # <<<<<<<<<<<<<<
+ *             # claim that our PV move will be the best move
+ *             score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
+ */
+      goto __pyx_L9;
+    }
+
+    /* "search.pyx":125
+ * 
+ *         else:
+ *             score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)             # <<<<<<<<<<<<<<
+ * 
+ *         ply[0] -= 1
+ */
+    /*else*/ {
+      __pyx_v_score = (-__pyx_f_6search_negamax(__pyx_v_board, (-__pyx_v_beta), (-__pyx_v_alpha), (__pyx_v_depth - 1), __pyx_v_nodes, __pyx_v_ply));
+    }
+    __pyx_L9:;
+
+    /* "search.pyx":127
+ *             score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+ * 
  *         ply[0] -= 1             # <<<<<<<<<<<<<<
  *         board.take_back(copy)
  * 
@@ -2766,16 +2945,16 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_2 = 0;
     (__pyx_v_ply[__pyx_t_2]) = ((__pyx_v_ply[__pyx_t_2]) - 1);
 
-    /* "search.pyx":98
- *         score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+    /* "search.pyx":128
+ * 
  *         ply[0] -= 1
  *         board.take_back(copy)             # <<<<<<<<<<<<<<
  * 
  *         # Fail hard beta cutoff
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_take_back); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_take_back); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_5 = __pyx_convert__to_py___pyx_t_5board_BoardCopy(__pyx_v_copy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_6 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2790,12 +2969,12 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "search.pyx":101
+    /* "search.pyx":131
  * 
  *         # Fail hard beta cutoff
  *         if score >= beta:             # <<<<<<<<<<<<<<
@@ -2805,7 +2984,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_1 = ((__pyx_v_score >= __pyx_v_beta) != 0);
     if (__pyx_t_1) {
 
-      /* "search.pyx":102
+      /* "search.pyx":132
  *         # Fail hard beta cutoff
  *         if score >= beta:
  *             if get_move_capture(move_list.moves[i]) == 0:             # <<<<<<<<<<<<<<
@@ -2815,7 +2994,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_t_1 = ((__pyx_f_4move_get_move_capture((__pyx_v_move_list->moves[__pyx_v_i]), 0) == 0) != 0);
       if (__pyx_t_1) {
 
-        /* "search.pyx":104
+        /* "search.pyx":134
  *             if get_move_capture(move_list.moves[i]) == 0:
  *                 # Store killer move
  *                 killer_moves[1][ply[0]] = killer_moves[0][ply[0]]             # <<<<<<<<<<<<<<
@@ -2824,7 +3003,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
         ((__pyx_v_6search_killer_moves[1])[(__pyx_v_ply[0])]) = ((__pyx_v_6search_killer_moves[0])[(__pyx_v_ply[0])]);
 
-        /* "search.pyx":105
+        /* "search.pyx":135
  *                 # Store killer move
  *                 killer_moves[1][ply[0]] = killer_moves[0][ply[0]]
  *                 killer_moves[0][ply[0]] = move_list.moves[i]             # <<<<<<<<<<<<<<
@@ -2833,7 +3012,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
         ((__pyx_v_6search_killer_moves[0])[(__pyx_v_ply[0])]) = (__pyx_v_move_list->moves[__pyx_v_i]);
 
-        /* "search.pyx":102
+        /* "search.pyx":132
  *         # Fail hard beta cutoff
  *         if score >= beta:
  *             if get_move_capture(move_list.moves[i]) == 0:             # <<<<<<<<<<<<<<
@@ -2842,7 +3021,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
       }
 
-      /* "search.pyx":106
+      /* "search.pyx":136
  *                 killer_moves[1][ply[0]] = killer_moves[0][ply[0]]
  *                 killer_moves[0][ply[0]] = move_list.moves[i]
  *             return beta # node fails high             # <<<<<<<<<<<<<<
@@ -2852,7 +3031,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_r = __pyx_v_beta;
       goto __pyx_L0;
 
-      /* "search.pyx":101
+      /* "search.pyx":131
  * 
  *         # Fail hard beta cutoff
  *         if score >= beta:             # <<<<<<<<<<<<<<
@@ -2861,7 +3040,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
     }
 
-    /* "search.pyx":109
+    /* "search.pyx":139
  * 
  *         # Found better move
  *         if score > alpha:             # <<<<<<<<<<<<<<
@@ -2871,7 +3050,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_1 = ((__pyx_v_score > __pyx_v_alpha) != 0);
     if (__pyx_t_1) {
 
-      /* "search.pyx":110
+      /* "search.pyx":140
  *         # Found better move
  *         if score > alpha:
  *             if get_move_capture(move_list.moves[i]) == 0:             # <<<<<<<<<<<<<<
@@ -2881,7 +3060,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_t_1 = ((__pyx_f_4move_get_move_capture((__pyx_v_move_list->moves[__pyx_v_i]), 0) == 0) != 0);
       if (__pyx_t_1) {
 
-        /* "search.pyx":112
+        /* "search.pyx":142
  *             if get_move_capture(move_list.moves[i]) == 0:
  *                 # Store history moves
  *                 history_moves[get_move_piece(move_list.moves[i])][get_move_target(move_list.moves[i])] += depth             # <<<<<<<<<<<<<<
@@ -2889,10 +3068,10 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  *             alpha = score
  */
         __pyx_t_14 = __pyx_f_4move_get_move_piece((__pyx_v_move_list->moves[__pyx_v_i]), 0);
-        __pyx_t_15 = __pyx_f_4move_get_move_target((__pyx_v_move_list->moves[__pyx_v_i]), 0);
-        ((__pyx_v_6search_history_moves[__pyx_t_14])[__pyx_t_15]) = (((__pyx_v_6search_history_moves[__pyx_t_14])[__pyx_t_15]) + __pyx_v_depth);
+        __pyx_t_16 = __pyx_f_4move_get_move_target((__pyx_v_move_list->moves[__pyx_v_i]), 0);
+        ((__pyx_v_6search_history_moves[__pyx_t_14])[__pyx_t_16]) = (((__pyx_v_6search_history_moves[__pyx_t_14])[__pyx_t_16]) + __pyx_v_depth);
 
-        /* "search.pyx":110
+        /* "search.pyx":140
  *         # Found better move
  *         if score > alpha:
  *             if get_move_capture(move_list.moves[i]) == 0:             # <<<<<<<<<<<<<<
@@ -2901,16 +3080,25 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
       }
 
-      /* "search.pyx":114
+      /* "search.pyx":144
  *                 history_moves[get_move_piece(move_list.moves[i])][get_move_target(move_list.moves[i])] += depth
  * 
  *             alpha = score             # <<<<<<<<<<<<<<
+ *             found_pv = 1
  * 
- *             # store PV move
  */
       __pyx_v_alpha = __pyx_v_score;
 
-      /* "search.pyx":117
+      /* "search.pyx":145
+ * 
+ *             alpha = score
+ *             found_pv = 1             # <<<<<<<<<<<<<<
+ * 
+ *             # store PV move
+ */
+      __pyx_v_found_pv = 1;
+
+      /* "search.pyx":148
  * 
  *             # store PV move
  *             pv_table[ply[0]][ply[0]] = move_list.moves[i]             # <<<<<<<<<<<<<<
@@ -2919,7 +3107,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
       ((__pyx_v_6search_pv_table[(__pyx_v_ply[0])])[(__pyx_v_ply[0])]) = (__pyx_v_move_list->moves[__pyx_v_i]);
 
-      /* "search.pyx":119
+      /* "search.pyx":150
  *             pv_table[ply[0]][ply[0]] = move_list.moves[i]
  *             # Loop over next ply
  *             for next_ply in range(ply[0] + 1, pv_length[ply[0] + 1]):             # <<<<<<<<<<<<<<
@@ -2927,11 +3115,11 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  *                 pv_table[ply[0]][next_ply] = pv_table[ply[0] + 1][next_ply]
  */
       __pyx_t_14 = (__pyx_v_6search_pv_length[((__pyx_v_ply[0]) + 1)]);
-      __pyx_t_15 = __pyx_t_14;
-      for (__pyx_t_16 = ((__pyx_v_ply[0]) + 1); __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
-        __pyx_v_next_ply = __pyx_t_16;
+      __pyx_t_16 = __pyx_t_14;
+      for (__pyx_t_17 = ((__pyx_v_ply[0]) + 1); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+        __pyx_v_next_ply = __pyx_t_17;
 
-        /* "search.pyx":121
+        /* "search.pyx":152
  *             for next_ply in range(ply[0] + 1, pv_length[ply[0] + 1]):
  *                 # Copy move from deeper ply into curreny ply
  *                 pv_table[ply[0]][next_ply] = pv_table[ply[0] + 1][next_ply]             # <<<<<<<<<<<<<<
@@ -2941,7 +3129,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
         ((__pyx_v_6search_pv_table[(__pyx_v_ply[0])])[__pyx_v_next_ply]) = ((__pyx_v_6search_pv_table[((__pyx_v_ply[0]) + 1)])[__pyx_v_next_ply]);
       }
 
-      /* "search.pyx":124
+      /* "search.pyx":155
  * 
  *             # Adjust pv_length
  *             pv_length[ply[0]] = pv_length[ply[0] + 1]             # <<<<<<<<<<<<<<
@@ -2950,7 +3138,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
       (__pyx_v_6search_pv_length[(__pyx_v_ply[0])]) = (__pyx_v_6search_pv_length[((__pyx_v_ply[0]) + 1)]);
 
-      /* "search.pyx":126
+      /* "search.pyx":157
  *             pv_length[ply[0]] = pv_length[ply[0] + 1]
  * 
  *             if ply[0] == 0:             # <<<<<<<<<<<<<<
@@ -2960,7 +3148,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_t_1 = (((__pyx_v_ply[0]) == 0) != 0);
       if (__pyx_t_1) {
 
-        /* "search.pyx":127
+        /* "search.pyx":158
  * 
  *             if ply[0] == 0:
  *                 best_so_far = move_list.moves[i]             # <<<<<<<<<<<<<<
@@ -2969,7 +3157,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
         __pyx_v_best_so_far = (__pyx_v_move_list->moves[__pyx_v_i]);
 
-        /* "search.pyx":126
+        /* "search.pyx":157
  *             pv_length[ply[0]] = pv_length[ply[0] + 1]
  * 
  *             if ply[0] == 0:             # <<<<<<<<<<<<<<
@@ -2978,7 +3166,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
       }
 
-      /* "search.pyx":109
+      /* "search.pyx":139
  * 
  *         # Found better move
  *         if score > alpha:             # <<<<<<<<<<<<<<
@@ -2986,10 +3174,10 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  *                 # Store history moves
  */
     }
-    __pyx_L5_continue:;
+    __pyx_L6_continue:;
   }
 
-  /* "search.pyx":129
+  /* "search.pyx":160
  *                 best_so_far = move_list.moves[i]
  * 
  *     if legal_moves == 0:             # <<<<<<<<<<<<<<
@@ -2999,7 +3187,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   __pyx_t_1 = ((__pyx_v_legal_moves == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "search.pyx":130
+    /* "search.pyx":161
  * 
  *     if legal_moves == 0:
  *         if in_check:             # <<<<<<<<<<<<<<
@@ -3009,7 +3197,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_t_1 = (__pyx_v_in_check != 0);
     if (__pyx_t_1) {
 
-      /* "search.pyx":131
+      /* "search.pyx":162
  *     if legal_moves == 0:
  *         if in_check:
  *             return -49000 + ply[0] # this is VERY important!             # <<<<<<<<<<<<<<
@@ -3019,7 +3207,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
       __pyx_r = (-49000L + (__pyx_v_ply[0]));
       goto __pyx_L0;
 
-      /* "search.pyx":130
+      /* "search.pyx":161
  * 
  *     if legal_moves == 0:
  *         if in_check:             # <<<<<<<<<<<<<<
@@ -3028,7 +3216,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
     }
 
-    /* "search.pyx":133
+    /* "search.pyx":164
  *             return -49000 + ply[0] # this is VERY important!
  * 
  *         return 0             # <<<<<<<<<<<<<<
@@ -3038,7 +3226,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "search.pyx":129
+    /* "search.pyx":160
  *                 best_so_far = move_list.moves[i]
  * 
  *     if legal_moves == 0:             # <<<<<<<<<<<<<<
@@ -3047,7 +3235,7 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
  */
   }
 
-  /* "search.pyx":136
+  /* "search.pyx":167
  * 
  *     # Node fails low
  *     return alpha             # <<<<<<<<<<<<<<
@@ -3057,12 +3245,12 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   __pyx_r = __pyx_v_alpha;
   goto __pyx_L0;
 
-  /* "search.pyx":67
+  /* "search.pyx":82
  *     return alpha
  * 
  * cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):             # <<<<<<<<<<<<<<
+ *     cdef int found_pv = 0
  *     pv_length[ply[0]] = ply[0]
- * 
  */
 
   /* function exit code */
@@ -3081,12 +3269,12 @@ static int __pyx_f_6search_negamax(PyObject *__pyx_v_board, int __pyx_v_alpha, i
   return __pyx_r;
 }
 
-/* "search.pyx":185
- *         pv_table[i][j] = 0
+/* "search.pyx":210
+ * score_pv[0] = 0
  * 
  * cdef int score_move(int move, object board, int ply):             # <<<<<<<<<<<<<<
- *     cdef int target_piece = P
- *     cdef int start_piece, end_piece
+ *     if score_pv[0]:
+ *         if pv_table[0][ply] == move:
  */
 
 static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board, int __pyx_v_ply) {
@@ -3109,16 +3297,73 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("score_move", 0);
 
-  /* "search.pyx":186
+  /* "search.pyx":211
  * 
  * cdef int score_move(int move, object board, int ply):
+ *     if score_pv[0]:             # <<<<<<<<<<<<<<
+ *         if pv_table[0][ply] == move:
+ *             score_pv[0] = 0
+ */
+  __pyx_t_1 = ((__pyx_v_6search_score_pv[0]) != 0);
+  if (__pyx_t_1) {
+
+    /* "search.pyx":212
+ * cdef int score_move(int move, object board, int ply):
+ *     if score_pv[0]:
+ *         if pv_table[0][ply] == move:             # <<<<<<<<<<<<<<
+ *             score_pv[0] = 0
+ *             return 20000 # Give pv move the highest score
+ */
+    __pyx_t_1 = ((((__pyx_v_6search_pv_table[0])[__pyx_v_ply]) == __pyx_v_move) != 0);
+    if (__pyx_t_1) {
+
+      /* "search.pyx":213
+ *     if score_pv[0]:
+ *         if pv_table[0][ply] == move:
+ *             score_pv[0] = 0             # <<<<<<<<<<<<<<
+ *             return 20000 # Give pv move the highest score
+ * 
+ */
+      (__pyx_v_6search_score_pv[0]) = 0;
+
+      /* "search.pyx":214
+ *         if pv_table[0][ply] == move:
+ *             score_pv[0] = 0
+ *             return 20000 # Give pv move the highest score             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int target_piece = P
+ */
+      __pyx_r = 0x4E20;
+      goto __pyx_L0;
+
+      /* "search.pyx":212
+ * cdef int score_move(int move, object board, int ply):
+ *     if score_pv[0]:
+ *         if pv_table[0][ply] == move:             # <<<<<<<<<<<<<<
+ *             score_pv[0] = 0
+ *             return 20000 # Give pv move the highest score
+ */
+    }
+
+    /* "search.pyx":211
+ * 
+ * cdef int score_move(int move, object board, int ply):
+ *     if score_pv[0]:             # <<<<<<<<<<<<<<
+ *         if pv_table[0][ply] == move:
+ *             score_pv[0] = 0
+ */
+  }
+
+  /* "search.pyx":216
+ *             return 20000 # Give pv move the highest score
+ * 
  *     cdef int target_piece = P             # <<<<<<<<<<<<<<
  *     cdef int start_piece, end_piece
  *     if get_move_capture(move):
  */
   __pyx_v_target_piece = __pyx_e_5board_P;
 
-  /* "search.pyx":188
+  /* "search.pyx":218
  *     cdef int target_piece = P
  *     cdef int start_piece, end_piece
  *     if get_move_capture(move):             # <<<<<<<<<<<<<<
@@ -3128,25 +3373,25 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
   __pyx_t_1 = (__pyx_f_4move_get_move_capture(__pyx_v_move, 0) != 0);
   if (__pyx_t_1) {
 
-    /* "search.pyx":190
+    /* "search.pyx":220
  *     if get_move_capture(move):
  * 
  *         if board.side == white:             # <<<<<<<<<<<<<<
  *             start_piece = p
  *             end_piece = k
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_side); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_e_5board_white); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_e_5board_white); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_1) {
 
-      /* "search.pyx":191
+      /* "search.pyx":221
  * 
  *         if board.side == white:
  *             start_piece = p             # <<<<<<<<<<<<<<
@@ -3155,7 +3400,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
       __pyx_v_start_piece = __pyx_e_5board_p;
 
-      /* "search.pyx":192
+      /* "search.pyx":222
  *         if board.side == white:
  *             start_piece = p
  *             end_piece = k             # <<<<<<<<<<<<<<
@@ -3164,17 +3409,17 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
       __pyx_v_end_piece = __pyx_e_5board_k;
 
-      /* "search.pyx":190
+      /* "search.pyx":220
  *     if get_move_capture(move):
  * 
  *         if board.side == white:             # <<<<<<<<<<<<<<
  *             start_piece = p
  *             end_piece = k
  */
-      goto __pyx_L4;
+      goto __pyx_L6;
     }
 
-    /* "search.pyx":194
+    /* "search.pyx":224
  *             end_piece = k
  *         else:
  *             start_piece = P             # <<<<<<<<<<<<<<
@@ -3184,7 +3429,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     /*else*/ {
       __pyx_v_start_piece = __pyx_e_5board_P;
 
-      /* "search.pyx":195
+      /* "search.pyx":225
  *         else:
  *             start_piece = P
  *             end_piece = K             # <<<<<<<<<<<<<<
@@ -3193,9 +3438,9 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
       __pyx_v_end_piece = __pyx_e_5board_K;
     }
-    __pyx_L4:;
+    __pyx_L6:;
 
-    /* "search.pyx":197
+    /* "search.pyx":227
  *             end_piece = K
  * 
  *         for index in range(start_piece, end_piece + 1):             # <<<<<<<<<<<<<<
@@ -3207,24 +3452,24 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     for (__pyx_t_7 = __pyx_v_start_piece; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
       __pyx_v_index = __pyx_t_7;
 
-      /* "search.pyx":198
+      /* "search.pyx":228
  * 
  *         for index in range(start_piece, end_piece + 1):
  *             if get_bit(board.bitboards[index], get_move_target(move)):             # <<<<<<<<<<<<<<
  *                 target_piece = index
  *                 break
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_board, __pyx_n_s_bitboards); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 228, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, __pyx_v_index, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, __pyx_v_index, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 228, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_3); if (unlikely((__pyx_t_8 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_3); if (unlikely((__pyx_t_8 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 228, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_1 = (__pyx_f_6helper_get_bit(__pyx_t_8, __pyx_f_4move_get_move_target(__pyx_v_move, 0)) != 0);
       if (__pyx_t_1) {
 
-        /* "search.pyx":199
+        /* "search.pyx":229
  *         for index in range(start_piece, end_piece + 1):
  *             if get_bit(board.bitboards[index], get_move_target(move)):
  *                 target_piece = index             # <<<<<<<<<<<<<<
@@ -3233,16 +3478,16 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
         __pyx_v_target_piece = __pyx_v_index;
 
-        /* "search.pyx":200
+        /* "search.pyx":230
  *             if get_bit(board.bitboards[index], get_move_target(move)):
  *                 target_piece = index
  *                 break             # <<<<<<<<<<<<<<
  *         return mvv_lva[get_move_piece(move)][target_piece] + 10000
  *     else:
  */
-        goto __pyx_L6_break;
+        goto __pyx_L8_break;
 
-        /* "search.pyx":198
+        /* "search.pyx":228
  * 
  *         for index in range(start_piece, end_piece + 1):
  *             if get_bit(board.bitboards[index], get_move_target(move)):             # <<<<<<<<<<<<<<
@@ -3251,9 +3496,9 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
       }
     }
-    __pyx_L6_break:;
+    __pyx_L8_break:;
 
-    /* "search.pyx":201
+    /* "search.pyx":231
  *                 target_piece = index
  *                 break
  *         return mvv_lva[get_move_piece(move)][target_piece] + 10000             # <<<<<<<<<<<<<<
@@ -3263,7 +3508,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     __pyx_r = (((__pyx_v_6search_mvv_lva[__pyx_f_4move_get_move_piece(__pyx_v_move, 0)])[__pyx_v_target_piece]) + 0x2710);
     goto __pyx_L0;
 
-    /* "search.pyx":188
+    /* "search.pyx":218
  *     cdef int target_piece = P
  *     cdef int start_piece, end_piece
  *     if get_move_capture(move):             # <<<<<<<<<<<<<<
@@ -3272,7 +3517,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
   }
 
-  /* "search.pyx":204
+  /* "search.pyx":234
  *     else:
  *         # Score 1st killer move
  *         if killer_moves[0][ply] == move:             # <<<<<<<<<<<<<<
@@ -3283,7 +3528,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     __pyx_t_1 = ((((__pyx_v_6search_killer_moves[0])[__pyx_v_ply]) == __pyx_v_move) != 0);
     if (__pyx_t_1) {
 
-      /* "search.pyx":205
+      /* "search.pyx":235
  *         # Score 1st killer move
  *         if killer_moves[0][ply] == move:
  *             return 9000             # <<<<<<<<<<<<<<
@@ -3293,7 +3538,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
       __pyx_r = 0x2328;
       goto __pyx_L0;
 
-      /* "search.pyx":204
+      /* "search.pyx":234
  *     else:
  *         # Score 1st killer move
  *         if killer_moves[0][ply] == move:             # <<<<<<<<<<<<<<
@@ -3302,7 +3547,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
     }
 
-    /* "search.pyx":208
+    /* "search.pyx":238
  * 
  *         # Score 2nd killer move
  *         elif killer_moves[1][ply] == move:             # <<<<<<<<<<<<<<
@@ -3312,7 +3557,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     __pyx_t_1 = ((((__pyx_v_6search_killer_moves[1])[__pyx_v_ply]) == __pyx_v_move) != 0);
     if (__pyx_t_1) {
 
-      /* "search.pyx":209
+      /* "search.pyx":239
  *         # Score 2nd killer move
  *         elif killer_moves[1][ply] == move:
  *             return 8000             # <<<<<<<<<<<<<<
@@ -3322,7 +3567,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
       __pyx_r = 0x1F40;
       goto __pyx_L0;
 
-      /* "search.pyx":208
+      /* "search.pyx":238
  * 
  *         # Score 2nd killer move
  *         elif killer_moves[1][ply] == move:             # <<<<<<<<<<<<<<
@@ -3331,7 +3576,7 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
  */
     }
 
-    /* "search.pyx":213
+    /* "search.pyx":243
  *         # Score history move
  *         else:
  *             return history_moves[get_move_piece(move)][get_move_target(move)]             # <<<<<<<<<<<<<<
@@ -3344,12 +3589,12 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
     }
   }
 
-  /* "search.pyx":185
- *         pv_table[i][j] = 0
+  /* "search.pyx":210
+ * score_pv[0] = 0
  * 
  * cdef int score_move(int move, object board, int ply):             # <<<<<<<<<<<<<<
- *     cdef int target_piece = P
- *     cdef int start_piece, end_piece
+ *     if score_pv[0]:
+ *         if pv_table[0][ply] == move:
  */
 
   /* function exit code */
@@ -3364,12 +3609,12 @@ static int __pyx_f_6search_score_move(int __pyx_v_move, PyObject *__pyx_v_board,
   return __pyx_r;
 }
 
-/* "search.pyx":216
+/* "search.pyx":246
  *     return 0
  * 
  * cdef object sort_moves(object chess, int ply):             # <<<<<<<<<<<<<<
  *     cdef Moves move_list = chess.generate_moves()
- *     cdef int move_scores[64]
+ * 
  */
 
 static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v_ply) {
@@ -3396,14 +3641,14 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("sort_moves", 0);
 
-  /* "search.pyx":217
+  /* "search.pyx":247
  * 
  * cdef object sort_moves(object chess, int ply):
  *     cdef Moves move_list = chess.generate_moves()             # <<<<<<<<<<<<<<
- *     cdef int move_scores[64]
- *     cdef int i
+ * 
+ *     if follow_pv[0]:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_chess, __pyx_n_s_generate_moves); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_chess, __pyx_n_s_generate_moves); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3417,26 +3662,56 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_4move_Moves))))) __PYX_ERR(0, 247, __pyx_L1_error)
   __pyx_v_move_list = ((struct __pyx_obj_4move_Moves *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "search.pyx":220
+  /* "search.pyx":249
+ *     cdef Moves move_list = chess.generate_moves()
+ * 
+ *     if follow_pv[0]:             # <<<<<<<<<<<<<<
+ *         enable_pv_scoring(move_list, ply)
+ * 
+ */
+  __pyx_t_4 = ((__pyx_v_6search_follow_pv[0]) != 0);
+  if (__pyx_t_4) {
+
+    /* "search.pyx":250
+ * 
+ *     if follow_pv[0]:
+ *         enable_pv_scoring(move_list, ply)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int move_scores[64]
+ */
+    __pyx_t_1 = __pyx_f_6search_enable_pv_scoring(((PyObject *)__pyx_v_move_list), __pyx_v_ply); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 250, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "search.pyx":249
+ *     cdef Moves move_list = chess.generate_moves()
+ * 
+ *     if follow_pv[0]:             # <<<<<<<<<<<<<<
+ *         enable_pv_scoring(move_list, ply)
+ * 
+ */
+  }
+
+  /* "search.pyx":254
  *     cdef int move_scores[64]
  *     cdef int i
  *     for i in range(move_list.count):             # <<<<<<<<<<<<<<
  *         move_scores[i] = score_move(move_list.moves[i], chess, ply)
  * 
  */
-  __pyx_t_4 = __pyx_v_move_list->count;
-  __pyx_t_5 = __pyx_t_4;
-  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
-    __pyx_v_i = __pyx_t_6;
+  __pyx_t_5 = __pyx_v_move_list->count;
+  __pyx_t_6 = __pyx_t_5;
+  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+    __pyx_v_i = __pyx_t_7;
 
-    /* "search.pyx":221
+    /* "search.pyx":255
  *     cdef int i
  *     for i in range(move_list.count):
  *         move_scores[i] = score_move(move_list.moves[i], chess, ply)             # <<<<<<<<<<<<<<
@@ -3446,41 +3721,41 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
     (__pyx_v_move_scores[__pyx_v_i]) = __pyx_f_6search_score_move((__pyx_v_move_list->moves[__pyx_v_i]), __pyx_v_chess, __pyx_v_ply);
   }
 
-  /* "search.pyx":224
+  /* "search.pyx":258
  * 
  *     cdef int current_move, next_move, temp
  *     for current_move in range(move_list.count):             # <<<<<<<<<<<<<<
  *         for next_move in range(current_move + 1, move_list.count):
  *             if move_scores[current_move] < move_scores[next_move]:
  */
-  __pyx_t_4 = __pyx_v_move_list->count;
-  __pyx_t_5 = __pyx_t_4;
-  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
-    __pyx_v_current_move = __pyx_t_6;
+  __pyx_t_5 = __pyx_v_move_list->count;
+  __pyx_t_6 = __pyx_t_5;
+  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
+    __pyx_v_current_move = __pyx_t_7;
 
-    /* "search.pyx":225
+    /* "search.pyx":259
  *     cdef int current_move, next_move, temp
  *     for current_move in range(move_list.count):
  *         for next_move in range(current_move + 1, move_list.count):             # <<<<<<<<<<<<<<
  *             if move_scores[current_move] < move_scores[next_move]:
  *                 # Swap scores
  */
-    __pyx_t_7 = __pyx_v_move_list->count;
-    __pyx_t_8 = __pyx_t_7;
-    for (__pyx_t_9 = (__pyx_v_current_move + 1); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-      __pyx_v_next_move = __pyx_t_9;
+    __pyx_t_8 = __pyx_v_move_list->count;
+    __pyx_t_9 = __pyx_t_8;
+    for (__pyx_t_10 = (__pyx_v_current_move + 1); __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
+      __pyx_v_next_move = __pyx_t_10;
 
-      /* "search.pyx":226
+      /* "search.pyx":260
  *     for current_move in range(move_list.count):
  *         for next_move in range(current_move + 1, move_list.count):
  *             if move_scores[current_move] < move_scores[next_move]:             # <<<<<<<<<<<<<<
  *                 # Swap scores
  *                 temp = move_scores[current_move]
  */
-      __pyx_t_10 = (((__pyx_v_move_scores[__pyx_v_current_move]) < (__pyx_v_move_scores[__pyx_v_next_move])) != 0);
-      if (__pyx_t_10) {
+      __pyx_t_4 = (((__pyx_v_move_scores[__pyx_v_current_move]) < (__pyx_v_move_scores[__pyx_v_next_move])) != 0);
+      if (__pyx_t_4) {
 
-        /* "search.pyx":228
+        /* "search.pyx":262
  *             if move_scores[current_move] < move_scores[next_move]:
  *                 # Swap scores
  *                 temp = move_scores[current_move]             # <<<<<<<<<<<<<<
@@ -3489,7 +3764,7 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
  */
         __pyx_v_temp = (__pyx_v_move_scores[__pyx_v_current_move]);
 
-        /* "search.pyx":229
+        /* "search.pyx":263
  *                 # Swap scores
  *                 temp = move_scores[current_move]
  *                 move_scores[current_move] = move_scores[next_move]             # <<<<<<<<<<<<<<
@@ -3498,7 +3773,7 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
  */
         (__pyx_v_move_scores[__pyx_v_current_move]) = (__pyx_v_move_scores[__pyx_v_next_move]);
 
-        /* "search.pyx":230
+        /* "search.pyx":264
  *                 temp = move_scores[current_move]
  *                 move_scores[current_move] = move_scores[next_move]
  *                 move_scores[next_move] = temp             # <<<<<<<<<<<<<<
@@ -3507,18 +3782,18 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
  */
         (__pyx_v_move_scores[__pyx_v_next_move]) = __pyx_v_temp;
 
-        /* "search.pyx":232
+        /* "search.pyx":266
  *                 move_scores[next_move] = temp
  * 
  *                 move_list.swap_move(current_move, next_move)             # <<<<<<<<<<<<<<
  * 
  *     return move_list
  */
-        __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->swap_move(__pyx_v_move_list, __pyx_v_current_move, __pyx_v_next_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+        __pyx_t_1 = ((struct __pyx_vtabstruct_4move_Moves *)__pyx_v_move_list->__pyx_vtab)->swap_move(__pyx_v_move_list, __pyx_v_current_move, __pyx_v_next_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "search.pyx":226
+        /* "search.pyx":260
  *     for current_move in range(move_list.count):
  *         for next_move in range(current_move + 1, move_list.count):
  *             if move_scores[current_move] < move_scores[next_move]:             # <<<<<<<<<<<<<<
@@ -3529,24 +3804,24 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
     }
   }
 
-  /* "search.pyx":234
+  /* "search.pyx":268
  *                 move_list.swap_move(current_move, next_move)
  * 
  *     return move_list             # <<<<<<<<<<<<<<
  * 
- * cdef print_move_scores (object move_list, object chess):
+ * cdef enable_pv_scoring(object move_list, int ply):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_move_list));
   __pyx_r = ((PyObject *)__pyx_v_move_list);
   goto __pyx_L0;
 
-  /* "search.pyx":216
+  /* "search.pyx":246
  *     return 0
  * 
  * cdef object sort_moves(object chess, int ply):             # <<<<<<<<<<<<<<
  *     cdef Moves move_list = chess.generate_moves()
- *     cdef int move_scores[64]
+ * 
  */
 
   /* function exit code */
@@ -3563,8 +3838,128 @@ static PyObject *__pyx_f_6search_sort_moves(PyObject *__pyx_v_chess, int __pyx_v
   return __pyx_r;
 }
 
-/* "search.pyx":236
+/* "search.pyx":270
  *     return move_list
+ * 
+ * cdef enable_pv_scoring(object move_list, int ply):             # <<<<<<<<<<<<<<
+ *     follow_pv[0] = 0
+ * 
+ */
+
+static PyObject *__pyx_f_6search_enable_pv_scoring(PyObject *__pyx_v_move_list, int __pyx_v_ply) {
+  int __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  long __pyx_t_2;
+  long __pyx_t_3;
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("enable_pv_scoring", 0);
+
+  /* "search.pyx":271
+ * 
+ * cdef enable_pv_scoring(object move_list, int ply):
+ *     follow_pv[0] = 0             # <<<<<<<<<<<<<<
+ * 
+ *     cdef int i
+ */
+  (__pyx_v_6search_follow_pv[0]) = 0;
+
+  /* "search.pyx":274
+ * 
+ *     cdef int i
+ *     for i in range(move_list.count):             # <<<<<<<<<<<<<<
+ *         if pv_table[0][ply] == move_list.moves[i]:
+ *             score_pv[0] = 1
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_2 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 274, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+
+    /* "search.pyx":275
+ *     cdef int i
+ *     for i in range(move_list.count):
+ *         if pv_table[0][ply] == move_list.moves[i]:             # <<<<<<<<<<<<<<
+ *             score_pv[0] = 1
+ *             follow_pv[0] = 1
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_6search_pv_table[0])[__pyx_v_ply])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_moves); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_5, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_1, __pyx_t_6, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (__pyx_t_7) {
+
+      /* "search.pyx":276
+ *     for i in range(move_list.count):
+ *         if pv_table[0][ply] == move_list.moves[i]:
+ *             score_pv[0] = 1             # <<<<<<<<<<<<<<
+ *             follow_pv[0] = 1
+ * 
+ */
+      (__pyx_v_6search_score_pv[0]) = 1;
+
+      /* "search.pyx":277
+ *         if pv_table[0][ply] == move_list.moves[i]:
+ *             score_pv[0] = 1
+ *             follow_pv[0] = 1             # <<<<<<<<<<<<<<
+ * 
+ * cdef print_move_scores (object move_list, object chess):
+ */
+      (__pyx_v_6search_follow_pv[0]) = 1;
+
+      /* "search.pyx":275
+ *     cdef int i
+ *     for i in range(move_list.count):
+ *         if pv_table[0][ply] == move_list.moves[i]:             # <<<<<<<<<<<<<<
+ *             score_pv[0] = 1
+ *             follow_pv[0] = 1
+ */
+    }
+  }
+
+  /* "search.pyx":270
+ *     return move_list
+ * 
+ * cdef enable_pv_scoring(object move_list, int ply):             # <<<<<<<<<<<<<<
+ *     follow_pv[0] = 0
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_AddTraceback("search.enable_pv_scoring", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "search.pyx":279
+ *             follow_pv[0] = 1
  * 
  * cdef print_move_scores (object move_list, object chess):             # <<<<<<<<<<<<<<
  *     cdef int i, move
@@ -3587,7 +3982,7 @@ static PyObject *__pyx_f_6search_print_move_scores(PyObject *__pyx_v_move_list, 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("print_move_scores", 0);
 
-  /* "search.pyx":238
+  /* "search.pyx":281
  * cdef print_move_scores (object move_list, object chess):
  *     cdef int i, move
  *     printf("     Move Scores: \n\n")             # <<<<<<<<<<<<<<
@@ -3596,38 +3991,38 @@ static PyObject *__pyx_f_6search_print_move_scores(PyObject *__pyx_v_move_list, 
  */
   (void)(printf(((char const *)"     Move Scores: \n\n")));
 
-  /* "search.pyx":239
+  /* "search.pyx":282
  *     cdef int i, move
  *     printf("     Move Scores: \n\n")
  *     for i in range(move_list.count):             # <<<<<<<<<<<<<<
  *         move = move_list.moves[i]
  *         printf("     move: ")
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_2 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_long(__pyx_t_1); if (unlikely((__pyx_t_2 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = __pyx_t_2;
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "search.pyx":240
+    /* "search.pyx":283
  *     printf("     Move Scores: \n\n")
  *     for i in range(move_list.count):
  *         move = move_list.moves[i]             # <<<<<<<<<<<<<<
  *         printf("     move: ")
  *         print_move(move)
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_moves); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_list, __pyx_n_s_moves); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_v_move = __pyx_t_6;
 
-    /* "search.pyx":241
+    /* "search.pyx":284
  *     for i in range(move_list.count):
  *         move = move_list.moves[i]
  *         printf("     move: ")             # <<<<<<<<<<<<<<
@@ -3636,18 +4031,18 @@ static PyObject *__pyx_f_6search_print_move_scores(PyObject *__pyx_v_move_list, 
  */
     (void)(printf(((char const *)"     move: ")));
 
-    /* "search.pyx":242
+    /* "search.pyx":285
  *         move = move_list.moves[i]
  *         printf("     move: ")
  *         print_move(move)             # <<<<<<<<<<<<<<
  *         printf("score: %d\n", score_move(move, chess, 0))
  * 
  */
-    __pyx_t_5 = __pyx_f_4move_print_move(__pyx_v_move, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 242, __pyx_L1_error)
+    __pyx_t_5 = __pyx_f_4move_print_move(__pyx_v_move, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 285, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "search.pyx":243
+    /* "search.pyx":286
  *         printf("     move: ")
  *         print_move(move)
  *         printf("score: %d\n", score_move(move, chess, 0))             # <<<<<<<<<<<<<<
@@ -3656,8 +4051,8 @@ static PyObject *__pyx_f_6search_print_move_scores(PyObject *__pyx_v_move_list, 
     (void)(printf(((char const *)"score: %d\n"), __pyx_f_6search_score_move(__pyx_v_move, __pyx_v_chess, 0)));
   }
 
-  /* "search.pyx":236
- *     return move_list
+  /* "search.pyx":279
+ *             follow_pv[0] = 1
  * 
  * cdef print_move_scores (object move_list, object chess):             # <<<<<<<<<<<<<<
  *     cdef int i, move
@@ -4891,9 +5286,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_enpassant, __pyx_k_enpassant, sizeof(__pyx_k_enpassant), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_generate_moves, __pyx_k_generate_moves, sizeof(__pyx_k_generate_moves), 0, 0, 1, 1},
-  {&__pyx_n_s_history_moves, __pyx_k_history_moves, sizeof(__pyx_k_history_moves), 0, 0, 1, 1},
   {&__pyx_n_s_is_square_attacked, __pyx_k_is_square_attacked, sizeof(__pyx_k_is_square_attacked), 0, 0, 1, 1},
-  {&__pyx_n_s_killer_moves, __pyx_k_killer_moves, sizeof(__pyx_k_killer_moves), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_make_move, __pyx_k_make_move, sizeof(__pyx_k_make_move), 0, 0, 1, 1},
   {&__pyx_n_s_moves, __pyx_k_moves, sizeof(__pyx_k_moves), 0, 0, 1, 1},
@@ -4901,8 +5294,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_occupancies, __pyx_k_occupancies, sizeof(__pyx_k_occupancies), 0, 0, 1, 1},
   {&__pyx_n_s_ply, __pyx_k_ply, sizeof(__pyx_k_ply), 0, 0, 1, 1},
-  {&__pyx_n_s_pv_length, __pyx_k_pv_length, sizeof(__pyx_k_pv_length), 0, 0, 1, 1},
-  {&__pyx_n_s_pv_table, __pyx_k_pv_table, sizeof(__pyx_k_pv_table), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_capi, __pyx_k_pyx_capi, sizeof(__pyx_k_pyx_capi), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
@@ -4912,7 +5303,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 24, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 81, __pyx_L1_error)
   __pyx_builtin_OverflowError = __Pyx_GetBuiltinName(__pyx_n_s_OverflowError); if (!__pyx_builtin_OverflowError) __PYX_ERR(1, 81, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 84, __pyx_L1_error)
@@ -5023,10 +5414,6 @@ static int __Pyx_modinit_variable_export_code(void) {
   /*--- Variable export code ---*/
   if (__Pyx_ExportVoidPtr(__pyx_n_s_ply, (void *)&__pyx_v_6search_ply, "int [1]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportVoidPtr(__pyx_n_s_mvv_lva, (void *)&__pyx_v_6search_mvv_lva, "int [12][12]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_killer_moves, (void *)&__pyx_v_6search_killer_moves, "int [2][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_history_moves, (void *)&__pyx_v_6search_history_moves, "int [12][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_pv_length, (void *)&__pyx_v_6search_pv_length, "int [64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportVoidPtr(__pyx_n_s_pv_table, (void *)&__pyx_v_6search_pv_table, "int [64][64]") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5262,9 +5649,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_search(PyObject *__pyx_pyinit_modu
   static int __pyx_t_11[12];
   static int __pyx_t_12[12];
   static int __pyx_t_13[12][12];
-  int __pyx_t_14;
-  int __pyx_t_15;
-  PyObject *__pyx_t_16 = NULL;
+  PyObject *__pyx_t_14 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5370,7 +5755,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "search.pyx":150
+  /* "search.pyx":181
  * cdef int mvv_lva[12][12]
  * mvv_lva[:] = [
  *  	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],             # <<<<<<<<<<<<<<
@@ -5390,7 +5775,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_1[10] = 0x1F9;
   __pyx_t_1[11] = 0x25D;
 
-  /* "search.pyx":151
+  /* "search.pyx":182
  * mvv_lva[:] = [
  *  	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],             # <<<<<<<<<<<<<<
@@ -5410,7 +5795,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_2[10] = 0x1F8;
   __pyx_t_2[11] = 0x25C;
 
-  /* "search.pyx":152
+  /* "search.pyx":183
  *  	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],             # <<<<<<<<<<<<<<
@@ -5430,7 +5815,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_3[10] = 0x1F7;
   __pyx_t_3[11] = 0x25B;
 
-  /* "search.pyx":153
+  /* "search.pyx":184
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],             # <<<<<<<<<<<<<<
@@ -5450,7 +5835,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_4[10] = 0x1F6;
   __pyx_t_4[11] = 0x25A;
 
-  /* "search.pyx":154
+  /* "search.pyx":185
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],
  * 	[101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601],             # <<<<<<<<<<<<<<
@@ -5470,7 +5855,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5[10] = 0x1F5;
   __pyx_t_5[11] = 0x259;
 
-  /* "search.pyx":155
+  /* "search.pyx":186
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],
  * 	[101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601],
  * 	[100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600],             # <<<<<<<<<<<<<<
@@ -5490,7 +5875,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_6[10] = 0x1F4;
   __pyx_t_6[11] = 0x258;
 
-  /* "search.pyx":157
+  /* "search.pyx":188
  * 	[100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600],
  * 
  * 	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],             # <<<<<<<<<<<<<<
@@ -5510,7 +5895,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_7[10] = 0x1F9;
   __pyx_t_7[11] = 0x25D;
 
-  /* "search.pyx":158
+  /* "search.pyx":189
  * 
  * 	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],             # <<<<<<<<<<<<<<
@@ -5530,7 +5915,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_8[10] = 0x1F8;
   __pyx_t_8[11] = 0x25C;
 
-  /* "search.pyx":159
+  /* "search.pyx":190
  * 	[105, 205, 305, 405, 505, 605,  105, 205, 305, 405, 505, 605],
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],             # <<<<<<<<<<<<<<
@@ -5550,7 +5935,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_9[10] = 0x1F7;
   __pyx_t_9[11] = 0x25B;
 
-  /* "search.pyx":160
+  /* "search.pyx":191
  * 	[104, 204, 304, 404, 504, 604,  104, 204, 304, 404, 504, 604],
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],             # <<<<<<<<<<<<<<
@@ -5570,7 +5955,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_10[10] = 0x1F6;
   __pyx_t_10[11] = 0x25A;
 
-  /* "search.pyx":161
+  /* "search.pyx":192
  * 	[103, 203, 303, 403, 503, 603,  103, 203, 303, 403, 503, 603],
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],
  * 	[101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601],             # <<<<<<<<<<<<<<
@@ -5590,7 +5975,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_11[10] = 0x1F5;
   __pyx_t_11[11] = 0x259;
 
-  /* "search.pyx":162
+  /* "search.pyx":193
  * 	[102, 202, 302, 402, 502, 602,  102, 202, 302, 402, 502, 602],
  * 	[101, 201, 301, 401, 501, 601,  101, 201, 301, 401, 501, 601],
  * 	[100, 200, 300, 400, 500, 600,  100, 200, 300, 400, 500, 600]             # <<<<<<<<<<<<<<
@@ -5610,7 +5995,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_12[10] = 0x1F4;
   __pyx_t_12[11] = 0x258;
 
-  /* "search.pyx":149
+  /* "search.pyx":180
  * # MVV LVA [attacker][victim]
  * cdef int mvv_lva[12][12]
  * mvv_lva[:] = [             # <<<<<<<<<<<<<<
@@ -5631,128 +6016,69 @@ if (!__Pyx_RefNanny) {
   memcpy(&(__pyx_t_13[11]), __pyx_t_12, sizeof(__pyx_t_13[0]));
   memcpy(&(__pyx_v_6search_mvv_lva[0]), __pyx_t_13, sizeof(__pyx_v_6search_mvv_lva[0]) * (12));
 
-  /* "search.pyx":167
- * cdef int i, j
- * # killer moves[id][ply]
- * for i in range(2):             # <<<<<<<<<<<<<<
- *     for j in range(64):
- *         killer_moves[i][j] = 0
+  /* "search.pyx":201
+ * cdef int pv_table[64][64]
+ * 
+ * memset(killer_moves, 0, sizeof(killer_moves))             # <<<<<<<<<<<<<<
+ * memset(history_moves, 0, sizeof(history_moves))
+ * memset(pv_table, 0, sizeof(pv_table))
  */
-  for (__pyx_t_14 = 0; __pyx_t_14 < 2; __pyx_t_14+=1) {
-    __pyx_v_6search_i = __pyx_t_14;
+  (void)(memset(__pyx_v_6search_killer_moves, 0, (sizeof(__pyx_v_6search_killer_moves))));
 
-    /* "search.pyx":168
- * # killer moves[id][ply]
- * for i in range(2):
- *     for j in range(64):             # <<<<<<<<<<<<<<
- *         killer_moves[i][j] = 0
+  /* "search.pyx":202
+ * 
+ * memset(killer_moves, 0, sizeof(killer_moves))
+ * memset(history_moves, 0, sizeof(history_moves))             # <<<<<<<<<<<<<<
+ * memset(pv_table, 0, sizeof(pv_table))
+ * memset(pv_length, 0, sizeof(pv_length))
+ */
+  (void)(memset(__pyx_v_6search_history_moves, 0, (sizeof(__pyx_v_6search_history_moves))));
+
+  /* "search.pyx":203
+ * memset(killer_moves, 0, sizeof(killer_moves))
+ * memset(history_moves, 0, sizeof(history_moves))
+ * memset(pv_table, 0, sizeof(pv_table))             # <<<<<<<<<<<<<<
+ * memset(pv_length, 0, sizeof(pv_length))
  * 
  */
-    for (__pyx_t_15 = 0; __pyx_t_15 < 64; __pyx_t_15+=1) {
-      __pyx_v_6search_j = __pyx_t_15;
+  (void)(memset(__pyx_v_6search_pv_table, 0, (sizeof(__pyx_v_6search_pv_table))));
 
-      /* "search.pyx":169
- * for i in range(2):
- *     for j in range(64):
- *         killer_moves[i][j] = 0             # <<<<<<<<<<<<<<
+  /* "search.pyx":204
+ * memset(history_moves, 0, sizeof(history_moves))
+ * memset(pv_table, 0, sizeof(pv_table))
+ * memset(pv_length, 0, sizeof(pv_length))             # <<<<<<<<<<<<<<
  * 
- * # history moves[piece][ply]
+ * cdef int follow_pv[1], score_pv[1]
  */
-      ((__pyx_v_6search_killer_moves[__pyx_v_6search_i])[__pyx_v_6search_j]) = 0;
-    }
-  }
+  (void)(memset(__pyx_v_6search_pv_length, 0, (sizeof(__pyx_v_6search_pv_length))));
 
-  /* "search.pyx":172
+  /* "search.pyx":207
  * 
- * # history moves[piece][ply]
- * for i in range(12):             # <<<<<<<<<<<<<<
- *     for j in range(64):
- *         history_moves[i][j] = 0
- */
-  for (__pyx_t_14 = 0; __pyx_t_14 < 12; __pyx_t_14+=1) {
-    __pyx_v_6search_i = __pyx_t_14;
-
-    /* "search.pyx":173
- * # history moves[piece][ply]
- * for i in range(12):
- *     for j in range(64):             # <<<<<<<<<<<<<<
- *         history_moves[i][j] = 0
+ * cdef int follow_pv[1], score_pv[1]
+ * follow_pv[0] = 0             # <<<<<<<<<<<<<<
+ * score_pv[0] = 0
  * 
  */
-    for (__pyx_t_15 = 0; __pyx_t_15 < 64; __pyx_t_15+=1) {
-      __pyx_v_6search_j = __pyx_t_15;
+  (__pyx_v_6search_follow_pv[0]) = 0;
 
-      /* "search.pyx":174
- * for i in range(12):
- *     for j in range(64):
- *         history_moves[i][j] = 0             # <<<<<<<<<<<<<<
- * 
- * # PV length
- */
-      ((__pyx_v_6search_history_moves[__pyx_v_6search_i])[__pyx_v_6search_j]) = 0;
-    }
-  }
-
-  /* "search.pyx":177
- * 
- * # PV length
- * for i in range(64):             # <<<<<<<<<<<<<<
- *     pv_length[i] = 0
- * 
- */
-  for (__pyx_t_14 = 0; __pyx_t_14 < 64; __pyx_t_14+=1) {
-    __pyx_v_6search_i = __pyx_t_14;
-
-    /* "search.pyx":178
- * # PV length
- * for i in range(64):
- *     pv_length[i] = 0             # <<<<<<<<<<<<<<
- * 
- * # PV table
- */
-    (__pyx_v_6search_pv_length[__pyx_v_6search_i]) = 0;
-  }
-
-  /* "search.pyx":181
- * 
- * # PV table
- * for i in range(64):             # <<<<<<<<<<<<<<
- *     for j in range(64):
- *         pv_table[i][j] = 0
- */
-  for (__pyx_t_14 = 0; __pyx_t_14 < 64; __pyx_t_14+=1) {
-    __pyx_v_6search_i = __pyx_t_14;
-
-    /* "search.pyx":182
- * # PV table
- * for i in range(64):
- *     for j in range(64):             # <<<<<<<<<<<<<<
- *         pv_table[i][j] = 0
- * 
- */
-    for (__pyx_t_15 = 0; __pyx_t_15 < 64; __pyx_t_15+=1) {
-      __pyx_v_6search_j = __pyx_t_15;
-
-      /* "search.pyx":183
- * for i in range(64):
- *     for j in range(64):
- *         pv_table[i][j] = 0             # <<<<<<<<<<<<<<
+  /* "search.pyx":208
+ * cdef int follow_pv[1], score_pv[1]
+ * follow_pv[0] = 0
+ * score_pv[0] = 0             # <<<<<<<<<<<<<<
  * 
  * cdef int score_move(int move, object board, int ply):
  */
-      ((__pyx_v_6search_pv_table[__pyx_v_6search_i])[__pyx_v_6search_j]) = 0;
-    }
-  }
+  (__pyx_v_6search_score_pv[0]) = 0;
 
   /* "search.pyx":1
  * from libc.stdio cimport printf             # <<<<<<<<<<<<<<
+ * from libc.string cimport memset
  * from eval cimport evaluate
- * from helper cimport get_ls1b_index, get_bit
  */
-  __pyx_t_16 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_16) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+  __pyx_t_14 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_14) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
   /* "carray.to_py":124
  * 
@@ -5766,7 +6092,7 @@ if (!__Pyx_RefNanny) {
 
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_16);
+  __Pyx_XDECREF(__pyx_t_14);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init search", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -7493,6 +7819,44 @@ raise_neg_overflow:
 }
 
 /* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+    const long neg_one = (long) -1, const_zero = (long) 0;
+#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+#pragma GCC diagnostic pop
+#endif
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+/* CIntToPy */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
 #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
 #pragma GCC diagnostic push
@@ -7760,44 +8124,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_PY_LONG_LONG(unsigned P
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(unsigned PY_LONG_LONG),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const long neg_one = (long) -1, const_zero = (long) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
                                      little, !is_unsigned);
     }
 }
