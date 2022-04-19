@@ -56,7 +56,7 @@ def main():
                             if board.make_move(move, 0):
                                 prev_move = move
                                 board.print_board()
-                                move = search_position(board, 4)
+                                move = search_position(board, 6)
                                 if move:
                                     print_move(move)
                                     board.make_move(move, 0)

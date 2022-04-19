@@ -3,9 +3,11 @@ from libc.string cimport memset
 from eval cimport evaluate
 from helper cimport get_ls1b_index, get_bit
 from board cimport Board, BoardCopy, P, N, B, R, Q, K, p, n, b, r, q, k, white, black
-from move cimport Moves, print_move, get_move_capture, get_move_piece, get_move_source, get_move_target
+from move cimport Moves, print_move, get_move_capture, get_move_piece, get_move_source, get_move_target, get_move_promoted
 from const cimport ascii_pieces
 
+
+cdef int start_depth[1]
 
 cpdef int search_position(object board, int depth):
     # clear helper data structures for search
@@ -22,10 +24,11 @@ cpdef int search_position(object board, int depth):
     cdef int current_depth
     cdef int nodes = 0, ply = 0, score = 0, count
     for current_depth in range(1, depth + 1):
+        start_depth[0] = current_depth
         follow_pv[0] = 1
 
         score = negamax(board, -50000, 50000, current_depth, &nodes, &ply)
-
+        printf("DEPTH %i | ", current_depth)
         printf("info score cp %d depth %d nodes %ld pv ", score, current_depth, nodes)
 
         # loop over moves within a PV line
@@ -41,6 +44,7 @@ cpdef int search_position(object board, int depth):
 
 cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):
     nodes[0] += 1
+
     cdef int evaluation = evaluate(board)
 
     # Fail hard beta cutoff
@@ -79,12 +83,17 @@ cdef int quiescence(object board, int alpha, int beta, int *nodes, int *ply):
     # Node fails low
     return alpha
 
+cdef int full_depth_moves[1]
+full_depth_moves[0] = 4
+cdef int reduction_limit[1]
+reduction_limit[0] = 3
+
 cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *ply):
     cdef int found_pv = 0
+
     pv_length[ply[0]] = ply[0]
 
     if depth == 0:
-        # return evaluate(board)
         return quiescence(board, alpha, beta, nodes, ply)
     
     # We reach max depth
@@ -99,11 +108,15 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
 
     cdef int legal_moves = 0
 
-    # cdef Moves move_list = board.generate_moves()
-    cdef Moves move_list = sort_moves(board, ply[0])
+    cdef Moves move_list = board.generate_moves()
+    if follow_pv[0]:
+        enable_pv_scoring(move_list, ply[0])
+
+    move_list = sort_moves(board, ply[0])
 
     cdef int i, score, next_ply
     cdef BoardCopy copy
+    cdef int moves_searched = 0
     for i in range(move_list.count):
         copy = board.copy_board()
         ply[0] += 1
@@ -122,10 +135,28 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
                 score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
 
         else:
-            score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+            # Normal ab search
+            if moves_searched == 0:
+                score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
+
+            # Late move reduction (LMR)
+            else:
+                if moves_searched >= full_depth_moves[0] and depth >= reduction_limit[0] and in_check == 0 and get_move_capture(move_list.moves[i]) == 0 and get_move_promoted(move_list.moves[i]) == 0:
+                    score = -negamax(board, -alpha - 1, -alpha, depth - 2, nodes, ply)
+                else:
+                    score = alpha + 1
+                
+                # if a bad move was found to be good
+                if score > alpha:
+                    score = -negamax(board, -alpha - 1, -alpha, depth - 1, nodes, ply)
+
+                    # if LMR fails
+                    if score > alpha and score < beta:
+                        score = -negamax(board, -beta, -alpha, depth - 1, nodes, ply)
 
         ply[0] -= 1
         board.take_back(copy)
+        moves_searched += 1
 
         # Fail hard beta cutoff
         if score >= beta:
@@ -133,6 +164,7 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
                 # Store killer move
                 killer_moves[1][ply[0]] = killer_moves[0][ply[0]]
                 killer_moves[0][ply[0]] = move_list.moves[i]
+
             return beta # node fails high
 
         # Found better move
@@ -153,9 +185,6 @@ cdef int negamax(object board, int alpha, int beta, int depth, int *nodes, int *
 
             # Adjust pv_length
             pv_length[ply[0]] = pv_length[ply[0] + 1]
-
-            if ply[0] == 0:
-                best_so_far = move_list.moves[i]
 
     if legal_moves == 0:
         if in_check:
@@ -246,10 +275,7 @@ cdef int score_move(int move, object board, int ply):
 cdef object sort_moves(object chess, int ply):
     cdef Moves move_list = chess.generate_moves()
 
-    if follow_pv[0]:
-        enable_pv_scoring(move_list, ply)
-
-    cdef int move_scores[64]
+    cdef int move_scores[218]
     cdef int i
     for i in range(move_list.count):
         move_scores[i] = score_move(move_list.moves[i], chess, ply)
