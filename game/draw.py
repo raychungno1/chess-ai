@@ -3,13 +3,13 @@ from .const import Const
 import sys
 sys.path.append('./chess')
 from board import Board
-from move import Moves, encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant
+from move import Moves, print_move, encode_move, get_move_source, get_move_target, get_move_piece, get_move_promoted, get_move_capture, get_move_castling, get_move_double, get_move_enpassant
 
 pygame.font.init()
 FONT = pygame.font.SysFont('ariel', 40)
 
 
-def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move):
+def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move, depth, nodes, eval, search_time):
     WIN.fill(Const.BG)
 
     for row in range(8):
@@ -29,10 +29,11 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move):
         draw_square(WIN, source // 8, source % 8, Const.HIGHLIGHT_ORIGIN)
         draw_square(WIN, target // 8, target % 8, Const.HIGHLIGHT_MOVE)
 
-    source = get_move_source(prev_move)
-    target = get_move_target(prev_move)
-    draw_square(WIN, source // 8, source % 8, Const.HIGHLIGHT_ORIGIN)
-    draw_square(WIN, target // 8, target % 8, Const.HIGHLIGHT_MOVE)
+    if prev_move:
+        source = get_move_source(prev_move)
+        target = get_move_target(prev_move)
+        draw_square(WIN, source // 8, source % 8, Const.HIGHLIGHT_ORIGIN)
+        draw_square(WIN, target // 8, target % 8, Const.HIGHLIGHT_MOVE)
 
     for row in range(8):
         for col in range(8):
@@ -53,6 +54,28 @@ def draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move):
             (mx - Const.SQUARE_SIZE // 2, my - Const.SQUARE_SIZE // 2),
             get_piece_img(board.get_piece(square_clicked))
         )
+
+
+
+    text = FONT.render("Depth:", 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE))
+    text = FONT.render(str(depth), 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 1.4))
+
+    text = FONT.render("Nodes Searched:", 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 2))
+    text = FONT.render(str(nodes), 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 2.4))
+
+    text = FONT.render("Evaluation:", 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 3))
+    text = FONT.render(str(eval), 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 3.4))
+
+    text = FONT.render("Time:", 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 4))
+    text = FONT.render("{:.2f}".format(search_time), 1, Const.BLACK)
+    WIN.blit(text, (720, Const.SQUARE_SIZE * 4.4))
 
 
 def draw_square(WIN, row, col, color):

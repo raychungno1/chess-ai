@@ -2,7 +2,7 @@ import pygame
 
 class Const:
   FPS = 30
-  WIDTH, HEIGHT = 720, 720
+  WIDTH, HEIGHT = 1000, 720
 
   BG = (210, 205, 202)
   DARK_SQUARE = (223, 197, 170)

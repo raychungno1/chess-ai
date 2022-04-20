@@ -5,9 +5,12 @@
 * Positional & Material based evaluation function
 * Search Optimizations
   * Negamax Alpha Beta Pruning
-    * Principle Variation Search enhancement
+    * Principle Variation Search
+    * Late Move Reduction
+    * Null Move Reduction
   * Quiescence Search to avoid the Horizon Effect
   * Iterative Deepening
+    * Adjusting aspiration windows
 * Move Ordering Optimizations
   * Principle Variation (used in iterative deepening)
   * Most Valuable Victim - Least Valuable Attacker table (capture moves)

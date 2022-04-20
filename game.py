@@ -28,6 +28,10 @@ def main():
     moves = Moves()
     moves.count = 0
     prev_move = 0
+    depth = 6
+    nodes = 0
+    eval = 0
+    search_time = 0
 
     while True:
         clock.tick(Const.FPS)
@@ -56,7 +60,10 @@ def main():
                             if board.make_move(move, 0):
                                 prev_move = move
                                 board.print_board()
-                                move = search_position(board, 6)
+                                start = time.perf_counter()
+                                move, nodes, eval = search_position(board, depth)
+                                end = time.perf_counter()
+                                search_time = end - start
                                 if move:
                                     print_move(move)
                                     board.make_move(move, 0)
@@ -69,11 +76,11 @@ def main():
 
         mx, my = pygame.mouse.get_pos()
 
-        draw_window(board, square_clicked, mx, my, moves, prev_move)
+        draw_window(board, square_clicked, mx, my, moves, prev_move, depth, nodes, eval, search_time)
 
 
-def draw_window(board, square_clicked, mx, my, moves, prev_move):
-    draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move)
+def draw_window(board, square_clicked, mx, my, moves, prev_move, depth, nodes, eval, search_time):
+    draw_board(WIN, PIECE_IMG, board, square_clicked, mx, my, moves, prev_move, depth, nodes, eval, search_time)
     pygame.display.update()
 
 
