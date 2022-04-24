@@ -28,6 +28,6 @@ A GCC compiler is required to compile and run the program using Cython.
 3. Activate virtualenv with `./env/Scripts/activate` on Windows or `source env/Scripts/activate` on Mac
 4. Install dependencies with `pip install -r requirements.txt`
 5. Move into the chess folder with `cd chess`
-6. Compile the cython files with `python setup.py`
+6. Compile the cython files with `python setup.py build_ext --inplace`
 7. Go to root directory
 8. Run the game with `python game.py`
