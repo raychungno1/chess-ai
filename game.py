@@ -28,7 +28,7 @@ def main():
     moves = Moves()
     moves.count = 0
     prev_move = 0
-    depth = 6
+    depth = 7
     nodes = 0
     eval = 0
     search_time = 0

@@ -1,3 +1,7 @@
+# Chess AI
+
+This chess engine was created as a final project for Machine Learning (CSE 5523). The engine plays at a speculated rating of approximately 1700 at a depth of 7. 
+
 ## Features/Optimizations
 * Pygame UI
 * Bitboard board representation
@@ -18,7 +22,12 @@
   * History Moves table (quiet moves)
 
 ## Run the program:
+A GCC compiler is required to compile and run the program using Cython. 
 1. Go to root directory
 2. Initialize virtualenv with `python -m virtualenv env`
 3. Activate virtualenv with `./env/Scripts/activate` on Windows or `source env/Scripts/activate` on Mac
 4. Install dependencies with `pip install -r requirements.txt`
+5. Move into the chess folder with `cd chess`
+6. Compile the cython files with `python setup.py`
+7. Go to root directory
+8. Run the game with `python game.py`
