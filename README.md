@@ -1,6 +1,6 @@
 # Chess AI
 
-This chess engine was created as a final project for Machine Learning (CSE 5523). The engine plays at a speculated rating of approximately 1700 at a depth of 7. View a demo of the program [here](https://youtu.be/oOvJXMsbHoo).
+This chess engine plays at a speculated rating of 1700 at a depth of 7. View a demo of the program [here](https://youtu.be/oOvJXMsbHoo).
 
 ## Features/Optimizations
 * Pygame UI
